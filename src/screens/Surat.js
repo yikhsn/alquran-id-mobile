@@ -28,6 +28,7 @@ class Surat extends Component{
     }
     
     render(){
+        const surat_id = this.props.navigation.getParam('surat_id', null);
         const surat = this.props.navigation.getParam('surat', null);
            
         return(
@@ -35,7 +36,9 @@ class Surat extends Component{
                 <HeaderSurat
                     surat={surat}
                 />
-                <Bismillah />
+                {
+                    surat_id !== 1 ? ( surat_id !== 9 ? <Bismillah /> : null ) : null
+                }
                 <FlatList
                     data={ this.state.ayats }
                     renderItem={ ({ item }) => {
