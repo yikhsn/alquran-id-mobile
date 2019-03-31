@@ -3,30 +3,39 @@ import {
     View,
     TouchableOpacity,
     Text,
-    Alert,
     StyleSheet
 } from 'react-native';
+import Swipeout from 'react-native-swipeout';
 import { deleteSuratBookmark } from '../../../controllers/BookmarkController';
 
 class BookmarkSuratList extends Component{
-    
-    deleteBookmark =  (value) => {
-        deleteSuratBookmark(value).then( (msg) => {
-            Alert.alert(
-                msg,
-                msg,
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => this.props.initBookmarks()
-                    },
-                ],
-                { cancelable: false }
-            );
-        });
+    deleteBookmark = (value) => {
+        deleteSuratBookmark(value).then( (msg) => this.props.initBookmarks() );
     }
     
-    render(){
+    render(){ 
+        let swipeRightButton = [
+            {
+                // component: (
+                //     <View
+                //         style={{
+                //           flex: 1,
+                //           alignItems: 'center',
+                //           justifyContent: 'center',
+                //           flexDirection: 'column',
+                //         }}
+                //     >
+                //         <Image source={require('../../../../../images/delete_white.png')} />
+                //     </View>
+                // ),
+                text: 'Hapus',
+                backgroundColor: '#ff445b',
+                color: '#ffffff',
+                underlayColor: '#f78',
+                onPress: () => this.deleteBookmark(surat.id)
+            }
+        ]
+
         const { surat } = this.props;
 
         const date = new Date(surat.created_at);
@@ -36,26 +45,29 @@ class BookmarkSuratList extends Component{
             : `${date.getMinutes()}:${date.getHours()}`;
 
         return(
-            <TouchableOpacity style={styles.container}
-                onPress={() => this.props.navigation.navigate('Surat', {
-                    surat: surat,
-                    surat_id: surat.surat_id
-
-                })}
-                onLongPress={ () => this.deleteBookmark(surat.id) }
+            <Swipeout 
+                right={swipeRightButton}
+                close={true}
             >
-                <View style={styles.left}>
-                    <Text style={styles.name}>
-                        {surat.surat_nama}
-                    </Text>
-                </View>
+                <TouchableOpacity style={styles.container}
+                    onPress={() => this.props.navigation.navigate('Surat', {
+                        surat: surat,
+                        surat_id: surat.surat_id
 
-                <View style={styles.right}>
-                    <Text style={styles.time}>
-                        { datePrint }
-                    </Text>
-                </View>
-            </TouchableOpacity>
+                    })}
+                >
+                    <View style={styles.left}>
+                        <Text style={styles.name}>
+                            {surat.surat_nama}
+                        </Text>
+                    </View>
+                    <View style={styles.right}>
+                        <Text style={styles.time}>
+                            { datePrint }
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </Swipeout>            
         )
     }
 }

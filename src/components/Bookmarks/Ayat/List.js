@@ -6,28 +6,24 @@ import {
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
+import Swipeout from 'react-native-swipeout';
 import { deleteAyatBookmark } from '../../../controllers/BookmarkController';
 
 class BookmarkAyatList extends Component{    
     deleteBookmark =  (value) => {
-        deleteAyatBookmark(value).then( (msg) => {
-            Alert.alert(
-                msg,
-                msg,
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => this.props.initBookmarks()
-                    },
-                ],
-                { cancelable: false }
-            );
-        });
+        deleteAyatBookmark(value).then( (msg) =>  this.props.initBookmarks());
     }
 
     render(){
-
-        console.log(this.props);
+        let swipeRightButton = [
+            {
+                text: 'Hapus',
+                backgroundColor: '#ff445b',
+                color: '#ffffff',
+                underlayColor: '#f78',
+                onPress: () => this.deleteBookmark(ayat.id)
+            }
+        ]
 
         const { ayat } = this.props;
 
@@ -38,24 +34,29 @@ class BookmarkAyatList extends Component{
             : `${date.getMinutes()}:${date.getHours()}`;
 
         return(
-            <TouchableOpacity style={styles.container}
-                onPress={ () => this.props.navigation.navigate('Surat', {
-                    surat: ayat,
-                    surat_id: ayat.nomor_surat
-                })}
-                onLongPress={ () => this.deleteBookmark(ayat.id)}
+            <Swipeout
+                right={swipeRightButton}
+                autoClose={true}
             >
-                <View style={styles.left}>
-                    <Text style={styles.surat}>{ayat.surat_nama}</Text>
-                    <Text style={styles.ayat}>:Ayat { ayat.nomor_ayat }</Text>
-                </View>
+                <TouchableOpacity style={styles.container}
+                    onPress={ () => this.props.navigation.navigate('Surat', {
+                        surat: ayat,
+                        surat_id: ayat.nomor_surat
+                    })}
+                >
+                    <View style={styles.left}>
+                        <Text style={styles.surat}>{ayat.surat_nama}</Text>
+                        <Text style={styles.ayat}>:Ayat { ayat.nomor_ayat }</Text>
+                    </View>
 
-                <View style={styles.right}>
-                    <Text style={styles.time}>
-                        { datePrint }
-                    </Text>
-                </View>
-            </TouchableOpacity>
+                    <View style={styles.right}>
+                        <Text style={styles.time}>
+                            { datePrint }
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </Swipeout>
+
         )
     }
 }

@@ -8,7 +8,8 @@ class SuratList extends Component{
         super(props);
 
         this.state = {
-            surats: []
+            surats: [],
+            scrollEnabled: true
         }        
     }
 
@@ -19,16 +20,21 @@ class SuratList extends Component{
     initListSurats = () => {
         getAllSurats().then( (surats) => this.setState( { surats }));
     }
+
+    allowScroll = (scrollEnabled) => {
+        this.setState({ scrollEnabled });
+    }
     
     render() {
         return(
-            <ScrollView>
+            <ScrollView scrollEnabled={this.state.scrollEnabled} >
                 <FlatList
                     data={ this.state.surats }
                     renderItem={ ({ item }) => {
                         return <List
                             surat={item}
                             navigation={this.props.navigation}
+                            allowScroll={this.allowScroll}
                         />
                     } }
                     keyExtractor={ (item, index) => item + index }

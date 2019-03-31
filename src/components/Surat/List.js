@@ -6,7 +6,7 @@ import {
     Alert,
     StyleSheet
 } from 'react-native';
-
+import Swipeout from 'react-native-swipeout';
 import { addSuratToBookmark } from '../../controllers/BookmarkController';
 
 import SuratName from './SuratName';
@@ -26,7 +26,6 @@ class SuratList extends Component{
                 [
                     {
                         text: 'OK',
-                        onPress: () => this.props.navigation.navigate('Read')
                     },
                 ],
                 { cancelable: false }
@@ -35,33 +34,62 @@ class SuratList extends Component{
     }
     
     render(){
+
+        let swipeRightButton = [
+            {
+                // component: (
+                //     <View
+                //         style={{
+                //           flex: 1,
+                //           alignItems: 'center',
+                //           justifyContent: 'center',
+                //           flexDirection: 'column',
+                //         }}
+                //     >
+                //         <Image source={require('../../../../../images/delete_white.png')} />
+                //     </View>
+                // ),
+                text: 'Bookmark',
+                fontSize: 20,
+                backgroundColor: '#2BC0FF',
+                color: '#ffffff',
+                underlayColor: '#f78',
+                onPress: () => this.addToBookmark(surat.id)
+            }
+        ]
+
         const { surat } = this.props;
 
         return(
-            <TouchableOpacity style={styles.container}
-                onPress={() => this.props.navigation.navigate('Surat', {
-                    surat: surat,
-                    surat_id: surat.id
-                })}
-                onLongPress={() => this.addToBookmark(surat.id)}
+            <Swipeout
+                right={swipeRightButton}
+                autoClose={true}
+                scroll={ (event) => this.props.allowScroll(event) }
             >
-                <View style={styles.left}>
-                    <SuratNumber
-                        number={ surat.id }
-                    />
+                <TouchableOpacity style={styles.container}
+                    onPress={() => this.props.navigation.navigate('Surat', {
+                        surat: surat,
+                        surat_id: surat.id
+                    })}
+                >
+                    <View style={styles.left}>
+                        <SuratNumber
+                            number={ surat.id }
+                        />
 
-                    <SuratName
-                        nama={surat.surat_nama}
-                        arti={surat.surat_arti}
-                    />
+                        <SuratName
+                            nama={surat.surat_nama}
+                            arti={surat.surat_arti}
+                        />
 
-                </View>
-                <View style={styles.right}>
-                    <Text style={styles.arab}>
-                        {surat.surat_arab}
-                    </Text>
-                </View>
-            </TouchableOpacity>
+                    </View>
+                    <View style={styles.right}>
+                        <Text style={styles.arab}>
+                            {surat.surat_arab}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </Swipeout>
         )
     }
 }
