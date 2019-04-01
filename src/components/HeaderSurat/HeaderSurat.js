@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 15,
+        paddingVertical: 2,
         borderBottomWidth: 2,
         borderColor: '#eeeeee'
     },
@@ -57,15 +57,22 @@ const styles = StyleSheet.create({
 
     },
     suratName: {
-        fontSize: 58,
+        fontSize: 60,
         color: '#444444',
+        top: 0,
+        bottom: 30,
         fontFamily: 'scheherazade-webfont',
+        // fontFamily: 'kfc_naskh-webfont',
+        // fontFamily: 'pdms_saleem-webfont',
+        // fontFamily: 'me_quran-webfont',
+        // fontFamily: 'xb_zar-webfont',
     },
     suratNameBox: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 5
+        marginBottom: 5,
+        top: -15,
     },
     suratNameId: {
         fontSize: 18,
@@ -79,7 +86,8 @@ const styles = StyleSheet.create({
     },
     ayatTotal: {
         fontSize: 18,
-        color: '#666666'
+        color: '#666666',
+        top: -15,
     },
 })
 

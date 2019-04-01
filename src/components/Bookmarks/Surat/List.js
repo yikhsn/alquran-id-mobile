@@ -3,6 +3,7 @@ import {
     View,
     TouchableOpacity,
     Text,
+    Image,
     StyleSheet
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
@@ -42,12 +43,13 @@ class BookmarkSuratList extends Component{
 
         const datePrint = ((new Date().getTime()) - date.getTime()) / (1000*60*60*24) > 1 
             ? `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}` 
-            : `${date.getMinutes()}:${date.getHours()}`;
+            : `${date.getHours()}:${date.getMinutes()}`;
 
         return(
             <Swipeout 
                 right={swipeRightButton}
                 close={true}
+                scroll={ (event) => this.props.allowScroll(event)}
             >
                 <TouchableOpacity style={styles.container}
                     onPress={() => this.props.navigation.navigate('Surat', {
@@ -57,8 +59,12 @@ class BookmarkSuratList extends Component{
                     })}
                 >
                     <View style={styles.left}>
+                        <Image
+                            style={styles.image}
+                            source={ require('../../../assets/bookmark-grey.png') }
+                        /> 
                         <Text style={styles.name}>
-                            {surat.surat_nama}
+                            QS. {surat.surat_nama}
                         </Text>
                     </View>
                     <View style={styles.right}>
@@ -76,7 +82,7 @@ const styles = StyleSheet.create({
     container: {
         paddingVertical: 10,
         paddingRight: 10,
-        paddingLeft: 30,
+        paddingLeft: 37,
         backgroundColor: '#ffffff',
         flexDirection: 'row',
         borderBottomWidth: 1,
@@ -97,6 +103,11 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 16,
         color: '#444444'
+    },
+    image: {
+        width: 14,
+        height: 14,
+        marginRight: 5
     },
     time: {
         fontSize: 14,

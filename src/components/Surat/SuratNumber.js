@@ -7,8 +7,8 @@ class SuratNumber extends Component{
             <ImageBackground
                 source={ require('../../assets/star.png') }
                 style={{
-                    width: 45,
-                    height: 45,
+                    width: 50,
+                    height: 50,
                     marginRight: 10,
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -25,8 +25,8 @@ class SuratNumber extends Component{
 
 const styles = StyleSheet.create({
     number:{
-        fontSize: 9,
-        color: '#666666'
+        fontSize: 10,
+        color: '#666666',
     },
 })
 

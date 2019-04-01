@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, Alert, StyleSheet } from 'react-native';
 import { addAyatToBookmark } from '../../controllers/BookmarkController';
-
+import searchExcerpter from '../../helpers/SearchExcerpt';
 
 class ResultList extends Component {
     addToBookmark = (id) => {
@@ -22,17 +22,17 @@ class ResultList extends Component {
     
     render(){
         return (
-            <TouchableOpacity
-                style={styles.result}
-                onPress={() => this.props.navigation.navigate('Surat', {
-                    surat: this.props.data,
-                    surat_id: this.props.data.nomor_surat
-                })}
-                onLongPress={ () => this.addToBookmark( this.props.data.id ) }
-            >
-                <Text style={styles.suratResult}>QS {this.props.data.surat_nama}:{this.props.data.nomor_ayat}</Text>
-                <Text style={styles.textResult}>{this.props.data.terjemahan}</Text>
-            </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.result}
+                    onPress={() => this.props.navigation.navigate('Surat', {
+                        surat: this.props.data,
+                        surat_id: this.props.data.nomor_surat
+                    })}
+                    onLongPress={ () => this.addToBookmark( this.props.data.id ) }
+                >
+                    <Text style={styles.suratResult}>{ (`QS. ${this.props.data.surat_nama}:Ayat ${this.props.data.nomor_ayat}`).toUpperCase() }</Text>
+                    <Text style={styles.textResult}>{searchExcerpter(this.props.data.terjemahan)}</Text>
+                </TouchableOpacity>
         )
     }
 }
@@ -40,20 +40,22 @@ class ResultList extends Component {
 const styles = StyleSheet.create({
     result: {
         backgroundColor: '#ffffff',
-        paddingHorizontal: 10,
         paddingVertical: 10,
-        marginBottom: 5,
+        paddingHorizontal: 15,
+        // marginBottom: 5,
         borderBottomWidth: 1,
         borderBottomColor: '#eaeaea'
     },
-    suratResult: {
-        fontSize: 16,
-        color: '#444444'
-    },
     textResult: {
         fontSize: 16,
-        color: '#666666'
-    }
+        color: '#444444',
+    },
+    suratResult: {
+        fontSize: 16,
+        marginBottom: 3,
+        color: '#444444',
+        alignSelf: 'flex-start'
+    },
 })
 
 export default ResultList;

@@ -11,33 +11,43 @@ import { bindActionCreators } from 'redux';
 import * as actionCreators from '../store/actionCreators';
 import Loader from '../components/Loader/Loader';
 import ResultList from '../components/ResultList/ResultList';
+import HeaderResultList from '../components/ResultList/HeaderResultList';
 
 class Search extends Component{
     render(){
-        console.log(this.props);
         return(
             <ScrollView style={{
                 flex: 1, 
-                backgroundColor: '#eaeaea'
+                backgroundColor: '#ffffff'
             }}>
-                <View style={styles.container}>
-                    <View style={styles.resultContainer}>
+                <View>
+                    <View style={styles.container}>
                         { 
+                            // cheking if in the search mode, will show the the search loading indicator
+                            // if not in search mode, will show the search result of result from the request
                             this.props.datas.isSearchMode 
                             ? 
                                 <Loader /> 
-                            : 
-                                <FlatList
-                                    data={this.props.datas.search}
-                                    renderItem={ ({ item }) => <ResultList 
-                                        data={item}
-                                        navigation={this.props.navigation}
-                                    /> }
-                                    keyExtractor={ (item, index) => item + index }
-                                /> 
+                            :
+                                    this.props.datas.search.length > 0
+                                    ?
+                                        <View>
+                                            <HeaderResultList />
+                                            <FlatList
+                                                data={this.props.datas.search}
+                                                renderItem={ ({ item }) => <ResultList 
+                                                data={item}
+                                                navigation={this.props.navigation}
+                                                /> }
+                                                keyExtractor={ (item, index) => item + index }
+                                            /> 
+                                        </View>
+                                    :
+                                        null                                
                         }                      
                     </View>
                 </View>
+
             </ScrollView>
         )
     }
@@ -45,11 +55,7 @@ class Search extends Component{
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 10,
-        marginTop: 10,
-        marginBottom: 5
-    },
-    resultContainer: {
+        // margin: 10
     }
 })
 

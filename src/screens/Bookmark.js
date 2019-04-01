@@ -15,7 +15,8 @@ class Bookmark extends Component{
 
         this.state = {
             surat_bookmarks: [],
-            ayat_bookmarks: []
+            ayat_bookmarks: [],
+            scrollEnabled: true
         }
     }
 
@@ -39,14 +40,19 @@ class Bookmark extends Component{
             .then( (surat_bookmarks) => this.setState( {surat_bookmarks} ));
     }
 
+    allowScroll = (scrollEnabled) => {
+        this.setState({ scrollEnabled });
+    }
+
     render(){
         return(
             <ScrollView>
-                <HeaderBookmark title="SURAT BOOKMARK" />
                 {
 
                     this.state.surat_bookmarks.length > 0
                     ?
+                    <View>
+                        <HeaderBookmark title="SURAT BOOKMARK" />
                         <FlatList
                             data={ this.state.surat_bookmarks }
                             renderItem={ ({ item }) => {
@@ -54,31 +60,36 @@ class Bookmark extends Component{
                                     surat={item}
                                     navigation={this.props.navigation}
                                     initBookmarks={this.initBookmarks}
+                                    allowScroll={this.allowScroll}
                                 /> 
                             }}
                             keyExtractor={ (item, index) => item + index }
                         />
+                    </View>                    
                     : 
-                        <NoBookmark />
+                        null
                 }
 
-                <HeaderBookmark title="AYAT BOOKMARK" />
                 {
                     this.state.ayat_bookmarks.length > 0
                     ?
-                        <FlatList
-                            data={ this.state.ayat_bookmarks }
-                            renderItem={ ({ item }) => {
-                                return <BookmarkAyatList
-                                    ayat={item}
-                                    navigation={this.props.navigation}
-                                    initBookmarks={this.initBookmarks}
-                                /> 
-                            }}
-                            keyExtractor={ (item, index) => item + index }
-                        />
+                        <View>
+                            <HeaderBookmark title="AYAT BOOKMARK" />
+                            <FlatList
+                                data={ this.state.ayat_bookmarks }
+                                renderItem={ ({ item }) => {
+                                    return <BookmarkAyatList
+                                        ayat={item}
+                                        navigation={this.props.navigation}
+                                        initBookmarks={this.initBookmarks}
+                                        allowScroll={this.allowScroll}
+                                    /> 
+                                }}
+                                keyExtractor={ (item, index) => item + index }
+                            />
+                        </View>
                     :
-                        <NoBookmark />
+                        null
                 }
             </ScrollView>
         )

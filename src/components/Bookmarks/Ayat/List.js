@@ -3,6 +3,7 @@ import {
     View,
     Text,
     Alert,
+    Image,
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
@@ -31,12 +32,13 @@ class BookmarkAyatList extends Component{
 
         const datePrint = ((new Date().getTime()) - date.getTime()) / (1000*60*60*24) > 1 
             ? `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}` 
-            : `${date.getMinutes()}:${date.getHours()}`;
+            : `${date.getHours()}:${date.getMinutes()}`;
 
         return(
             <Swipeout
                 right={swipeRightButton}
                 autoClose={true}
+                scroll={ (event) => this.props.allowScroll(event)}
             >
                 <TouchableOpacity style={styles.container}
                     onPress={ () => this.props.navigation.navigate('Surat', {
@@ -45,7 +47,11 @@ class BookmarkAyatList extends Component{
                     })}
                 >
                     <View style={styles.left}>
-                        <Text style={styles.surat}>{ayat.surat_nama}</Text>
+                        <Image
+                            style={styles.image}
+                            source={ require('../../../assets/bookmark-grey.png') }
+                        /> 
+                        <Text style={styles.surat}>QS. {ayat.surat_nama}</Text>
                         <Text style={styles.ayat}>:Ayat { ayat.nomor_ayat }</Text>
                     </View>
 
@@ -65,7 +71,7 @@ const styles = StyleSheet.create({
     container: {
         paddingVertical: 10,
         paddingRight: 10,
-        paddingLeft: 30,
+        paddingLeft: 37,
         backgroundColor: '#ffffff',
         flexDirection: 'row',
         borderBottomWidth: 1,
@@ -91,6 +97,11 @@ const styles = StyleSheet.create({
     ayat: {
         fontSize: 16,
         color: '#444444'
+    },
+    image: {
+        width: 14,
+        height: 14,
+        marginRight: 5
     },
     time: {
         fontSize: 14,

@@ -40,7 +40,7 @@ class Ayat extends Component{
                          source={ require('../../assets/oval.png') }
                          style={{
                             width: 40,
-                            height: 40,
+                            height: 50,
                             alignItems: 'center',
                             justifyContent: 'center',
                         }}
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     left: {
-        width: 40,
+        width: 50,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row'
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     number: {
-        fontSize: 10,
+        fontSize: 8,
         color: '#444444'
     },
     ayatContainer: {
