@@ -1,13 +1,11 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default HeaderBookmark = (props) => {
     return(
         <View style={styles.container}>
-            <Image
-                style={styles.image}
-                source={ require('../../assets/folder.png') }
-            />    
+            <Icon style={styles.image} name="md-folder-open" size={30} color="#444444"/>  
             <Text style={styles.title}>
                 {props.title}
             </Text>
@@ -25,9 +23,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     image: {
-        width: 22,
-        height: 22,
-        marginRight: 5
+        marginRight: 8
     },
     title: {
         color: '#444444',

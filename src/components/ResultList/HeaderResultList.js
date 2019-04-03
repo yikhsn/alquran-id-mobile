@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 
 class HeaderResultList extends Component{
     render(){
         return(
             <View style={styles.container}>
-                <Text style={styles.title}>pencarian 'Quran' - </Text>
-                <Text style={styles.report}>ditemukan 104 ayat</Text>
+                <Text style={styles.title}>pencarian '{this.props.datas.wordsSearch}' - </Text>
+                <Text style={styles.report}>{this.props.datas.search.length} ayat ditemukan</Text>
             </View>
         )
     }
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         flexDirection: 'row',
         backgroundColor: '#ffffff',
-        borderBottomWidth: 1,
+        borderBottomWidth: 2,
         borderBottomColor: '#eaeaea'
     },
     title: {
@@ -31,4 +32,10 @@ const styles = StyleSheet.create({
     }
 })
 
-export default HeaderResultList;
+const mapStateToProps = state => {
+    return {
+        datas: state
+    }
+}
+
+export default connect(mapStateToProps)(HeaderResultList);

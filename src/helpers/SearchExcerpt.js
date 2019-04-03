@@ -1,5 +1,5 @@
 export default searchExcerpt = (terjemahan, words) => {
-    let lengthExcerpt = 90;
+    let lengthExcerpt = 85;
     let result;
 
     if (terjemahan.length < lengthExcerpt) result = terjemahan;

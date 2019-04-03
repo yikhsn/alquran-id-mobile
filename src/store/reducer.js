@@ -1,7 +1,9 @@
 import * as actionTypes from './actionTypes';
 
 const initialState = {
+    suratList: [],
     search: [],
+    wordsSearch: '',
     isSearchMode: false
 }
 
@@ -14,17 +16,34 @@ const reducer = (state = initialState, action) => {
                 }
         
         case actionTypes.SET_SEARCH_MODE:
-            console.log('set to search mode');
             return {
                 ...state,
                 isSearchMode: true
             }
     
         case actionTypes.REMOVE_SEARCH_MODE:
-            console.log('remove from search mode');
             return {
                 ...state,
                 isSearchMode: false
+            }
+
+        case actionTypes.SET_WORDS_SEARCH:
+            return {
+                ...state,
+                wordsSearch: action.wordsSearch
+            }
+
+        case actionTypes.SET_SURAT_LIST:
+            return {
+                ...state,
+                suratList: action.suratList
+            }
+
+        case actionTypes.REVERSE_SURAT_LIST:
+            const reversed = [...state.suratList].reverse();
+            return {
+                ...state,
+                suratList: reversed
             }
         
         default:

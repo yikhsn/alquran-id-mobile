@@ -7,6 +7,7 @@ import {
     StyleSheet
 } from 'react-native';
 import Swipeout from 'react-native-swipeout';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { deleteSuratBookmark } from '../../../controllers/BookmarkController';
 
 class BookmarkSuratList extends Component{
@@ -59,10 +60,7 @@ class BookmarkSuratList extends Component{
                     })}
                 >
                     <View style={styles.left}>
-                        <Image
-                            style={styles.image}
-                            source={ require('../../../assets/bookmark-grey.png') }
-                        /> 
+                        <Icon style={styles.image} name="md-bookmark" size={20} color="#444444"/>
                         <Text style={styles.name}>
                             QS. {surat.surat_nama}
                         </Text>
@@ -82,7 +80,7 @@ const styles = StyleSheet.create({
     container: {
         paddingVertical: 10,
         paddingRight: 10,
-        paddingLeft: 37,
+        paddingLeft: 40,
         backgroundColor: '#ffffff',
         flexDirection: 'row',
         borderBottomWidth: 1,
@@ -105,8 +103,6 @@ const styles = StyleSheet.create({
         color: '#444444'
     },
     image: {
-        width: 14,
-        height: 14,
         marginRight: 5
     },
     time: {

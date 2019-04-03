@@ -1,4 +1,7 @@
 import React from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import ReadHeader from '../components/ReadHeader/ReadHeader';
 import SearchHeader from '../components/SearchHeader/SearchHeader';
 import SuratList from '../screens/SuratList';
 import Surat from '../screens/Surat';
@@ -17,7 +20,7 @@ const ReadNavigator = createStackNavigator(
         SuratList: {
             screen: SuratList,
             navigationOptions: {
-                title: 'Daftar Surat',
+                header: navProps => <ReadHeader {...navProps}/>
             }
         },
         Surat : {
@@ -124,14 +127,46 @@ const SettingNavigator = createStackNavigator(
 
 export default createAppContainer(createBottomTabNavigator(
     {
-        Read: ReadNavigator,
-        Bookmark: BookmarkNavigator,
+        Reads: ReadNavigator,
+        Bookmarks: BookmarkNavigator,
         Search: SearchNavigator,
-        Setting: SettingNavigator
+        Settings: SettingNavigator
     },
     {
-        initialRouteName: 'Search',
-        order: ['Read', 'Bookmark', 'Search', 'Setting'],
-        animationEnabled: true
+        initialRouteName: 'Reads',
+        order: ['Reads', 'Search', 'Bookmarks', 'Settings'],
+        defaultNavigationOptions: ({ navigation }) => ({
+            tabBarIcon: ({ focused, horizontal, tintColor }) => {
+                const { routeName } = navigation.state;
+                let IconComponent = Ionicons;
+                let iconName;
+                if (routeName === 'Reads') {
+                    iconName = `md-book`; 
+                }
+                else if (routeName === 'Bookmarks') {
+                    iconName = `md-bookmarks`;
+                }
+                else if (routeName === 'Search') {
+                    iconName = `md-search`;
+                }
+                else if (routeName === 'Settings') {
+                    iconName = `md-settings`;
+                }
+        
+                // You can return any component that you like here!
+                return <IconComponent name={iconName} size={32} color={tintColor} />;
+            },
+        }),
+        tabBarOptions: {
+        tabStyle: {
+
+        },
+        showLabel: false,
+        labelStyle: {
+            fontSize: 12,
+        },
+        activeTintColor: '#2bc0ff',
+        inactiveTintColor: '#666666',
+        },
     }
 ));

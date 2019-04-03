@@ -3,6 +3,7 @@ package com.quranmobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
          new SQLitePluginPackage(),
           new MainReactPackage(),
+            new VectorIconsPackage(),
             new RNGestureHandlerPackage()
       );
     }

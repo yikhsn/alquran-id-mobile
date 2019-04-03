@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, Alert, StyleSheet } from 'react-native';
+import { 
+    View, 
+    TouchableOpacity, 
+    Image,
+    Text, 
+    Alert, 
+    StyleSheet
+} from 'react-native';
 import { addAyatToBookmark } from '../../controllers/BookmarkController';
 import searchExcerpter from '../../helpers/SearchExcerpt';
 
@@ -30,8 +37,19 @@ class ResultList extends Component {
                     })}
                     onLongPress={ () => this.addToBookmark( this.props.data.id ) }
                 >
+                <View style={styles.left}>
                     <Text style={styles.suratResult}>{ (`QS. ${this.props.data.surat_nama}:Ayat ${this.props.data.nomor_ayat}`).toUpperCase() }</Text>
                     <Text style={styles.textResult}>{searchExcerpter(this.props.data.terjemahan)}</Text>
+                </View>
+                <View style={styles.right}>
+                    <Image
+                        style={{
+                            width: 15,
+                            height: 15
+                        }}
+                        source={ require('../../assets/right-arrow-black.png') }
+                    />
+                </View>
                 </TouchableOpacity>
         )
     }
@@ -39,20 +57,29 @@ class ResultList extends Component {
 
 const styles = StyleSheet.create({
     result: {
+        flex: 1,
         backgroundColor: '#ffffff',
         paddingVertical: 10,
         paddingHorizontal: 15,
-        // marginBottom: 5,
+        flexDirection: 'row',
         borderBottomWidth: 1,
-        borderBottomColor: '#eaeaea'
+        borderBottomColor: '#eaeaea',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    left: {
+        flex: 1
+    },
+    right: {
+        justifyContent: 'flex-end'
     },
     textResult: {
-        fontSize: 16,
-        color: '#444444',
+        fontSize: 15,
+        color: '#666666',
     },
     suratResult: {
         fontSize: 16,
-        marginBottom: 3,
+        marginBottom: 2,
         color: '#444444',
         alignSelf: 'flex-start'
     },

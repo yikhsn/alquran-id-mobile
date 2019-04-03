@@ -15,7 +15,7 @@ const Bismillah = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 5,
         borderColor: '#eeeeee',
         borderBottomWidth: 1,

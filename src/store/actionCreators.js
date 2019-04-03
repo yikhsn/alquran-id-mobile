@@ -18,3 +18,26 @@ export const removeSearchMode = () => {
         type: actionTypes.REMOVE_SEARCH_MODE,
     }
 }
+
+export const setWordsSearch = (wordsSearch) => {
+    return {
+        type: actionTypes.SET_WORDS_SEARCH,
+        wordsSearch: wordsSearch
+    }
+}
+
+export const setSuratList = (suratList) => {
+    // console.log(suratList);
+    // console.log('from action creator');
+
+    return{
+        type: actionTypes.SET_SURAT_LIST,
+        suratList: suratList
+    }
+}
+
+export const reverseSuratList = () => {    
+    return {
+        type: actionTypes.REVERSE_SURAT_LIST
+    }
+}

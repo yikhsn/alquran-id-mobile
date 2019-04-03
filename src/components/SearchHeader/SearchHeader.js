@@ -14,12 +14,11 @@ import * as actionCreators from '../../store/actionCreators';
 
 class SearchHeader extends Component{
     state = {
-        words: '',
         isFocused: false
     }
 
-    // function to handle search input from the user, to set words to state
-    handleWordChange = (words) => this.setState({ words });
+    // function to handle search input from the user, to set words to redux state
+    handleWordChange = (words) => this.props.setWordsSearch(words);
 
     // function to handle search proses, when user click search button
     handleSearch = () => {
@@ -37,13 +36,13 @@ class SearchHeader extends Component{
         Keyboard.dismiss();
 
         // then before system would do searching, check the user input is not the blank words
-        if (this.state.words.trim()) this.searchAyat(this.state.words);
+        if (this.props.datas.wordsSearch.trim()) this.searchAyat(this.props.datas.wordsSearch);
         else this.props.removeSearchMode();
     }
 
     // this function clear the user input when user click clear button
     handleClear = () => {
-        this.setState({ words: '' });
+        this.props.setWordsSearch('')
 
         this.props.removeSearchMode();
 
@@ -74,7 +73,7 @@ class SearchHeader extends Component{
                 <View style={styles.inputContainer}>
                     <TextInput 
                         style={styles.input}
-                        value={this.state.words}
+                        value={this.props.datas.wordsSearch}
                         multiline={false}
                         autoCorrect={false}
                         autoFocus={false}
@@ -90,7 +89,7 @@ class SearchHeader extends Component{
                         this.state.isFocused
                         ?
                             (
-                                this.state.words
+                                this.props.datas.wordsSearch
                                 ?
                                     <View style={{
                                         flexDirection: 'row'
