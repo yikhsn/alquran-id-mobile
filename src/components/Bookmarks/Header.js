@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
         marginRight: 8
     },
     title: {
+        fontFamily: 'Roboto-Regular',
         color: '#444444',
         fontSize: 16,
     }

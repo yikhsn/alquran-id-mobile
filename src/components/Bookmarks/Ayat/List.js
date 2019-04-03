@@ -88,10 +88,12 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end'
     },
     surat: {
+        fontFamily: 'Roboto-Regular',
         fontSize: 16,
         color: '#444444',
     },
     ayat: {
+        fontFamily: 'Roboto-Regular',
         fontSize: 16,
         color: '#444444'
     },
@@ -99,6 +101,7 @@ const styles = StyleSheet.create({
         marginRight: 5
     },
     time: {
+        fontFamily: 'Roboto-Regular',
         fontSize: 14,
         color: '#555555'
     }

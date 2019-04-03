@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 5,
         height: 40,
+        fontFamily: 'Roboto-Regular',
         fontSize: 20,
         color: '#ffffff',
         justifyContent: 'center',

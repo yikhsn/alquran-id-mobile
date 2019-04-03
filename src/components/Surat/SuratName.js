@@ -25,11 +25,13 @@ const styles = StyleSheet.create({
     },
     name: {
         color: '#444444',
-        fontSize: 18
+        fontFamily: 'Roboto-Regular',
+        fontSize: 17
     },
     translation: {
         color: '#555555',
-        fontSize: 14
+        fontSize: 14,
+        fontFamily: 'Roboto-Regular',
     },
 })
 

@@ -23,11 +23,13 @@ const styles = StyleSheet.create({
         borderBottomColor: '#eaeaea'
     },
     title: {
-        color: '#888888',
+        fontFamily: 'Roboto-Regular',
+        color: '#aaaaaa',
         fontSize: 16,
     },
     report: {
-        color: '#888888',
+        fontFamily: 'Roboto-Regular',
+        color: '#aaaaaa',
         fontSize: 16,
     }
 })

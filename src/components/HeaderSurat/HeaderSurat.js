@@ -7,12 +7,6 @@ class HeaderSurat extends Component{
 
         return(
             <View style={styles.container}>
-                {/* <View style={styles.leftHeader}>
-                    <Image
-                        source={ require('../../assest/left.png') }
-                        style={ styles.leftImageHeader}
-                    />
-                </View> */}
                 <View style={styles.centerHeader}>
                     <Text style={styles.suratName}>{surat.surat_arab}</Text>
                     <View style={styles.suratNameBox}>
@@ -21,13 +15,6 @@ class HeaderSurat extends Component{
                     </View>
                     <Text style={styles.ayatTotal}>{surat.ayat_total} Ayat</Text>
                 </View>
-                {/* <View style={styles.rightHeader}>
-                    <Image 
-                        source={ require('../../assest/right.png') }
-                        style={ styles.leftImageHeader}
-                    />
-                </View> */}
-
            </View>
         )
     }
@@ -60,31 +47,30 @@ const styles = StyleSheet.create({
         fontSize: 60,
         color: '#444444',
         top: 0,
-        bottom: 30,
+        bottom: 40,
         fontFamily: 'scheherazade-webfont',
-        // fontFamily: 'kfc_naskh-webfont',
-        // fontFamily: 'pdms_saleem-webfont',
-        // fontFamily: 'me_quran-webfont',
-        // fontFamily: 'xb_zar-webfont',
     },
     suratNameBox: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 5,
-        top: -15,
+        top: -10,
     },
     suratNameId: {
+        fontFamily: 'Roboto-Regular',
         fontSize: 18,
         color: '#666666',
         paddingHorizontal: 2
     },
     suratNameMean: {
+        fontFamily: 'Roboto-Regular',
         fontSize: 18,
         color: '#666666',
         paddingHorizontal: 2
     },
     ayatTotal: {
+        fontFamily: 'Roboto-Regular',
         fontSize: 18,
         color: '#666666',
         top: -15,

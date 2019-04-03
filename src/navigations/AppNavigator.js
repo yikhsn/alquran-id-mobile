@@ -38,6 +38,7 @@ const ReadNavigator = createStackNavigator(
             headerTitleStyle: {
                 color: '#ffffff',
                 fontSize: 22,
+                fontFamily: 'Roboto-Regular',
             },
         }
     }
@@ -66,6 +67,7 @@ const BookmarkNavigator = createStackNavigator(
             headerTitleStyle: {
                 color: '#ffffff',
                 fontSize: 22,
+                fontFamily: 'Roboto-Regular',
             },
         }
     }
@@ -95,6 +97,7 @@ const SearchNavigator = createStackNavigator(
             headerTitleStyle: {
                 color: '#ffffff',
                 fontSize: 22,
+                fontFamily: 'Roboto-Regular',
             },
         }
     }
@@ -120,6 +123,7 @@ const SettingNavigator = createStackNavigator(
             headerTitleStyle: {
                 color: '#ffffff',
                 fontSize: 22,
+                fontFamily: 'Roboto-Regular',
             },
         }
     }
@@ -130,11 +134,11 @@ export default createAppContainer(createBottomTabNavigator(
         Reads: ReadNavigator,
         Bookmarks: BookmarkNavigator,
         Search: SearchNavigator,
-        Settings: SettingNavigator
+        // Settings: SettingNavigator
     },
     {
         initialRouteName: 'Reads',
-        order: ['Reads', 'Search', 'Bookmarks', 'Settings'],
+        order: ['Reads', 'Search', 'Bookmarks'],
         defaultNavigationOptions: ({ navigation }) => ({
             tabBarIcon: ({ focused, horizontal, tintColor }) => {
                 const { routeName } = navigation.state;
@@ -149,9 +153,9 @@ export default createAppContainer(createBottomTabNavigator(
                 else if (routeName === 'Search') {
                     iconName = `md-search`;
                 }
-                else if (routeName === 'Settings') {
-                    iconName = `md-settings`;
-                }
+                // else if (routeName === 'Settings') {
+                //     iconName = `md-settings`;
+                // }
         
                 // You can return any component that you like here!
                 return <IconComponent name={iconName} size={32} color={tintColor} />;

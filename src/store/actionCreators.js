@@ -27,9 +27,6 @@ export const setWordsSearch = (wordsSearch) => {
 }
 
 export const setSuratList = (suratList) => {
-    // console.log(suratList);
-    // console.log('from action creator');
-
     return{
         type: actionTypes.SET_SURAT_LIST,
         suratList: suratList

@@ -74,10 +74,12 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end'
     },
     textResult: {
+        fontFamily: 'Roboto-Regular',        
         fontSize: 15,
         color: '#666666',
     },
     suratResult: {
+        fontFamily: 'Roboto-Regular',
         fontSize: 16,
         marginBottom: 2,
         color: '#444444',

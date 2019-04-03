@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     number: {
+        fontFamily: 'Roboto-Regular',
         fontSize: 8,
         color: '#444444'
     },
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
         padding: 5
     },
     ayatMean: {
+        fontFamily: 'Roboto-Regular',
         fontSize: 16,
         color: '#555555'
     }

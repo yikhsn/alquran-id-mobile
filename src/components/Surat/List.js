@@ -116,10 +116,6 @@ const styles = StyleSheet.create({
     },
     arab: {
         fontFamily: 'scheherazade-webfont',
-        // fontFamily: 'kfc_naskh-webfont',
-        // fontFamily: 'pdms_saleem-webfont',
-        // fontFamily: 'me_quran-webfont',
-        // fontFamily: 'xb_zar-webfont',
         color: '#444444',
         fontSize: 40,
     }
