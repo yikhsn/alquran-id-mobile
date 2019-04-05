@@ -15,7 +15,7 @@ const Bismillah = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 5,
         borderColor: '#eeeeee',
         borderBottomWidth: 1,
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     ayat: {
-        fontSize: 40,
+        fontSize: 35,
         fontFamily: 'scheherazade-webfont',
         color: '#444444',
     }

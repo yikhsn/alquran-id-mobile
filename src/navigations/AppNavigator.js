@@ -1,7 +1,6 @@
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import ReadHeader from '../components/ReadHeader/ReadHeader';
 import SearchHeader from '../components/SearchHeader/SearchHeader';
 import SuratList from '../screens/SuratList';
 import Surat from '../screens/Surat';
@@ -19,9 +18,6 @@ const ReadNavigator = createStackNavigator(
     {
         SuratList: {
             screen: SuratList,
-            navigationOptions: {
-                header: navProps => <ReadHeader {...navProps}/>
-            }
         },
         Surat : {
             screen: Surat,
@@ -37,7 +33,7 @@ const ReadNavigator = createStackNavigator(
             headerTintColor: '#ffffff',
             headerTitleStyle: {
                 color: '#ffffff',
-                fontSize: 22,
+                fontSize: 20,
                 fontFamily: 'Roboto-Regular',
             },
         }
@@ -66,7 +62,7 @@ const BookmarkNavigator = createStackNavigator(
             headerTintColor: '#ffffff',
             headerTitleStyle: {
                 color: '#ffffff',
-                fontSize: 22,
+                fontSize: 20,
                 fontFamily: 'Roboto-Regular',
             },
         }
@@ -96,7 +92,7 @@ const SearchNavigator = createStackNavigator(
             headerTintColor: '#ffffff',
             headerTitleStyle: {
                 color: '#ffffff',
-                fontSize: 22,
+                fontSize: 20,
                 fontFamily: 'Roboto-Regular',
             },
         }
@@ -122,7 +118,7 @@ const SettingNavigator = createStackNavigator(
             headerTintColor: '#ffffff',
             headerTitleStyle: {
                 color: '#ffffff',
-                fontSize: 22,
+                fontSize: 20,
                 fontFamily: 'Roboto-Regular',
             },
         }
@@ -134,7 +130,7 @@ export default createAppContainer(createBottomTabNavigator(
         Reads: ReadNavigator,
         Bookmarks: BookmarkNavigator,
         Search: SearchNavigator,
-        // Settings: SettingNavigator
+        Settings: SettingNavigator
     },
     {
         initialRouteName: 'Reads',
@@ -153,9 +149,9 @@ export default createAppContainer(createBottomTabNavigator(
                 else if (routeName === 'Search') {
                     iconName = `md-search`;
                 }
-                // else if (routeName === 'Settings') {
-                //     iconName = `md-settings`;
-                // }
+                else if (routeName === 'Settings') {
+                    iconName = `md-settings`;
+                }
         
                 // You can return any component that you like here!
                 return <IconComponent name={iconName} size={32} color={tintColor} />;

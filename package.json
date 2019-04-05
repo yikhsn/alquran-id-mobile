@@ -9,7 +9,9 @@
   "dependencies": {
     "react": "16.6.3",
     "react-native": "0.58.6",
+    "react-native-extra-dimensions-android": "^1.2.5",
     "react-native-gesture-handler": "^1.1.0",
+    "react-native-modal": "^9.0.0",
     "react-native-sqlite-storage": "^3.3.10",
     "react-native-swipeout": "^2.3.6",
     "react-native-vector-icons": "^6.4.2",

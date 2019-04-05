@@ -8,11 +8,9 @@ class SuratName extends Component{
             <View style={styles.surat}>
                 <Text style={styles.name}>
                     { this.props.nama }
-                    {/* Al-Fatihah */}
                 </Text>
                 <Text style={styles.translation}>
                     { this.props.arti }
-                    {/* Al-Fatihah */}
                 </Text>
             </View>
         )
@@ -26,7 +24,7 @@ const styles = StyleSheet.create({
     name: {
         color: '#444444',
         fontFamily: 'Roboto-Regular',
-        fontSize: 17
+        fontSize: 18
     },
     translation: {
         color: '#555555',

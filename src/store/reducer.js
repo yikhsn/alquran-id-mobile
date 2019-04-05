@@ -4,7 +4,9 @@ const initialState = {
     suratList: [],
     search: [],
     wordsSearch: '',
-    isSearchMode: false
+    isSearchMode: false,
+    goToSuratVisible: false,
+    goToAyatVisible: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -44,6 +46,18 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 suratList: reversed
+            }
+
+        case  actionTypes.TOGGLE_GO_TO_SURAT_MODAL:
+            return {
+                ...state,
+                goToSuratVisible: !state.goToSuratVisible
+            }
+
+        case  actionTypes.TOGGLE_GO_TO_AYAT_MODAL:
+            return {
+                ...state,
+                goToAyatVisible: !state.goToAyatVisible
             }
         
         default:

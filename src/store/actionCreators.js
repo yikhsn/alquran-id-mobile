@@ -38,3 +38,15 @@ export const reverseSuratList = () => {
         type: actionTypes.REVERSE_SURAT_LIST
     }
 }
+
+export const toggleGoToSuratModal = () => {
+    return {
+        type: actionTypes.TOGGLE_GO_TO_SURAT_MODAL
+    }
+}
+
+export const toggleGoToAyatModal = () => {
+    return {
+        type: actionTypes.TOGGLE_GO_TO_AYAT_MODAL
+    }
+}

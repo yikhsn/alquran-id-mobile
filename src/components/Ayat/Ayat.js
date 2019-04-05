@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     ayat: {
-        fontSize: 40,
+        fontSize: 35,
         fontFamily: 'scheherazade-webfont',
         color: '#444444',
     },

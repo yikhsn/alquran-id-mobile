@@ -10,8 +10,7 @@ class HeaderSurat extends Component{
                 <View style={styles.centerHeader}>
                     <Text style={styles.suratName}>{surat.surat_arab}</Text>
                     <View style={styles.suratNameBox}>
-                        <Text style={styles.suratNameId}>{surat.surat_nama}</Text>
-                        <Text style={styles.suratNameMean}>({surat.surat_arti})</Text>
+                        <Text style={styles.suratNameMean}>{surat.surat_arti}</Text>
                     </View>
                     <Text style={styles.ayatTotal}>{surat.ayat_total} Ayat</Text>
                 </View>
@@ -44,10 +43,10 @@ const styles = StyleSheet.create({
 
     },
     suratName: {
-        fontSize: 60,
+        fontSize: 50,
         color: '#444444',
         top: 0,
-        bottom: 40,
+        bottom: 35,
         fontFamily: 'scheherazade-webfont',
     },
     suratNameBox: {
@@ -57,21 +56,15 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         top: -10,
     },
-    suratNameId: {
-        fontFamily: 'Roboto-Regular',
-        fontSize: 18,
-        color: '#666666',
-        paddingHorizontal: 2
-    },
     suratNameMean: {
         fontFamily: 'Roboto-Regular',
-        fontSize: 18,
+        fontSize: 16,
         color: '#666666',
         paddingHorizontal: 2
     },
     ayatTotal: {
         fontFamily: 'Roboto-Regular',
-        fontSize: 18,
+        fontSize: 16,
         color: '#666666',
         top: -15,
     },
