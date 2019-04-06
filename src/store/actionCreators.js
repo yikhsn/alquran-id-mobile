@@ -26,6 +26,12 @@ export const setWordsSearch = (wordsSearch) => {
     }
 }
 
+export const setWordsSearched = () => {
+    return {
+        type: actionTypes.SET_WORDS_SEARCHED,
+    }
+}
+
 export const setSuratList = (suratList) => {
     return{
         type: actionTypes.SET_SURAT_LIST,

@@ -61,6 +61,9 @@ class SearchHeader extends Component{
             // then when the data from request is coming, set the search result to redux state
             this.props.setSearchResult(ayats);
 
+            // then set wordsSearch data state to wordsSearched data state to
+            this.props.setWordsSearched();
+
             // then remove search mode, to remove searcing loading indicator and replace
             // with the search result
             this.props.removeSearchMode();
@@ -77,6 +80,7 @@ class SearchHeader extends Component{
                         multiline={false}
                         autoCorrect={false}
                         autoFocus={false}
+                        autoCapitalize='none'
                         placeholder={'Cari...'}
                         placeholderTextColor='#DFF2FB'
                         onChangeText={(words) => this.handleWordChange(words) }

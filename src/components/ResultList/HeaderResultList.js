@@ -6,7 +6,7 @@ class HeaderResultList extends Component{
     render(){
         return(
             <View style={styles.container}>
-                <Text style={styles.title}>pencarian '{this.props.datas.wordsSearch}' - </Text>
+                <Text style={styles.title}>pencarian '{this.props.datas.wordsSearched}' - </Text>
                 <Text style={styles.report}>{this.props.datas.search.length} ayat ditemukan</Text>
             </View>
         )

@@ -4,6 +4,7 @@ const initialState = {
     suratList: [],
     search: [],
     wordsSearch: '',
+    wordsSearched: '',
     selectedAyat: null,
     isSearchMode: false,
     goToSuratVisible: false,
@@ -34,6 +35,12 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 wordsSearch: action.wordsSearch
+            }
+
+        case actionTypes.SET_WORDS_SEARCHED:
+            return {
+                ...state,
+                wordsSearched: state.wordsSearch
             }
 
         case actionTypes.SET_SURAT_LIST:
