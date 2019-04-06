@@ -77,3 +77,31 @@ export const deleteFromRecentReads = (id) => {
         })
     })
 }
+
+export const deleteAllFromRecentReads = () => {
+    return new Promise( (resolve, reject) => {
+        db.transaction( txn => {
+            txn.executeSql(
+                "DELETE from recent_reads",
+                [],
+                (tx, results) => {
+                    let msg = {};
+                    if (results.rowsAffected > 0) {
+                        msg.title = "Dihapus!";
+                        msg.content = "Terakhir dibaca berhasil dihapus";
+                    }
+                    else {
+                        msg.title = "Gagal!";
+                        msg.content = "Terjadi kesalahan menghapus terakhir dibaca";
+                    }
+                    resolve(msg);
+                }, (error) => {
+                    let msg = {};
+                    msg.title = "Gagal!";
+                    msg.content = "Terjadi kesalahan menghapus terakhir dibaca";
+                    resolve(error);
+                }
+            )
+        })
+    })
+}

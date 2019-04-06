@@ -25,7 +25,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../store/actionCreators';
 import { addAyatToBookmark } from '../controllers/BookmarkController';
-import { addToRecentReads } from '../controllers/RecentReadsController';
+import { addToRecentReads, deleteAllFromRecentReads } from '../controllers/RecentReadsController';
 
 class Surat extends Component{
     constructor(props){
@@ -103,19 +103,23 @@ class Surat extends Component{
     addToRecent = (id) => {
         this.toggleListModal();
 
-        addToRecentReads(id).then( (msg) => {
-            Alert.alert(
-                msg.title,
-                msg.content,
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => this.props.navigation.navigate('Surat')
-                    },
-                ],
-                { cancelable: false }
-            );
+        deleteAllFromRecentReads().then( (mes) => {
+            addToRecentReads(id).then( (msg) => {
+                Alert.alert(
+                    msg.title,
+                    msg.content,
+                    [
+                        {
+                            text: 'OK',
+                            onPress: () => this.props.navigation.navigate('Surat')
+                        },
+                    ],
+                    { cancelable: false }
+                );
+            })
         })
+ 
+
     }
     
     render(){
@@ -254,18 +258,8 @@ class Surat extends Component{
                                         name='access-time' size={28} color='#444444'
                                         style={styles.modalListButtonIcon}
                                     />
-                                    <Text style={styles.modalListButtonText}>Sebagai terakhir dibaca</Text>
+                                    <Text style={styles.modalListButtonText}>Tandai terakhir dibaca</Text>
                                 </TouchableOpacity>
-                                {/* <TouchableOpacity
-                                    onPress={ () => console.log('button is pressed') }
-                                    style={styles.modalListButton}
-                                >
-                                    <MaterialIcon 
-                                        name='library-add' size={28} color='#444444'
-                                        style={styles.modalListButtonIcon}
-                                    />
-                                    <Text style={styles.modalListButtonText}>Tombol 1</Text>
-                                </TouchableOpacity> */}
                                 <TouchableOpacity
                                     onPress={ () => this.toggleListModal() } 
                                     style={styles.modalListButton}
@@ -274,7 +268,7 @@ class Surat extends Component{
                                         name='close' size={28} color='#444444'
                                         style={styles.modalListButtonIcon}
                                     />
-                                    <Text style={styles.modalListButtonText}>Close</Text>
+                                    <Text style={styles.modalListButtonText}>Keluar</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
