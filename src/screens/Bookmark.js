@@ -4,10 +4,12 @@ import {
     getAyatBookmarks,
     getSuratBookmarks
 } from '../controllers/BookmarkController';
+import { getRecentReads } from '../controllers/RecentReadsController';
 import BookmarkAyatList from '../components/Bookmarks/Ayat/List';
 import BookmarkSuratList from '../components/Bookmarks/Surat/List';
 import HeaderBookmark from '../components/Bookmarks/Header';
-import NoBookmark from '../components/NoBookmark/NoBookmark';
+import HeaderRecentReads from '../components/RecentReads/Header';
+import ListRecentReads from '../components/RecentReads/List';
 
 class Bookmark extends Component{
     constructor(props){
@@ -16,6 +18,7 @@ class Bookmark extends Component{
         this.state = {
             surat_bookmarks: [],
             ayat_bookmarks: [],
+            recent_reads: [],
             scrollEnabled: true
         }
 
@@ -39,6 +42,9 @@ class Bookmark extends Component{
         
         getSuratBookmarks()
             .then( (surat_bookmarks) => this.setState( {surat_bookmarks} ));
+
+        getRecentReads()
+            .then( (recent_reads) => this.setState( {recent_reads} ));   
     }
 
     allowScroll = (scrollEnabled) => {
@@ -77,6 +83,28 @@ class Bookmark extends Component{
                                 <HeaderBookmark title="AYAT BOOKMARK" />
                                 <FlatList
                                     data={ this.state.ayat_bookmarks }
+                                    renderItem={ ({ item }) => {
+                                        return <BookmarkAyatList
+                                            ayat={item}
+                                            navigation={this.props.navigation}
+                                            initBookmarks={this.initBookmarks}
+                                            allowScroll={this.allowScroll}
+                                        /> 
+                                    }}
+                                    keyExtractor={ (item, index) => item + index }
+                                />
+                            </View>
+                        :
+                            null
+                    }
+
+                    {
+                        this.state.recent_reads.length > 0
+                        ?
+                            <View>
+                                <HeaderRecentReads title="TERAKHIR DIBACA" />
+                                <FlatList
+                                    data={ this.state.recent_reads }
                                     renderItem={ ({ item }) => {
                                         return <BookmarkAyatList
                                             ayat={item}

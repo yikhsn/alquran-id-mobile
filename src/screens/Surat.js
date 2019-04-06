@@ -24,6 +24,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../store/actionCreators';
 import { addAyatToBookmark } from '../controllers/BookmarkController';
+import { addToRecentReads } from '../controllers/RecentReadsController';
 
 class Surat extends Component{
     constructor(props){
@@ -86,6 +87,24 @@ class Surat extends Component{
         this.toggleListModal();
 
         addAyatToBookmark(id).then( (msg) => {
+            Alert.alert(
+                msg,
+                msg,
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => this.props.navigation.navigate('Surat')
+                    },
+                ],
+                { cancelable: false }
+            );
+        })
+    }
+
+    addToRecent = (id) => {
+        this.toggleListModal();
+
+        addToRecentReads(id).then( (msg) => {
             Alert.alert(
                 msg,
                 msg,
@@ -224,13 +243,22 @@ class Surat extends Component{
                                 >
                                     <Text style={styles.modalListButtonText}>Tambah ke bookmark</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={ () => console.log('button is pressed') } style={styles.modalListButton}>
+                                <TouchableOpacity
+                                    onPress={ () => this.addToRecent(this.props.selectedAyat.id) } 
+                                    style={styles.modalListButton}
+                                >
+                                    <Text style={styles.modalListButtonText}>Tambahkan ke recent reads</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={ () => console.log('button is pressed') }
+                                    style={styles.modalListButton}
+                                >
                                     <Text style={styles.modalListButtonText}>Tombol 1</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={ () => console.log('button is pressed') } style={styles.modalListButton}>
-                                    <Text style={styles.modalListButtonText}>Tombol 1</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={ () => this.toggleListModal() } style={styles.modalListButton}>
+                                <TouchableOpacity
+                                    onPress={ () => this.toggleListModal() } 
+                                    style={styles.modalListButton}
+                                >
                                     <Text style={styles.modalListButtonText}>Close</Text>
                                 </TouchableOpacity>
                             </View>
