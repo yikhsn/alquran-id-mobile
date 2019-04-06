@@ -7,33 +7,15 @@ import {
     Alert,
     StyleSheet
 } from 'react-native';
-import { addAyatToBookmark } from '../../controllers/BookmarkController';
 
-class Ayat extends Component{
-    
-    addToBookmark = (id) => {
-        addAyatToBookmark(id).then( (msg) => {
-            Alert.alert(
-                msg,
-                msg,
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => this.props.navigation.navigate('Surat')
-                    },
-                ],
-                { cancelable: false }
-            );
-        })
-    }
-    
+class Ayat extends Component{    
     render(){
         const { ayat } = this.props;
-
+        
         return(
             <TouchableOpacity 
                 style={styles.container}
-                onPress={ () => this.addToBookmark(ayat.id) }
+                onPress={ () => this.props.handleAyatPressed(ayat) }
             >
                 <View style={styles.left}>
                     <ImageBackground

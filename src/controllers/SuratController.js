@@ -25,8 +25,8 @@ export const getSingleSurat  = (surat_id) => {
     return new Promise( (resolve, reject) => {
         db.transaction( txn => {
             txn.executeSql(
-                "SELECT * from ayats WHERE nomor_surat=?",
-                [surat_id],
+                `SELECT ayats.id, ayats.nomor_surat, ayats.nomor_ayat, ayats.ayat, ayats.terjemahan, surats.surat_nama from ayats JOIN surats ON ayats.nomor_surat=surats.id WHERE nomor_surat=${surat_id}`,
+                [],
                 (tx, results) => {
                     var ayats = [];
                     for (let i = 0; i < results.rows.length; ++i) {

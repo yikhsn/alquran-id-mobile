@@ -4,6 +4,7 @@ const initialState = {
     suratList: [],
     search: [],
     wordsSearch: '',
+    selectedAyat: null,
     isSearchMode: false,
     goToSuratVisible: false,
     goToAyatVisible: false
@@ -58,6 +59,12 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 goToAyatVisible: !state.goToAyatVisible
+            }
+
+        case actionTypes.SELECT_AYAT:
+            return {
+                ...state,
+                selectedAyat: action.selectedAyat
             }
         
         default:

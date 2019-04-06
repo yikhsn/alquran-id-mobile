@@ -13,7 +13,7 @@ class RightHeaderSuratList extends Component{
                 <TouchableOpacity
                     style={styles.reverseButton}
                     onPress={ () =>  this.props.reverseSuratList() }
-                    >
+                >
                     <Icon style={styles.image} name="exchange" size={20} color="#ffffff"/>
                 </TouchableOpacity>
                 <TouchableOpacity

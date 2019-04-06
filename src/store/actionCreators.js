@@ -50,3 +50,10 @@ export const toggleGoToAyatModal = () => {
         type: actionTypes.TOGGLE_GO_TO_AYAT_MODAL
     }
 }
+
+export const selectAyat = (selectedAyat) => {
+    return {
+        type: actionTypes.SELECT_AYAT,
+        selectedAyat: selectedAyat
+    }
+}

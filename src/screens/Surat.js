@@ -8,7 +8,9 @@ import {
     Picker,
     Text,
     TouchableHighlight,
+    TouchableOpacity,
     TextInput,
+    Alert,
     StyleSheet
  } from 'react-native';
 import { getSingleSurat } from '../controllers/SuratController';
@@ -21,6 +23,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../store/actionCreators';
+import { addAyatToBookmark } from '../controllers/BookmarkController';
 
 class Surat extends Component{
     constructor(props){
@@ -29,7 +32,11 @@ class Surat extends Component{
         this.state = {
             ayats: [],
             selectedSuratId: 1,
-            selectedAyat: null
+            selectedAyatId: null,
+
+            selectedAyat: null,
+
+            isListModalVisible: false
         }
     }
 
@@ -62,6 +69,36 @@ class Surat extends Component{
             surat_id: surat.id
         });
     }
+
+    toggleListModal = () => {
+        this.setState({ isListModalVisible: !this.state.isListModalVisible });
+    }
+
+    selectAyat = (selectedAyat) => this.props.selectAyat(selectedAyat);
+
+    handleAyatPressed = (ayat) => {
+        this.toggleListModal();
+
+        this.selectAyat(ayat);
+    }
+
+    addToBookmark = (id) => {
+        this.toggleListModal();
+
+        addAyatToBookmark(id).then( (msg) => {
+            Alert.alert(
+                msg,
+                msg,
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => this.props.navigation.navigate('Surat')
+                    },
+                ],
+                { cancelable: false }
+            );
+        })
+    }
     
     render(){
         const surat_id = this.props.navigation.getParam('surat_id', null);
@@ -86,6 +123,8 @@ class Surat extends Component{
                         return <Ayat 
                             ayat={item}
                             navigation={this.props.navigation}
+                            handleAyatPressed={this.handleAyatPressed}
+                            addToBookmark={this.addToBookmark}
                         />
                     }}
                     keyExtractor={ (item, index) => item + index }
@@ -95,7 +134,9 @@ class Surat extends Component{
                     <Modal 
                         isVisible={this.props.goToAyatVisible}
                         deviceWidth={deviceWidth}
-                        deviceHeight={deviceHeight} 
+                        deviceHeight={deviceHeight}
+                        animationInTiming={500}
+                        animationOutTiming={500}
                         style={{
                             alignItems: 'center',
                             justifyContent: 'center'
@@ -123,7 +164,7 @@ class Surat extends Component{
                                     <Text style={styles.inputAyatLabel}>Ayat</Text>
                                     <TextInput
                                         style={styles.inputAyatInput}
-                                        value={this.state.selectedAyat}
+                                        value={this.state.selectedAyatId}
                                         placeholder='Ayat, misal: 1'
                                     />
                                 </View>
@@ -146,6 +187,56 @@ class Surat extends Component{
                     </Modal>
                 </View>
 
+
+                <View>
+                    <Modal 
+                        isVisible={this.state.isListModalVisible}
+                        deviceWidth={deviceWidth}
+                        deviceHeight={deviceHeight} 
+                        animationInTiming={500}
+                        animationOutTiming={500}
+                        style={{
+                            flex: 1,
+                            justifyContent: "flex-end",
+                            margin: 0,
+                            alignItems: "center",
+                        }}
+                        onBackdropPress={ () => this.toggleListModal() }
+                    >
+                        <View style={styles.modalListContainer}>
+                            <View style={styles.modalListHeader} >
+                                <Text style={styles.modalListTitle}>
+                                    { 
+                                        this.props.selectedAyat 
+                                        ? 
+                                            'QS. '+this.props.selectedAyat.surat_nama+':Ayat '+this.props.selectedAyat.nomor_ayat 
+                                        : 
+                                            'loading'
+                                    }
+                                </Text>
+                            </View>
+                            <View style={styles.modalListContent}>
+                                <TouchableOpacity 
+                                    onPress={ () => 
+                                        this.addToBookmark(this.props.selectedAyat.id) 
+                                    } 
+                                    style={styles.modalListButton}
+                                >
+                                    <Text style={styles.modalListButtonText}>Tambah ke bookmark</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={ () => console.log('button is pressed') } style={styles.modalListButton}>
+                                    <Text style={styles.modalListButtonText}>Tombol 1</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={ () => console.log('button is pressed') } style={styles.modalListButton}>
+                                    <Text style={styles.modalListButtonText}>Tombol 1</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={ () => this.toggleListModal() } style={styles.modalListButton}>
+                                    <Text style={styles.modalListButtonText}>Close</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+                </View>
             </ScrollView>
         )
     }
@@ -227,13 +318,49 @@ const styles = StyleSheet.create({
     buttonText : {
         alignContent: 'center',
         alignSelf: 'center'
+    },
+
+
+    // style for modal list
+    modalListContainer: {
+        // height: 300,
+        width: '100%',
+        backgroundColor: '#FFFFFF',
+    },
+    modalListHeader: {
+        padding: 20
+    },
+    modalListTitle: {
+        fontSize: 17,
+        fontWeight: '500',
+        alignSelf: 'center',
+        fontFamily: 'Roboto-Regular',
+        color: '#444444'
+    },
+    modalListContent: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    }, 
+    modalListButton: {
+        padding: 15,
+        width: '100%',
+        borderTopWidth: 1,
+        borderTopColor: '#eaeaea',
+        backgroundColor: '#ffffff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    modalListButtonText: {
+        color: '#444444',
+        fontSize: 16
     }
 })
 
 const mapStateToProps = state => {
     return {
         suratList: state.suratList,
-        goToAyatVisible: state.goToAyatVisible
+        goToAyatVisible: state.goToAyatVisible,
+        selectedAyat: state.selectedAyat
     }
 }
 
