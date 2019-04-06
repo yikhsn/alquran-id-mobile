@@ -51,12 +51,19 @@ export const addSuratToBookmark = (id) => {
                 "INSERT INTO surat_bookmarks (surat_id, created_at) VALUES (?, ?)",
                 [id, dateIso],
                 (tx, results) => {
-                    let msg;
-                    if (results.rowsAffected > 0) msg = "Surat berhasil dibookmark";
-                    else msg = "Surat gagal dibookmark";
+                    let msg = {};
+                    if (results.rowsAffected > 0){
+                        msg.title = "Berhasil!";
+                        msg.content = "Surat berhasil dibookmark";
+                    }
+                    else{
+                        msg.title = "Gagal!";
+                        msg.content = "Terjadi kesalahan saat surat dibookmark";
+                    }
                     resolve(msg);
                 }, (error) => {
-                    msg = "Surat gagal dibookmark";
+                    msg.title = "Gagal!";
+                    msg.content = "Terjadi kesalahan saat surat dibookmark";
                     resolve(msg);
                 }
             )
@@ -74,12 +81,19 @@ export const addAyatToBookmark = (id) => {
                 "INSERT INTO ayat_bookmarks (ayat_id, created_at) VALUES (?, ?)",
                 [id, dateIso],
                 (tx, results) => {
-                    let msg;
-                    if (results.rowsAffected > 0) msg = "Ayat berhasil dibookmark";
-                    else msg = "Ayat gagal dibookmark";
+                    let msg = {};
+                    if (results.rowsAffected > 0){
+                        msg.title = "Berhasil!";
+                        msg.content = "Ayat berhasil dibookmark";
+                    }
+                    else {
+                        msg.title = "Gagal!";
+                        msg.content = "Terjadi kesalahan saat ayat dibookmark";
+                    }
                     resolve(msg);
                 }, (error) => {
-                    msg = "Ayat gagal dibookmark";
+                    msg.title = "Gagal!";
+                    msg.content = "Terjadi kesalahan saat ayat dibookmark";
                     resolve(msg);
                 }
             )
@@ -94,16 +108,19 @@ export const deleteSuratBookmark = (id) => {
                 "DELETE from surat_bookmarks WHERE id=?",
                 [id],
                 (tx, results) => {
-                    let msg;
+                    let msg = {};
                     if (results.rowsAffected > 0) {
-                        msg = "Bookmark berhasil dihapus";
+                        msg.title = "Berhasil!";
+                        msg.content = "Surat dihapus dari bookmark";
                     }
                     else {
-                        msg = "Bookmark gagal dihapus";
+                        msg.title = "Gagal!";
+                        msg.content = "Terjadi kesalahan saat menghapus bookmark";
                     }
                     resolve(msg);
                 }, (error) => {
-                    msg = "Terjadi kesalahan";
+                    msg.title = "Gagal!";
+                    msg.content = "Terjadi kesalahan saat menghapus bookmark";
                     resolve(error);
                 }
             )
@@ -118,16 +135,19 @@ export const deleteAyatBookmark = ( id ) => {
                 "DELETE from ayat_bookmarks WHERE id=?",
                 [id],
                 (tx, results) => {
-                    let msg;
+                    let msg = {};
                     if (results.rowsAffected > 0) {
-                        msg = "Delete Bookmark Success";
+                        msg.title = "Berhasil!";
+                        msg.content = "Ayat dihapus dari bookmark";
                     }
                     else {
-                        msg = "Delete Bookmark Failed";
+                        msg.title = "Gagal!";
+                        msg.content = "Terjadi kesalahan saat menghapus bookmark";
                     }
                     resolve(msg);
                 }, (error) => {
-                    msg = "Delete Bookmark Failed";
+                    msg.title = "Gagal!";
+                    msg.content = "Terjadi kesalahan saat menghapus bookmark";
                     resolve(error);
                 }
             )

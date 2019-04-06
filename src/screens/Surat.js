@@ -20,6 +20,7 @@ import Bismillah from '../components/Bismillah/Bismillah';
 import GoToSuratBotton from '../components/GoToSuratButton/GoToSuratButton';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../store/actionCreators';
@@ -36,7 +37,6 @@ class Surat extends Component{
             selectedAyatId: null,
 
             selectedAyat: null,
-
             isListModalVisible: false
         }
     }
@@ -44,7 +44,6 @@ class Surat extends Component{
     static navigationOptions = ({ navigation }) => ({
         title: 'Surat ' + navigation.state.params.surat.surat_nama,
         headerRight: <GoToSuratBotton />
-        
     })
 
     componentDidMount(){
@@ -65,7 +64,7 @@ class Surat extends Component{
 
         const surat = this.props.suratList.find( surat => surat.id === this.state.selectedSuratId );
 
-        this.props.navigation.navigate('Surat', {
+        this.props.navigation.push('Surat', {
             surat: surat,
             surat_id: surat.id
         });
@@ -88,8 +87,8 @@ class Surat extends Component{
 
         addAyatToBookmark(id).then( (msg) => {
             Alert.alert(
-                msg,
-                msg,
+                msg.title,
+                msg.content,
                 [
                     {
                         text: 'OK',
@@ -106,8 +105,8 @@ class Surat extends Component{
 
         addToRecentReads(id).then( (msg) => {
             Alert.alert(
-                msg,
-                msg,
+                msg.title,
+                msg.content,
                 [
                     {
                         text: 'OK',
@@ -241,24 +240,40 @@ class Surat extends Component{
                                     } 
                                     style={styles.modalListButton}
                                 >
+                                    <MaterialIcon 
+                                        name='library-add' size={28} color='#444444'
+                                        style={styles.modalListButtonIcon}
+                                    />
                                     <Text style={styles.modalListButtonText}>Tambah ke bookmark</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={ () => this.addToRecent(this.props.selectedAyat.id) } 
                                     style={styles.modalListButton}
                                 >
-                                    <Text style={styles.modalListButtonText}>Tambahkan ke recent reads</Text>
+                                    <MaterialIcon 
+                                        name='access-time' size={28} color='#444444'
+                                        style={styles.modalListButtonIcon}
+                                    />
+                                    <Text style={styles.modalListButtonText}>Sebagai terakhir dibaca</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity
+                                {/* <TouchableOpacity
                                     onPress={ () => console.log('button is pressed') }
                                     style={styles.modalListButton}
                                 >
+                                    <MaterialIcon 
+                                        name='library-add' size={28} color='#444444'
+                                        style={styles.modalListButtonIcon}
+                                    />
                                     <Text style={styles.modalListButtonText}>Tombol 1</Text>
-                                </TouchableOpacity>
+                                </TouchableOpacity> */}
                                 <TouchableOpacity
                                     onPress={ () => this.toggleListModal() } 
                                     style={styles.modalListButton}
                                 >
+                                    <MaterialIcon 
+                                        name='close' size={28} color='#444444'
+                                        style={styles.modalListButtonIcon}
+                                    />
                                     <Text style={styles.modalListButtonText}>Close</Text>
                                 </TouchableOpacity>
                             </View>
@@ -372,14 +387,19 @@ const styles = StyleSheet.create({
     modalListButton: {
         padding: 15,
         width: '100%',
-        borderTopWidth: 1,
-        borderTopColor: '#eaeaea',
+        flexDirection: 'row',
+        // borderTopWidth: 1,
+        // borderTopColor: '#eaeaea',
         backgroundColor: '#ffffff',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+    },
+    modalListButtonIcon: {
+        marginRight: 5,
     },
     modalListButtonText: {
         color: '#444444',
+        fontFamily: 'Roboto-Regular',
         fontSize: 16
     }
 })

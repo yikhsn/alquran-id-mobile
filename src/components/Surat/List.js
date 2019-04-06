@@ -21,8 +21,8 @@ class SuratList extends Component{
     addToBookmark = (id) => {
         addSuratToBookmark(id).then( msg => {
             Alert.alert(
-                msg,
-                msg,
+                msg.title,
+                msg.content,
                 [
                     {
                         text: 'OK',

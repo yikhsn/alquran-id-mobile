@@ -5,7 +5,7 @@ export const  getRecentReads = () => {
     return new Promise( (resolve, reject) => {
         db.transaction( txn => {
             txn.executeSql(
-                "SELECT * FROM recent_reads JOIN ayats ON recent_reads.ayat_id=ayats.id",
+                "SELECT ayats.nomor_surat, ayats.nomor_ayat, surats.surat_nama, surats.surat_arab, surats.surat_arti, surats.ayat_total, recent_reads.id, recent_reads.ayat_id, recent_reads.created_at FROM ayats JOIN recent_reads ON recent_reads.ayat_id=ayats.id JOIN surats ON ayats.nomor_surat=surats.id",
                 [],
                 (tx, results) => {
                     let recent_reads = [];                    
@@ -31,12 +31,19 @@ export const addToRecentReads = (id) => {
                 "INSERT INTO recent_reads (ayat_id, created_at) VALUES (?, ?)",
                 [id, dateIso],
                 (tx, results) => {
-                    let msg;
-                    if (results.rowsAffected > 0) msg = "Ayat ditambahkanan terakhir dibaca";
-                    else msg = "Ayat ditambahkanan terakhir dibaca";
+                    let msg = {} ;
+                    if (results.rowsAffected > 0) {
+                        msg.title = "Berhasil!";
+                        msg.content = "Ayat ditandai sebabai terakhir dibaca";
+                    }
+                    else {
+                        msg.title = "Gagal!";
+                        msg.content = "Kesalahan saat menandai terakhir dibaca";
+                    }                    
                     resolve(msg);
                 }, (error) => {
-                    msg = "Ayat gagal ditambahkanan terakhir dibaca";
+                    msg.title = "Gagal!";
+                    msg.content = "Kesalahan saat menandai terakhir dibaca";
                     resolve(msg);
                 }
             )
@@ -44,24 +51,26 @@ export const addToRecentReads = (id) => {
     })
 }
 
-
-export const deleteFromRecentReads = ( id ) => {
+export const deleteFromRecentReads = (id) => {
     return new Promise( (resolve, reject) => {
         db.transaction( txn => {
             txn.executeSql(
                 "DELETE from recent_reads WHERE id=?",
                 [id],
                 (tx, results) => {
-                    let msg;
+                    let msg = {};
                     if (results.rowsAffected > 0) {
-                        msg = "Delete Recent Read Success";
+                        msg.title = "Dihapus!";
+                        msg.content = "Terakhir dibaca berhasil dihapus";
                     }
                     else {
-                        msg = "Delete Recent Read Failed";
+                        msg.title = "Gagal!";
+                        msg.content = "Terjadi kesalahan menghapus terakhir dibaca";
                     }
                     resolve(msg);
                 }, (error) => {
-                    msg = "Delete Recent Read Failed";
+                    msg.title = "Gagal!";
+                    msg.content = "Terjadi kesalahan menghapus terakhir dibaca";
                     resolve(error);
                 }
             )

@@ -26,7 +26,6 @@ class Bookmark extends Component{
     }
 
     componentDidMount() {
-
         this._navListener = this.props.navigation.addListener('didFocus', () => {
             this.initBookmarks();
         });
@@ -54,6 +53,28 @@ class Bookmark extends Component{
     render(){
             return(
                 <ScrollView>
+                    {
+                        this.state.recent_reads.length > 0
+                        ?
+                            <View>
+                                <HeaderRecentReads title="TERAKHIR DIBACA" />
+                                <FlatList
+                                    data={ this.state.recent_reads }
+                                    renderItem={ ({ item }) => {
+                                        return <ListRecentReads
+                                            ayat={item}
+                                            navigation={this.props.navigation}
+                                            initBookmarks={this.initBookmarks}
+                                            allowScroll={this.allowScroll}
+                                        /> 
+                                    }}
+                                    keyExtractor={ (item, index) => item + index }
+                                />
+                            </View>
+                        :
+                            null
+                    }
+                    
                     {
                         this.state.surat_bookmarks.length > 0
                         ?
@@ -83,28 +104,6 @@ class Bookmark extends Component{
                                 <HeaderBookmark title="AYAT BOOKMARK" />
                                 <FlatList
                                     data={ this.state.ayat_bookmarks }
-                                    renderItem={ ({ item }) => {
-                                        return <BookmarkAyatList
-                                            ayat={item}
-                                            navigation={this.props.navigation}
-                                            initBookmarks={this.initBookmarks}
-                                            allowScroll={this.allowScroll}
-                                        /> 
-                                    }}
-                                    keyExtractor={ (item, index) => item + index }
-                                />
-                            </View>
-                        :
-                            null
-                    }
-
-                    {
-                        this.state.recent_reads.length > 0
-                        ?
-                            <View>
-                                <HeaderRecentReads title="TERAKHIR DIBACA" />
-                                <FlatList
-                                    data={ this.state.recent_reads }
                                     renderItem={ ({ item }) => {
                                         return <BookmarkAyatList
                                             ayat={item}
