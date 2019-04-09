@@ -1,6 +1,7 @@
 import * as actionTypes from './actionTypes';
 
 const initialState = {
+    ayats: [],
     suratList: [],
     search: [],
     wordsSearch: '',
@@ -73,6 +74,13 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 selectedAyat: action.selectedAyat
             }
+
+        case actionTypes.SET_AYAT:
+            return {
+                ...state,
+                ayats: action.ayats
+            }
+        
         
         default:
             return state;

@@ -12,7 +12,7 @@ import {
     TextInput,
     Alert,
     StyleSheet
- } from 'react-native';
+} from 'react-native';
 import { getSingleSurat } from '../controllers/SuratController';
 import HeaderSurat from '../components/HeaderSurat/HeaderSurat';
 import Ayat from '../components/Ayat/Ayat';
@@ -27,18 +27,26 @@ import * as actionCreators from '../store/actionCreators';
 import { addAyatToBookmark } from '../controllers/BookmarkController';
 import { addToRecentReads, deleteAllFromRecentReads } from '../controllers/RecentReadsController';
 
+import { ScrollIntoView, wrapScrollViewConfigured } from 'react-native-scroll-into-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+const ScrollIntoViewScrollView = wrapScrollViewConfigured({
+    refPropName: 'innerRef'
+})(KeyboardAwareScrollView);
+
 class Surat extends Component{
     constructor(props){
         super(props);
 
         this.state = {
-            ayats: [],
             selectedSuratId: 1,
             selectedAyatId: null,
 
             selectedAyat: null,
             isListModalVisible: false
         }
+
+        this.initSurat();
     }
 
     static navigationOptions = ({ navigation }) => ({
@@ -46,13 +54,9 @@ class Surat extends Component{
         headerRight: <GoToSuratBotton />
     })
 
-    componentDidMount(){
-        this.initSurat();
-    }
-
     initSurat = () => {
         const surat_id = this.props.navigation.getParam('surat_id', null);
-        getSingleSurat(surat_id).then( (ayats) => this.setState({ ayats }));
+        getSingleSurat(surat_id).then( (ayats) => this.props.setAyats(ayats));
     }
 
     handleChangePicker = (itemValue) => {
@@ -118,11 +122,16 @@ class Surat extends Component{
                 );
             })
         })
- 
-
     }
+
+    scrollSectionIntoView = (section) => {
+        this.sectionsRefs[section].current.scrollIntoView({ align: 'top' });
+    };
+    
     
     render(){
+        this.sectionsRefs = this.props.ayats.map(_section => React.createRef());
+
         const surat_id = this.props.navigation.getParam('surat_id', null);
         const surat = this.props.navigation.getParam('surat', null);
 
@@ -132,7 +141,13 @@ class Surat extends Component{
             : require("react-native-extra-dimensions-android").get("REAL_WINDOW_HEIGHT");
            
         return(
-            <ScrollView>
+            <ScrollIntoViewScrollView>
+                <TouchableOpacity
+                    onPress={ () => this.scrollSectionIntoView(5) }
+                >
+                    <Text>Go</Text>
+                </TouchableOpacity>
+
                 <HeaderSurat
                     surat={surat}
                 />
@@ -140,14 +155,24 @@ class Surat extends Component{
                     surat_id !== 1 ? ( surat_id !== 9 ? <Bismillah /> : null ) : null
                 }
                 <FlatList
-                    data={ this.state.ayats }
+                    data={ this.props.ayats }
                     renderItem={ ({ item }) => {
-                        return <Ayat 
-                            ayat={item}
-                            navigation={this.props.navigation}
-                            handleAyatPressed={this.handleAyatPressed}
-                            addToBookmark={this.addToBookmark}
-                        />
+                        return (
+                            <ScrollIntoView
+                                key={item.nomor_ayat}
+                                ref={this.sectionsRefs[item.nomor_ayat]}
+                                onMount={false}
+                                onUpdate
+                            >
+                                <Ayat
+                                    ayat={item}
+                                    navigation={this.props.navigation}
+                                    handleAyatPressed={this.handleAyatPressed}
+                                    addToBookmark={this.addToBookmark}
+                                />  
+                            </ScrollIntoView>
+                        )
+    
                     }}
                     keyExtractor={ (item, index) => item + index }
                 />
@@ -274,7 +299,7 @@ class Surat extends Component{
                         </View>
                     </Modal>
                 </View>
-            </ScrollView>
+            </ScrollIntoViewScrollView>
         )
     }
 }
@@ -360,7 +385,6 @@ const styles = StyleSheet.create({
 
     // style for modal list
     modalListContainer: {
-        // height: 300,
         width: '100%',
         backgroundColor: '#FFFFFF',
     },
@@ -382,8 +406,6 @@ const styles = StyleSheet.create({
         padding: 15,
         width: '100%',
         flexDirection: 'row',
-        // borderTopWidth: 1,
-        // borderTopColor: '#eaeaea',
         backgroundColor: '#ffffff',
         alignItems: 'center',
         justifyContent: 'flex-start',
@@ -402,7 +424,8 @@ const mapStateToProps = state => {
     return {
         suratList: state.suratList,
         goToAyatVisible: state.goToAyatVisible,
-        selectedAyat: state.selectedAyat
+        selectedAyat: state.selectedAyat,
+        ayats: state.ayats
     }
 }
 

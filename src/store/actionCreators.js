@@ -63,3 +63,10 @@ export const selectAyat = (selectedAyat) => {
         selectedAyat: selectedAyat
     }
 }
+
+export const setAyats = (ayats) => {
+    return {
+        type: actionTypes.SET_AYAT,
+        ayats: ayats
+    }
+}

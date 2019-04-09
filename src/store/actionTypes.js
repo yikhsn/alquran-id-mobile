@@ -14,3 +14,5 @@ export const TOGGLE_GO_TO_SURAT_MODAL = 'TOGGLE_GO_TO_SURAT_MODAL';
 export const TOGGLE_GO_TO_AYAT_MODAL = 'TOGGLE_GO_TO_AYAT_MODAL';
 
 export const SELECT_AYAT = 'SELECT_AYAT';
+
+export const SET_AYAT = 'SET_AYAT';

@@ -7,6 +7,7 @@ import {
     Alert,
     StyleSheet
 } from 'react-native';
+import { ScrollIntoView } from 'react-native-scroll-into-view';
 
 class Ayat extends Component{    
     render(){
@@ -19,8 +20,8 @@ class Ayat extends Component{
             >
                 <View style={styles.left}>
                     <ImageBackground
-                         source={ require('../../assets/oval.png') }
-                         style={{
+                        source={ require('../../assets/oval.png') }
+                        style={{
                             width: 40,
                             height: 50,
                             alignItems: 'center',
