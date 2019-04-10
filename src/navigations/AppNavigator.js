@@ -133,8 +133,8 @@ export default createAppContainer(createBottomTabNavigator(
         Settings: SettingNavigator
     },
     {
-        initialRouteName: 'Reads',
-        order: ['Reads', 'Search', 'Bookmarks'],
+        initialRouteName: 'Settings',
+        order: ['Reads', 'Search', 'Bookmarks', 'Settings'],
         defaultNavigationOptions: ({ navigation }) => ({
             tabBarIcon: ({ focused, horizontal, tintColor }) => {
                 const { routeName } = navigation.state;
