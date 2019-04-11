@@ -33,7 +33,8 @@ class ResultList extends Component {
                     style={styles.result}
                     onPress={() => this.props.navigation.navigate('Surat', {
                         surat: this.props.data,
-                        surat_id: this.props.data.nomor_surat
+                        surat_id: this.props.data.nomor_surat,
+                        ayatGoToId: this.props.data.nomor_ayat
                     })}
                     onLongPress={ () => this.addToBookmark( this.props.data.id ) }
                 >
