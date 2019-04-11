@@ -142,12 +142,17 @@ class SearchHeader extends Component{
 
 const styles = StyleSheet.create({
     container: {
+        elevation: 5,
         flexDirection: 'row',
-        height: 57,
+        height: 58,
         backgroundColor: '#2BC0FF',
         padding: 5,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.8,
+        shadowRadius: 1,  
     },
     logoContainer: {
         width: '10%'
