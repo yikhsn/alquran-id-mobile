@@ -30,6 +30,7 @@ import { addToRecentReads, deleteAllFromRecentReads } from '../controllers/Recen
 import { ScrollIntoView, wrapScrollViewConfigured } from 'react-native-scroll-into-view';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+// create wrapScrollViewConfigured for scroll into some ayat section
 const ScrollIntoViewScrollView = wrapScrollViewConfigured({
     refPropName: 'innerRef'
 })(KeyboardAwareScrollView);
@@ -41,8 +42,8 @@ class Surat extends Component{
         this.state = {
             selectedSuratId: 1,
             selectedAyatId: null,
+            ayatSugest: 7,
 
-            selectedAyat: null,
             isListModalVisible: false
         }
 
@@ -54,38 +55,85 @@ class Surat extends Component{
         headerRight: <GoToSuratBotton />
     })
 
+    componentDidMount() {
+        setTimeout(this.goToAyatView, 4000);
+    }
+
+    // function to scroll to section ayat view based on ayatId from navigation params
+    goToAyatView = () => {
+        const ayatGoToId = this.props.navigation.getParam('ayatGoToId', null);
+
+        if (ayatGoToId) {
+            this.scrollSectionIntoView(ayatGoToId);
+        }
+    }
+
+    // init ayat from database
     initSurat = () => {
         const surat_id = this.props.navigation.getParam('surat_id', null);
         getSingleSurat(surat_id).then( (ayats) => this.props.setAyats(ayats));
     }
 
+    // function to handle surat that user changed on modal picker 
     handleChangePicker = (itemValue) => {
+
+        // change state 'selectedSuratId' to curent selected itemValue on picker
         this.setState({ selectedSuratId: itemValue  });
+
+        // change state 'selectedAyatId' to null everytime user change picker
+        this.setState({ selectedAyatId: null });
+
+        // change ayat sugest on modal to  curent range of ayats
+        this.handleAyatSugestModal(itemValue);
     }
 
+    // function to handle state 'ayasSugest' to the curent surat selected
+    handleAyatSugestModal = (suratId) => {
+        const lastSugest = this.props.suratList.find( surat => surat.id === suratId);
+
+        const lastSugestString = lastSugest.ayat_total;
+        this.setState({ ayatSugest: lastSugestString });
+    }
+
+    // function to handle and check input user input to state 'selectedAyatId'
+    handleCheckSelectedAyatId = (selectedAyatId) => {
+        if ( selectedAyatId > this.state.ayatSugest) return;
+        else this.setState({ selectedAyatId });
+    }
+
+    // function to navigate from modal
     navigateFromModal = () => {
+
+        // toggle, in this case will close the modal
         this.props.toggleGoToAyatModal();
 
+        // select the surat data from redux state 'suratList' based on state 'selectedSuratId'
         const surat = this.props.suratList.find( surat => surat.id === this.state.selectedSuratId );
 
+        // navigate from the modal
         this.props.navigation.push('Surat', {
             surat: surat,
-            surat_id: surat.id
+            surat_id: surat.id,
+            ayatGoToId: this.state.selectedAyatId
         });
     }
 
+    // function to toggle visibilty on the modal
     toggleListModal = () => {
         this.setState({ isListModalVisible: !this.state.isListModalVisible });
     }
 
+    // function to handle state 'selectedAyat' to show on modal when ayat clicked
     selectAyat = (selectedAyat) => this.props.selectAyat(selectedAyat);
 
+    // function to handle when ayat clicked on pressed
     handleAyatPressed = (ayat) => {
         this.toggleListModal();
 
         this.selectAyat(ayat);
     }
 
+    // function to handle button add ayat bookmark to database on modal
     addToBookmark = (id) => {
         this.toggleListModal();
 
@@ -104,6 +152,7 @@ class Surat extends Component{
         })
     }
 
+    // function to handle button add ayat to recent read to database on modal
     addToRecent = (id) => {
         this.toggleListModal();
 
@@ -124,17 +173,23 @@ class Surat extends Component{
         })
     }
 
+    // function scroll to scroll into ayat section/view based on the ayat that pressed
     scrollSectionIntoView = (section) => {
         this.sectionsRefs[section].current.scrollIntoView({ align: 'top' });
     };
     
     
     render(){
+        // create ref to each ayat
         this.sectionsRefs = this.props.ayats.map(_section => React.createRef());
 
+        // get surat id from navigation params to decide to show bismillah or not
         const surat_id = this.props.navigation.getParam('surat_id', null);
+        
+        // get surat data from navigation params to show on header surat
         const surat = this.props.navigation.getParam('surat', null);
 
+        // get device width and height to for backdrop modal
         const deviceWidth = Dimensions.get("window").width;
         const deviceHeight = Platform.OS === "ios"
             ? Dimensions.get("window").height
@@ -142,12 +197,6 @@ class Surat extends Component{
            
         return(
             <ScrollIntoViewScrollView>
-                <TouchableOpacity
-                    onPress={ () => this.scrollSectionIntoView(5) }
-                >
-                    <Text>Go</Text>
-                </TouchableOpacity>
-
                 <HeaderSurat
                     surat={surat}
                 />
@@ -212,7 +261,8 @@ class Surat extends Component{
                                     <TextInput
                                         style={styles.inputAyatInput}
                                         value={this.state.selectedAyatId}
-                                        placeholder='Ayat, misal: 1'
+                                        onChangeText={ (selectedAyatId) => this.handleCheckSelectedAyatId(selectedAyatId) }
+                                        placeholder={`1-${this.state.ayatSugest.toString()}`}
                                     />
                                 </View>
                             </View>

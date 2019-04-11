@@ -44,7 +44,8 @@ class BookmarkAyatList extends Component{
                 <TouchableOpacity style={styles.container}
                     onPress={ () => this.props.navigation.navigate('Surat', {
                         surat: ayat,
-                        surat_id: ayat.nomor_surat
+                        surat_id: ayat.nomor_surat,
+                        ayatGoToId: ayat.nomor_ayat
                     })}
                 >
                     <View style={styles.left}>

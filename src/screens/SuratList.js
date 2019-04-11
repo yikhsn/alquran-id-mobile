@@ -29,9 +29,13 @@ class SuratList extends Component{
 
         this.state = {
             scrollEnabled: true,
+            
             selectedSuratId: 1,
-            selectedAyat: null
+            selectedAyatId: null,
+            ayatSugest: 7,
         }        
+
+        this.initListSurats();
     }
 
     static navigationOptions = ({ navigation }) => ({
@@ -39,10 +43,7 @@ class SuratList extends Component{
         headerRight: <RightHeaderSuratList />
     })
 
-    componentDidMount(){
-        this.initListSurats();
-    }
-
+    // function to init all surat list from the database
     initListSurats = () => {
         getAllSurats().then( (surats) => this.props.setSuratList(surats));
     }
@@ -52,18 +53,45 @@ class SuratList extends Component{
     }
 
     navigateFromModal = () => {
+        // toggle, in this case will close the modal
         this.props.toggleGoToSuratModal();
 
+        // select the surat data from redux state 'suratList' based on state 'selectedSuratId'
         const surat = this.props.suratList.find( surat => surat.id === this.state.selectedSuratId );
 
+        // navigate from the modal
         this.props.navigation.navigate('Surat', {
             surat: surat,
-            surat_id: surat.id
+            surat_id: surat.id,
+            ayatGoToId: this.state.selectedAyatId
         });
     }
 
+    // function to handle state 'ayasSugest' to the curent surat selected
+    handleAyatSugestModal = (suratId) => {
+        const lastSugest = this.props.suratList.find( surat => surat.id === suratId);
+
+        const lastSugestString = lastSugest.ayat_total;
+        this.setState({ ayatSugest: lastSugestString });
+    }
+
+    // function to handle and check input user input to state 'selectedAyatId'
+    handleCheckSelectedAyatId = (selectedAyatId) => {
+        if ( selectedAyatId > this.state.ayatSugest) return;
+        else this.setState({ selectedAyatId });
+    }
+
+    // function to handle surat that user changed on modal picker
     handleChangePicker = (itemValue) => {
+        
+        // change state 'selectedSuratId' to the current value
         this.setState({ selectedSuratId: itemValue  });
+
+        // change state 'selectedAyatId' to null everytime user change picker
+        this.setState({ selectedAyatId: null });
+
+        // change ayat sugest on modal to  curent range of ayats
+        this.handleAyatSugestModal(itemValue);
     }
     
     render() {
@@ -117,8 +145,9 @@ class SuratList extends Component{
                                     <Text style={styles.inputAyatLabel}>Ayat</Text>
                                     <TextInput
                                         style={styles.inputAyatInput}
-                                        value={this.state.selectedAyat}
-                                        placeholder='Ayat, misal: 1'
+                                        value={this.state.selectedAyatId}
+                                        onChangeText={ (selectedAyatId) => this.handleCheckSelectedAyatId(selectedAyatId) }
+                                        placeholder={ `1-${this.state.ayatSugest}` }
                                     />
                                 </View>
                             </View>
