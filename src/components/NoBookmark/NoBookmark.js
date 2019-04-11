@@ -8,25 +8,25 @@ import {
 const NoBookmark = (props) => {
     return(
         <View style={styles.container}>
-            <Text style={styles.text}>Kosong!</Text>
+            <Text style={styles.text}>Belum ada bookmark!</Text>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         paddingVertical: 10,
         paddingRight: 10,
         paddingLeft: 30,
         backgroundColor: '#ffffff',
-        borderBottomWidth: 1,
-        borderColor: '#eaeaea',
         justifyContent: 'center',
         alignItems: 'center',        
     },
     text : {
         fontSize: 16,
-        color: '#444444'
+        color: '#666666',
+        fontFamily: 'Roboto-Regular',
     }
 })
 

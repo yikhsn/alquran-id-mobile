@@ -10,6 +10,7 @@ import BookmarkSuratList from '../components/Bookmarks/Surat/List';
 import HeaderBookmark from '../components/Bookmarks/Header';
 import HeaderRecentReads from '../components/RecentReads/Header';
 import ListRecentReads from '../components/RecentReads/List';
+import NoBookmark from '../components/NoBookmark/NoBookmark';
 
 class Bookmark extends Component{
     constructor(props){
@@ -52,7 +53,30 @@ class Bookmark extends Component{
 
     render(){
             return(
-                <ScrollView>
+                <ScrollView
+                    style={{
+                        flex: 1,
+                    }}
+                >
+                    {
+                        this.state.recent_reads.length > 0
+                        ?
+                            null
+                        :
+                            (
+                                this.state.surat_bookmarks.length > 0
+                                ?
+                                    null
+                                :
+                                    (
+                                        this.state.ayat_bookmarks.length > 0
+                                        ?
+                                            null
+                                        :
+                                            <NoBookmark />
+                                    )
+                            )
+                    }
                     {
                         this.state.recent_reads.length > 0
                         ?
