@@ -196,7 +196,9 @@ class Surat extends Component{
             : require("react-native-extra-dimensions-android").get("REAL_WINDOW_HEIGHT");
            
         return(
-            <ScrollIntoViewScrollView>
+            <ScrollIntoViewScrollView
+                keyboardShouldPersistTaps='always'
+            >
                 <HeaderSurat
                     surat={surat}
                 />
@@ -227,7 +229,8 @@ class Surat extends Component{
                 />
 
                 <View>
-                    <Modal 
+                    <Modal
+                        keyboardShouldPersistTaps='always'
                         isVisible={this.props.goToAyatVisible}
                         deviceWidth={deviceWidth}
                         deviceHeight={deviceHeight}
@@ -263,6 +266,7 @@ class Surat extends Component{
                                         value={this.state.selectedAyatId}
                                         onChangeText={ (selectedAyatId) => this.handleCheckSelectedAyatId(selectedAyatId) }
                                         placeholder={`1-${this.state.ayatSugest.toString()}`}
+                                        keyboardType='numeric'
                                     />
                                 </View>
                             </View>
@@ -270,12 +274,14 @@ class Surat extends Component{
                                 <TouchableHighlight
                                     onPress={ () => this.props.toggleGoToAyatModal() }
                                     style={styles.buttonClose}
+                                    underlayColor='#80d9ff'
                                 >
                                      <Icon style={styles.buttonText} name='close' size={28} color='#ffffff' />
                                 </TouchableHighlight>
                                 <TouchableHighlight
                                     onPress={ () => this.navigateFromModal() }
                                     style={styles.buttonSubmit}
+                                    underlayColor='#80d9ff'
                                 >
                                      <Icon style={styles.buttonText} name='page-next' size={28} color='#ffffff' />
                                 </TouchableHighlight>
@@ -403,6 +409,7 @@ const styles = StyleSheet.create({
     },
     inputAyatInput: {
         flex: 1,
+        padding: 10,
         fontSize: 16,
         borderWidth: 1,
         borderColor: '#eaeaea'

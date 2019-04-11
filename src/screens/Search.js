@@ -16,36 +16,37 @@ import HeaderResultList from '../components/ResultList/HeaderResultList';
 class Search extends Component{
     render(){
         return(
-            <ScrollView style={{
-                flex: 1, 
-                backgroundColor: '#ffffff'
-            }}>
-                <View>
-                    <View style={styles.container}>
-                        { 
-                            // cheking if in the search mode, will show the the search loading indicator
-                            // if not in search mode, will show the search result of result from the request
-                            this.props.datas.isSearchMode 
-                            ? 
-                                <Loader /> 
+            <ScrollView 
+                style={{
+                    flex: 1, 
+                    backgroundColor: '#ffffff'
+                }}
+                keyboardShouldPersistTaps='always'
+            >
+                <View style={styles.container}>
+                    { 
+                        // cheking if in the search mode, will show the the search loading indicator
+                        // if not in search mode, will show the search result of result from the request
+                        this.props.datas.isSearchMode 
+                        ? 
+                            <Loader /> 
+                        :
+                            this.props.datas.search.length > 0
+                            ?
+                                <View>
+                                    <HeaderResultList />
+                                    <FlatList
+                                        data={this.props.datas.search}
+                                        renderItem={ ({ item }) => <ResultList 
+                                        data={item}
+                                        navigation={this.props.navigation}
+                                        /> }
+                                        keyExtractor={ (item, index) => item + index }
+                                    /> 
+                                </View>
                             :
-                                    this.props.datas.search.length > 0
-                                    ?
-                                        <View>
-                                            <HeaderResultList />
-                                            <FlatList
-                                                data={this.props.datas.search}
-                                                renderItem={ ({ item }) => <ResultList 
-                                                data={item}
-                                                navigation={this.props.navigation}
-                                                /> }
-                                                keyExtractor={ (item, index) => item + index }
-                                            /> 
-                                        </View>
-                                    :
-                                        null                                
-                        }                      
-                    </View>
+                                null                                
+                    }                      
                 </View>
 
             </ScrollView>
