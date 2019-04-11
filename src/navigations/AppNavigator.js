@@ -40,6 +40,23 @@ const ReadNavigator = createStackNavigator(
     }
 )
 
+ReadNavigator.navigationOptions = ({ navigation }) => {
+    let tabBarVisible;
+    if (navigation.state.routes.length > 1) {
+      navigation.state.routes.map(route => {
+        if (route.routeName === "Surat") {
+          tabBarVisible = false;
+        } else {
+          tabBarVisible = true;
+        }
+      });
+    }
+  
+    return {
+      tabBarVisible
+    };
+};
+
 const BookmarkNavigator = createStackNavigator(
     {
         Bookmark: {
@@ -68,6 +85,23 @@ const BookmarkNavigator = createStackNavigator(
         }
     }
 )
+
+BookmarkNavigator.navigationOptions = ({ navigation }) => {
+    let tabBarVisible;
+    if (navigation.state.routes.length > 1) {
+      navigation.state.routes.map(route => {
+        if (route.routeName === "Surat") {
+          tabBarVisible = false;
+        } else {
+          tabBarVisible = true;
+        }
+      });
+    }
+  
+    return {
+      tabBarVisible
+    };
+};
 
 const SearchNavigator = createStackNavigator(
     {
@@ -98,6 +132,23 @@ const SearchNavigator = createStackNavigator(
         }
     }
 )
+
+SearchNavigator.navigationOptions = ({ navigation }) => {
+    let tabBarVisible;
+    if (navigation.state.routes.length > 1) {
+      navigation.state.routes.map(route => {
+        if (route.routeName === "Surat") {
+          tabBarVisible = false;
+        } else {
+          tabBarVisible = true;
+        }
+      });
+    }
+  
+    return {
+      tabBarVisible
+    };
+};
 
 const SettingNavigator = createStackNavigator(
     {
