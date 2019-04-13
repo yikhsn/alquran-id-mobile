@@ -6,7 +6,7 @@ import {
     Alert, 
     StyleSheet
 } from 'react-native';
-import { addAyatToBookmark } from '../../controllers/BookmarkController';
+// import { addAyatToBookmark } from '../../controllers/BookmarkController';
 import searchExcerpter from '../../helpers/SearchExcerpt';
 import Theme, { createStyle } from 'react-native-theming';
 import {
@@ -14,21 +14,21 @@ import {
 } from '../../themes/customs/components'
 
 class ResultList extends Component {
-    addToBookmark = (id) => {
-        addAyatToBookmark(id).then( msg => {
-            Alert.alert(
-                msg,
-                msg,
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => this.props.navigation.navigate('Search')
-                    },
-                ],
-                { cancelable: false }
-            );
-        })
-    }
+    // addToBookmark = (id) => {
+    //     addAyatToBookmark(id).then( msg => {
+    //         Alert.alert(
+    //             msg,
+    //             msg,
+    //             [
+    //                 {
+    //                     text: 'OK',
+    //                     onPress: () => this.props.navigation.navigate('Search')
+    //                 },
+    //             ],
+    //             { cancelable: false }
+    //         );
+    //     })
+    // }
     
     render(){
         return (
@@ -39,21 +39,21 @@ class ResultList extends Component {
                         surat_id: this.props.data.nomor_surat,
                         ayatGoToId: this.props.data.nomor_ayat
                     })}
-                    onLongPress={ () => this.addToBookmark( this.props.data.id ) }
+                    // onLongPress={ () => this.addToBookmark( this.props.data.id ) }
                 >
-                <Theme.View style={styles.left}>
-                    <Theme.Text style={styles.suratResult}>{ (`QS. ${this.props.data.surat_nama}:Ayat ${this.props.data.nomor_ayat}`).toUpperCase() }</Theme.Text>
-                    <Theme.Text style={styles.textResult}>{searchExcerpter(this.props.data.terjemahan)}</Theme.Text>
-                </Theme.View>
-                <Theme.View style={styles.right}>
-                    <Image
-                        style={{
-                            width: 15,
-                            height: 15
-                        }}
-                        source={ require('../../assets/right-arrow-black.png') }
-                    />
-                </Theme.View>
+                    <Theme.View style={styles.left}>
+                        <Theme.Text style={styles.suratResult}>{ (`QS. ${this.props.data.surat_nama}:Ayat ${this.props.data.nomor_ayat}`).toUpperCase() }</Theme.Text>
+                        <Theme.Text style={styles.textResult}>{searchExcerpter(this.props.data.terjemahan)}</Theme.Text>
+                    </Theme.View>
+                    <Theme.View style={styles.right}>
+                        <Image
+                            style={{
+                                width: 15,
+                                height: 15
+                            }}
+                            source={ require('../../assets/right-arrow-black.png') }
+                        />
+                    </Theme.View>
                 </ThemedTouchableOpacity>
         )
     }

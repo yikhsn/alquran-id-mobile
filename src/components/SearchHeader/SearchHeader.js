@@ -87,7 +87,7 @@ class SearchHeader extends Component{
                         autoFocus={false}
                         autoCapitalize='none'
                         placeholder={'Cari...'}
-                        placeholderTextColor='@textColorQuaternary'
+                        placeholderTextColor='@textPlaceHolderSearch'
                         onChangeText={(words) => this.handleWordChange(words) }
                         onSubmitEditing={ () => this.handleSearch() }
                         onFocus={ () => this.handleFocus() }

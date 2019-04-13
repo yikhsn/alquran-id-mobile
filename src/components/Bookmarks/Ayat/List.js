@@ -45,7 +45,9 @@ class BookmarkAyatList extends Component{
                 autoClose={true}
                 scroll={ (event) => this.props.allowScroll(event)}
             >
-                <ThemedTouchableOpacity style={styles.container}
+                <ThemedTouchableOpacity 
+                    style={styles.container}
+                    activeOpacity={0.6}
                     onPress={ () => this.props.navigation.navigate('Surat', {
                         surat: ayat,
                         surat_id: ayat.nomor_surat,

@@ -56,7 +56,9 @@ class BookmarkSuratList extends Component{
                 close={true}
                 scroll={ (event) => this.props.allowScroll(event)}
             >
-                <ThemedTouchableOpacity style={styles.container}
+                <ThemedTouchableOpacity 
+                    style={styles.container}
+                    activeOpacity={0.6}
                     onPress={() => this.props.navigation.navigate('Surat', {
                         surat: surat,
                         surat_id: surat.surat_id

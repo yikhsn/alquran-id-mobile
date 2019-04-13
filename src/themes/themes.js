@@ -21,6 +21,8 @@ export default themes = [
         textColorTertiary: '#888888',
         textColorQuaternary: '#aaaaaa',
 
+        textPlaceHolderSearch: '#B5E6FD',
+
         textColorLight: '#ffffff',
         textColorLightSecondary: '#DFF2FB',
 
@@ -55,6 +57,8 @@ export default themes = [
         textColorSecondary2: '#bbb',
         textColorTertiary: '#aaa',
         textColorQuaternary: '#909090',
+
+        textPlaceHolderSearch: '#909090',
 
         textColorLight: '#d4d4d4',
         textColorLightSecondary: '#ffffff',
