@@ -1,35 +1,36 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import Theme, { createStyle } from 'react-native-theming';
 
 class HeaderResultList extends Component{
     render(){
         return(
-            <View style={styles.container}>
-                <Text style={styles.title}>pencarian '{this.props.datas.wordsSearched}' - </Text>
-                <Text style={styles.report}>{this.props.datas.search.length} ayat ditemukan</Text>
-            </View>
+            <Theme.View style={styles.container}>
+                <Theme.Text style={styles.title}>pencarian '{this.props.datas.wordsSearched}' - </Theme.Text>
+                <Theme.Text style={styles.report}>{this.props.datas.search.length} ayat ditemukan</Theme.Text>
+            </Theme.View>
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     container: {
         paddingVertical: 10,
         paddingHorizontal: 15,
         flexDirection: 'row',
-        backgroundColor: '#ffffff',
+        backgroundColor: '@backgroundColor',
         borderBottomWidth: 2,
-        borderBottomColor: '#eaeaea'
+        borderBottomColor: '@borderColor'
     },
     title: {
         fontFamily: 'Roboto-Regular',
-        color: '#aaaaaa',
+        color: '@textColorQuaternary',
         fontSize: 16,
     },
     report: {
         fontFamily: 'Roboto-Regular',
-        color: '#aaaaaa',
+        color: '@textColorQuaternary',
         fontSize: 16,
     }
 })

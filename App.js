@@ -7,10 +7,23 @@ import Appnavigator from './src/navigations/AppNavigator';
 const store = createStore(reducer);
 
 export default class App extends Component {
+    state = {
+        theme: 'light'
+    }
+
+    dark = () => this.setState({ theme: 'dark'});
+    light = () => this.setState({ theme: 'light'});
+
     render() {
         return (
             <Provider store={store}>
-                <Appnavigator />
+                <Appnavigator
+                    screenProps={{ 
+                        theme: this.state.theme,
+                        dark: this.dark,
+                        light: this.light
+                    }}
+                />
             </Provider>
         );
     }

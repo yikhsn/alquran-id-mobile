@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ImageBackground, Text, StyleSheet } from 'react-native';
+import Theme, { createStyle } from 'react-native-theming';
 
 class SuratNumber extends Component{
     render(){
@@ -14,16 +15,16 @@ class SuratNumber extends Component{
                     justifyContent: 'center',
                 }}
             >
-                <Text style={styles.number}>
+                <Theme.Text style={styles.number}>
                     { this.props.number }
                     {/* 1 */}
-                </Text>
+                </Theme.Text>
             </ImageBackground>  
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     number:{
         fontSize: 10,
         color: '#666666',

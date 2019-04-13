@@ -20,20 +20,24 @@ import Bismillah from '../components/Bismillah/Bismillah';
 import GoToSuratBotton from '../components/GoToSuratButton/GoToSuratButton';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../store/actionCreators';
 import { addAyatToBookmark } from '../controllers/BookmarkController';
 import { addToRecentReads, deleteAllFromRecentReads } from '../controllers/RecentReadsController';
-
-import { ScrollIntoView, wrapScrollViewConfigured } from 'react-native-scroll-into-view';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-// create wrapScrollViewConfigured for scroll into some ayat section
-const ScrollIntoViewScrollView = wrapScrollViewConfigured({
-    refPropName: 'innerRef'
-})(KeyboardAwareScrollView);
+import { ScrollIntoView } from 'react-native-scroll-into-view';
+import Theme, { createStyle } from 'react-native-theming';
+import ThemeConstants from '../themes/navigations/ThemeConstants';
+import { 
+    ThemedMatIcon,
+    ThemedMaterialsIcon,
+    ThemedTextInput,
+    ThemedTouchableHighlight,
+    ThemedTouchableOpacity,
+    ThemedPicker,
+    ThemedPickerItem,
+    ThemedScrollIntoViewScrollView
+} from '../themes/customs/components';
 
 class Surat extends Component{
     constructor(props){
@@ -50,10 +54,24 @@ class Surat extends Component{
         this.initSurat();
     }
 
-    static navigationOptions = ({ navigation }) => ({
-        title: 'Surat ' + navigation.state.params.surat.surat_nama,
-        headerRight: <GoToSuratBotton />
-    })
+    static navigationOptions = ({ screenProps, navigation }) => {
+        let currentTheme = ThemeConstants[screenProps.theme];
+        
+        return {
+            title: 'Surat ' + navigation.state.params.surat.surat_nama,
+            headerRight: <GoToSuratBotton />,
+            headerTintColor: currentTheme.headerTintColor,
+            headerStyle: {
+                backgroundColor: currentTheme.backgroundColor,
+                borderBottomColor: currentTheme.borderColor,
+            },
+            headerTitleStyle: {
+                color: currentTheme.headerTitleColor,
+                fontSize: currentTheme.headerTitleFontSize,
+                fontFamily: currentTheme.headerTitleFontFamily,
+            },
+        }
+    }
 
     componentDidMount() {
         setTimeout(this.goToAyatView, 4000);
@@ -196,13 +214,15 @@ class Surat extends Component{
             : require("react-native-extra-dimensions-android").get("REAL_WINDOW_HEIGHT");
            
         return(
-            <ScrollIntoViewScrollView
+            <ThemedScrollIntoViewScrollView
                 keyboardShouldPersistTaps='always'
+                style={styles.container}
             >
                 <HeaderSurat
                     surat={surat}
                 />
                 {
+                    // to show bismillah in all ayat except in al-fatihah(QS1) and at-taubah (QS9)
                     surat_id !== 1 ? ( surat_id !== 9 ? <Bismillah /> : null ) : null
                 }
                 <FlatList
@@ -228,9 +248,8 @@ class Surat extends Component{
                     keyExtractor={ (item, index) => item + index }
                 />
 
-                <View>
+                <Theme.View>
                     <Modal
-                        keyboardShouldPersistTaps='always'
                         isVisible={this.props.goToAyatVisible}
                         deviceWidth={deviceWidth}
                         deviceHeight={deviceHeight}
@@ -242,53 +261,65 @@ class Surat extends Component{
                         }}
                         onBackdropPress={ () => this.props.toggleGoToAyatModal() }
                     >
-                        <View style={styles.modalContainer}>
-                            <View style={styles.modalContent}>
-                                <Text style={styles.modalHeader}>Lompat ke</Text>
-                                <View style={styles.inputSurat}>
-                                    <Text style={styles.inputSuratLabel}>Surat</Text>
-                                    <Picker
+                        <Theme.View style={styles.modalContainer}>
+                            <Theme.View style={styles.modalContent}>
+                                <Theme.Text style={styles.modalHeader}>Lompat ke</Theme.Text>
+                                <Theme.View style={styles.inputSurat}>
+                                    <Theme.Text style={styles.inputSuratLabel}>Surat</Theme.Text>
+                                    <ThemedPicker
                                         style={styles.inputSuratInput}
                                         mode='dropdown'
                                         selectedValue={this.state.selectedSuratId}
                                         onValueChange={(itemValue, indexValue) => 
                                             this.handleChangePicker(itemValue)
-                                        }>
-                                        { this.props.suratList.map((item, index) => {
-                                            return (<Picker.Item label={item.surat_nama} value={item.id} key={item.id}/>) 
-                                        })}
-                                    </Picker>
-                                </View>
-                                <View style={styles.inputAyatContainer}>
-                                    <Text style={styles.inputAyatLabel}>Ayat</Text>
-                                    <TextInput
+                                        }
+                                        >
+                                        {
+                                            this.props.suratList.map((item, index) => {
+                                                return (<ThemedPickerItem  color='@textColorPrimary' label={item.surat_nama} value={item.id} key={item.id}/>) 
+                                            })
+                                        }
+                                    </ThemedPicker>
+                                </Theme.View>
+                                <Theme.View style={styles.inputAyatContainer}>
+                                    <Theme.Text style={styles.inputAyatLabel}>Ayat</Theme.Text>
+                                    <ThemedTextInput
                                         style={styles.inputAyatInput}
                                         value={this.state.selectedAyatId}
                                         onChangeText={ (selectedAyatId) => this.handleCheckSelectedAyatId(selectedAyatId) }
                                         placeholder={`1-${this.state.ayatSugest.toString()}`}
+                                        placeholderTextColor='@textColorQuaternary'
                                         keyboardType='numeric'
                                     />
-                                </View>
-                            </View>
-                            <View style={styles.buttonContainer}>
-                                <TouchableHighlight
+                                </Theme.View>
+                            </Theme.View>
+                            <Theme.View style={styles.buttonContainer}>
+                                <ThemedTouchableHighlight
                                     onPress={ () => this.props.toggleGoToAyatModal() }
                                     style={styles.buttonClose}
-                                    underlayColor='#80d9ff'
+                                    underlayColor='@buttonColorSecondaryHighlight'
                                 >
-                                     <Icon style={styles.buttonText} name='close' size={28} color='#ffffff' />
-                                </TouchableHighlight>
-                                <TouchableHighlight
+                                     <ThemedMaterialsIcon 
+                                        style={styles.buttonText} 
+                                        name='close' size={28} 
+                                        color='@modalSecondaryButtonIcon' 
+                                     />
+                                </ThemedTouchableHighlight>
+                                <ThemedTouchableHighlight
                                     onPress={ () => this.navigateFromModal() }
                                     style={styles.buttonSubmit}
-                                    underlayColor='#80d9ff'
+                                    underlayColor='@buttonColorPrimaryHighlight'
                                 >
-                                     <Icon style={styles.buttonText} name='page-next' size={28} color='#ffffff' />
-                                </TouchableHighlight>
-                            </View>
-                        </View>
+                                     <ThemedMaterialsIcon 
+                                        style={styles.buttonText} 
+                                        name='page-next' size={28} 
+                                        color='@modalPrimaryButtonIcon' 
+                                    />
+                                </ThemedTouchableHighlight>
+                            </Theme.View>
+                        </Theme.View>
                     </Modal>
-                </View>
+                </Theme.View>
 
 
                 <View>
@@ -306,115 +337,126 @@ class Surat extends Component{
                         }}
                         onBackdropPress={ () => this.toggleListModal() }
                     >
-                        <View style={styles.modalListContainer}>
-                            <View style={styles.modalListHeader} >
-                                <Text style={styles.modalListTitle}>
+                        <Theme.View style={styles.modalListContainer}>
+                            <Theme.View style={styles.modalListHeader} >
+                                <Theme.Text style={styles.modalListTitle}>
                                     { 
                                         this.props.selectedAyat 
                                         ? 
-                                            'QS. '+this.props.selectedAyat.surat_nama+':Ayat '+this.props.selectedAyat.nomor_ayat 
+                                            'QS. ' + this.props.selectedAyat.surat_nama+':Ayat '+this.props.selectedAyat.nomor_ayat 
                                         : 
                                             'loading'
                                     }
-                                </Text>
-                            </View>
-                            <View style={styles.modalListContent}>
-                                <TouchableOpacity 
+                                </Theme.Text>
+                            </Theme.View>
+                            <Theme.View style={styles.modalListContent}>
+                                <ThemedTouchableOpacity 
                                     onPress={ () => 
                                         this.addToBookmark(this.props.selectedAyat.id) 
                                     } 
                                     style={styles.modalListButton}
                                 >
-                                    <MaterialIcon 
-                                        name='library-add' size={28} color='#444444'
+                                    <ThemedMatIcon 
+                                        name='library-add' size={28} color='@textColorPrimary'
                                         style={styles.modalListButtonIcon}
                                     />
-                                    <Text style={styles.modalListButtonText}>Tambah ke bookmark</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
+                                    <Theme.Text style={styles.modalListButtonText}>Tambah ke bookmark</Theme.Text>
+                                </ThemedTouchableOpacity>
+                                <ThemedTouchableOpacity
                                     onPress={ () => this.addToRecent(this.props.selectedAyat.id) } 
                                     style={styles.modalListButton}
                                 >
-                                    <MaterialIcon 
-                                        name='access-time' size={28} color='#444444'
+                                    <ThemedMatIcon 
+                                        name='access-time' size={28} color='@textColorPrimary'
                                         style={styles.modalListButtonIcon}
                                     />
-                                    <Text style={styles.modalListButtonText}>Tandai terakhir dibaca</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity
+                                    <Theme.Text style={styles.modalListButtonText}>Tandai terakhir dibaca</Theme.Text>
+                                </ThemedTouchableOpacity>
+                                <ThemedTouchableOpacity
                                     onPress={ () => this.toggleListModal() } 
                                     style={styles.modalListButton}
                                 >
-                                    <MaterialIcon 
-                                        name='close' size={28} color='#444444'
+                                    <ThemedMatIcon 
+                                        name='close' size={28} color='@textColorPrimary'
                                         style={styles.modalListButtonIcon}
                                     />
-                                    <Text style={styles.modalListButtonText}>Keluar</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                                    <Theme.Text style={styles.modalListButtonText}>Keluar</Theme.Text>
+                                </ThemedTouchableOpacity>
+                            </Theme.View>
+                        </Theme.View>
                     </Modal>
                 </View>
-            </ScrollIntoViewScrollView>
+            </ThemedScrollIntoViewScrollView>
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
+    container: {
+        backgroundColor: '@backgroundColor'
+    },
+
+
     modalContainer: {
         height: ( Dimensions.get("window").width  * 90 / 100 ) * 60 / 100,
         width: '90%',
     },
     modalContent: {
         flex: 1,
+        margin: 0,
         paddingVertical: 10,
         paddingHorizontal: 15,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '@backgroundColor',
     },
     modalHeader: {
         fontSize: 20,
         marginBottom: 5,
         fontWeight: '500',
         fontFamily: 'Roboto-Regular',
-        color: '#444444'
+        color: '@textColorPrimary'
     },
     inputAyatContainer:{
         flex: 1,
-        color: '#444444',
+        color: '@textColorPrimary',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
     inputSurat: {
         flex: 1,
-        color: '#444444',
+        color: '@textColorPrimary',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
     inputAyatLabel: {
-        color: '#444444',
+        color: '@textColorPrimary',
         fontSize: 16,
         width: '20%'
     },
     inputSuratLabel: {
-        color: '#444444',
+        color: '@textColorPrimary',
         fontSize: 16,
         width: '20%'
     },
     inputSuratInput: {
-        flex: 1
+        flex: 1,
+        // to make color of arrow in item picker same as its text
+        // backgroundColor: '@backgroundColor',
+        color: '@textColorPrimary',
     },
     inputAyatInput: {
         flex: 1,
+        color: '@textColorPrimary',
         padding: 10,
         fontSize: 16,
         borderWidth: 1,
-        borderColor: '#eaeaea'
+        borderColor: '@borderColor'
     },
     buttonContainer: {
+        margin: 0,
         height: 40,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -422,14 +464,14 @@ const styles = StyleSheet.create({
     },
     buttonClose: {
         flex: 1,
-        backgroundColor: '#5ecfff',
+        backgroundColor: '@buttonColorSecondary',
         padding: 5,
         justifyContent: 'center',
         alignContent: 'center',
     },
     buttonSubmit: {
         flex: 2,
-        backgroundColor: '#2bc0ff',
+        backgroundColor: '@buttonColorPrimary',
         padding: 5,
         justifyContent: 'center',
         alignContent: 'center',
@@ -443,7 +485,7 @@ const styles = StyleSheet.create({
     // style for modal list
     modalListContainer: {
         width: '100%',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '@backgroundColor',
     },
     modalListHeader: {
         padding: 20
@@ -453,7 +495,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         alignSelf: 'center',
         fontFamily: 'Roboto-Regular',
-        color: '#444444'
+        color: '@textColorPrimary'
     },
     modalListContent: {
         alignItems: 'center',
@@ -463,7 +505,7 @@ const styles = StyleSheet.create({
         padding: 15,
         width: '100%',
         flexDirection: 'row',
-        backgroundColor: '#ffffff',
+        backgroundColor: '@backgroundColor',
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
@@ -471,7 +513,7 @@ const styles = StyleSheet.create({
         marginRight: 5,
     },
     modalListButtonText: {
-        color: '#444444',
+        color: '@textColorPrimary',
         fontFamily: 'Roboto-Regular',
         fontSize: 16
     }

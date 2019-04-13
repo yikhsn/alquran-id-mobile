@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import { 
     View,
-    TouchableOpacity,
     Text,
     Alert,
     StyleSheet
 } from 'react-native';
-import Swipeout from 'react-native-swipeout';
 import { addSuratToBookmark } from '../../controllers/BookmarkController';
 
 import SuratName from './SuratName';
 import SuratNumber from './SuratNumber';
+
+import Theme, { createStyle } from 'react-native-theming';
+import {
+    ThemedSwipeout,
+    ThemedTouchableOpacity,
+    ThemedIonicons,
+} from '../../themes/customs/components';
 
 class SuratList extends Component{
     constructor(props){
@@ -61,18 +66,18 @@ class SuratList extends Component{
         const { surat } = this.props;
 
         return(
-            <Swipeout
+            <ThemedSwipeout
                 right={swipeRightButton}
                 autoClose={true}
                 scroll={ (event) => this.props.allowScroll(event) }
             >
-                <TouchableOpacity style={styles.container}
+                <ThemedTouchableOpacity style={styles.container}
                     onPress={() => this.props.navigation.navigate('Surat', {
                         surat: surat,
                         surat_id: surat.id
                     })}
                 >
-                    <View style={styles.left}>
+                    <Theme.View style={styles.left}>
                         <SuratNumber
                             number={ surat.id }
                         />
@@ -82,26 +87,26 @@ class SuratList extends Component{
                             arti={surat.surat_arti}
                         />
 
-                    </View>
-                    <View style={styles.right}>
-                        <Text style={styles.arab}>
+                    </Theme.View>
+                    <Theme.View style={styles.right}>
+                        <Theme.Text style={styles.arab}>
                             {surat.surat_arab}
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            </Swipeout>
+                        </Theme.Text>
+                    </Theme.View>
+                </ThemedTouchableOpacity>
+            </ThemedSwipeout>
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     container: {
         paddingVertical: 5,
         paddingHorizontal: 10,
-        backgroundColor: '#ffffff',
+        backgroundColor: '@backgroundColor',
         flexDirection: 'row',
         borderBottomWidth: 1,
-        borderColor: '#eeeeee',
+        borderColor: '@borderColor',
         justifyContent: 'center'
     },
     left: {
@@ -116,7 +121,7 @@ const styles = StyleSheet.create({
     },
     arab: {
         fontFamily: 'scheherazade-webfont',
-        color: '#444444',
+        color: '@textColorPrimary',
         fontSize: 40,
     }
 

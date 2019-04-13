@@ -1,33 +1,33 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
+import Theme, { createStyle } from 'react-native-theming';
 
 class SuratName extends Component{
     render(){
         return(
-            <View style={styles.surat}>
-                <Text style={styles.name}>
+            <Theme.View style={styles.surat}>
+                <Theme.Text style={styles.name}>
                     { this.props.nama }
-                </Text>
-                <Text style={styles.translation}>
+                </Theme.Text>
+                <Theme.Text style={styles.translation}>
                     { this.props.arti }
-                </Text>
-            </View>
+                </Theme.Text>
+            </Theme.View>
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     surat: {
         justifyContent:'center',
     },
     name: {
-        color: '#444444',
+        color: '@textColorPrimary',
         fontFamily: 'Roboto-Regular',
         fontSize: 18
     },
     translation: {
-        color: '#555555',
+        color: '@textColorSecondary',
         fontSize: 14,
         fontFamily: 'Roboto-Regular',
     },

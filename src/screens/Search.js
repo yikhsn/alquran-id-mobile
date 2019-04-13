@@ -12,18 +12,18 @@ import * as actionCreators from '../store/actionCreators';
 import Loader from '../components/Loader/Loader';
 import ResultList from '../components/ResultList/ResultList';
 import HeaderResultList from '../components/ResultList/HeaderResultList';
+import Theme, { createStyle } from 'react-native-theming';
+import {
+    ThemedScrollView
+} from '../themes/customs/components';
 
 class Search extends Component{
     render(){
         return(
-            <ScrollView 
-                style={{
-                    flex: 1, 
-                    backgroundColor: '#ffffff'
-                }}
+            <ThemedScrollView 
+                style={styles.container}
                 keyboardShouldPersistTaps='always'
             >
-                <View style={styles.container}>
                     { 
                         // cheking if in the search mode, will show the the search loading indicator
                         // if not in search mode, will show the search result of result from the request
@@ -47,16 +47,16 @@ class Search extends Component{
                             :
                                 null                                
                     }                      
-                </View>
 
-            </ScrollView>
+            </ThemedScrollView>
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     container: {
-        // margin: 10
+        flex: 1,
+        backgroundColor: '@backgroundColor'
     }
 })
 

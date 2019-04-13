@@ -209,15 +209,16 @@ export default createAppContainer(createBottomTabNavigator(
             },
         }),
         tabBarOptions: {
-        tabStyle: {
-
-        },
-        showLabel: false,
-        labelStyle: {
-            fontSize: 12,
-        },
-        activeTintColor: '#2bc0ff',
-        inactiveTintColor: '#666666',
+            tabStyle: {
+                backgroundColor: '#262626',
+                borderTopColor: '#262626'
+            },
+            showLabel: false,
+            labelStyle: {
+                fontSize: 12,
+            },
+            activeTintColor: '#2bc0ff',
+            inactiveTintColor: '#666666',
         },
     }
 ));

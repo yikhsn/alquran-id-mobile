@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { 
     View, 
-    TouchableOpacity, 
     Image,
     Text, 
     Alert, 
@@ -9,6 +8,10 @@ import {
 } from 'react-native';
 import { addAyatToBookmark } from '../../controllers/BookmarkController';
 import searchExcerpter from '../../helpers/SearchExcerpt';
+import Theme, { createStyle } from 'react-native-theming';
+import {
+    ThemedTouchableOpacity
+} from '../../themes/customs/components'
 
 class ResultList extends Component {
     addToBookmark = (id) => {
@@ -29,7 +32,7 @@ class ResultList extends Component {
     
     render(){
         return (
-                <TouchableOpacity
+                <ThemedTouchableOpacity
                     style={styles.result}
                     onPress={() => this.props.navigation.navigate('Surat', {
                         surat: this.props.data,
@@ -38,11 +41,11 @@ class ResultList extends Component {
                     })}
                     onLongPress={ () => this.addToBookmark( this.props.data.id ) }
                 >
-                <View style={styles.left}>
-                    <Text style={styles.suratResult}>{ (`QS. ${this.props.data.surat_nama}:Ayat ${this.props.data.nomor_ayat}`).toUpperCase() }</Text>
-                    <Text style={styles.textResult}>{searchExcerpter(this.props.data.terjemahan)}</Text>
-                </View>
-                <View style={styles.right}>
+                <Theme.View style={styles.left}>
+                    <Theme.Text style={styles.suratResult}>{ (`QS. ${this.props.data.surat_nama}:Ayat ${this.props.data.nomor_ayat}`).toUpperCase() }</Theme.Text>
+                    <Theme.Text style={styles.textResult}>{searchExcerpter(this.props.data.terjemahan)}</Theme.Text>
+                </Theme.View>
+                <Theme.View style={styles.right}>
                     <Image
                         style={{
                             width: 15,
@@ -50,21 +53,21 @@ class ResultList extends Component {
                         }}
                         source={ require('../../assets/right-arrow-black.png') }
                     />
-                </View>
-                </TouchableOpacity>
+                </Theme.View>
+                </ThemedTouchableOpacity>
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     result: {
         flex: 1,
-        backgroundColor: '#ffffff',
+        backgroundColor: '@backgroundColor',
         paddingVertical: 10,
         paddingHorizontal: 15,
         flexDirection: 'row',
         borderBottomWidth: 1,
-        borderBottomColor: '#eaeaea',
+        borderBottomColor: '@borderColor',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -77,13 +80,13 @@ const styles = StyleSheet.create({
     textResult: {
         fontFamily: 'Roboto-Regular',        
         fontSize: 15,
-        color: '#666666',
+        color: '@textColorSecondary',
     },
     suratResult: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
         marginBottom: 2,
-        color: '#444444',
+        color: '@textColorPrimary',
         alignSelf: 'flex-start'
     },
 })

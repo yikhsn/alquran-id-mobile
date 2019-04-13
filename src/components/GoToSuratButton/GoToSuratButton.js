@@ -1,34 +1,38 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../store/actionCreators';
 
+import Theme, { createStyle } from 'react-native-theming';
+import { 
+    ThemedMaterialsIcon,
+    ThemedTouchableOpacity
+ } from '../../themes/customs/components';
+
 class ReadHeader extends Component{
     render(){
         return(
-            <View style={styles.container}>
-                <TouchableOpacity
+            <Theme.View style={styles.container}>
+                <ThemedTouchableOpacity
                     onPress={ () => this.props.toggleGoToAyatModal() }
                 >
-                    <Icon style={styles.gotoIcon} name="page-next-outline" size={25} color="#ffffff" />
-                </TouchableOpacity>
-            </View>
+                    <ThemedMaterialsIcon 
+                        style={styles.gotoIcon} 
+                        name="page-next-outline" 
+                        size={25} 
+                        color="@textColorLight" 
+                    />
+                </ThemedTouchableOpacity>
+            </Theme.View>
         )
     }
 }
 
-const styles = StyleSheet.create({    
+const styles = createStyle({    
     container: {
         marginRight: 15
-    },
-    title: {
-        fontSize: 22,
-        fontWeight: '500',
-        color: '#ffffff',
-        justifyContent: 'center'
     },
     gotoIcon: {
     },

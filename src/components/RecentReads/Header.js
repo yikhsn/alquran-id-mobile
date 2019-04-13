@@ -1,24 +1,27 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Theme, { createStyle } from 'react-native-theming';
+import { ThemedIonicons } from '../../themes/customs/components';
+
 
 export default HeaderBookmark = (props) => {
     return(
-        <View style={styles.container}>
-            <Icon style={styles.image} name="md-time" size={30} color="#444444"/>  
-            <Text style={styles.title}>
+        <Theme.View style={styles.container}>
+            <ThemedIonicons style={styles.image} name="md-time" size={30} color="@textColorPrimary"/>  
+            <Theme.Text style={styles.title}>
                 {props.title}
-            </Text>
-        </View>
+            </Theme.Text>
+        </Theme.View>
     )
 }
 
-const styles = StyleSheet.create({
+const styles =createStyle({
     container: {
+        backgroundColor: '@backgroundColor',
         paddingVertical: 10,
         paddingHorizontal: 10,
         borderBottomWidth: 1,
-        borderColor: '#eaeaea',
+        borderColor: '@borderColor',
         flexDirection: 'row',
         alignItems: 'center'
     },
@@ -27,7 +30,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontFamily: 'Roboto-Regular',
-        color: '#444444',
+        color: '@textColorPrimary',
         fontSize: 16,
     }
 })

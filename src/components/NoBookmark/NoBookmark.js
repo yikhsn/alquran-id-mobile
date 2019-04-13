@@ -4,28 +4,29 @@ import {
     Text,
     StyleSheet
 } from 'react-native';
+import Theme, { createStyle } from 'react-native-theming';
 
 const NoBookmark = (props) => {
     return(
-        <View style={styles.container}>
-            <Text style={styles.text}>Belum ada bookmark!</Text>
-        </View>
+        <Theme.View style={styles.container}>
+            <Theme.Text style={styles.text}>Belum ada bookmark!</Theme.Text>
+        </Theme.View>
     )
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     container: {
         flex: 1,
         paddingVertical: 10,
         paddingRight: 10,
         paddingLeft: 30,
-        backgroundColor: '#ffffff',
+        backgroundColor: '@backgroundColor',
         justifyContent: 'center',
         alignItems: 'center',        
     },
     text : {
         fontSize: 16,
-        color: '#666666',
+        color: '@textColorPrimary',
         fontFamily: 'Roboto-Regular',
     }
 })

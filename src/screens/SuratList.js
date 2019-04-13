@@ -15,13 +15,23 @@ import {
 import Modal from 'react-native-modal';
 import List from '../components/Surat/List';
 import RightHeaderSuratList from '../components/RightHeaderSuratList/RightHeaderSuratList';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { getAllSurats } from '../controllers/SuratController';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../store/actionCreators';
+
+import Theme, { createStyle } from 'react-native-theming';
+import ThemeConstants from '../themes/navigations/ThemeConstants';
+import { 
+    ThemedScrollView,
+    ThemedTextInput,
+    ThemedTouchableHighlight,
+    ThemedMaterialsIcon,
+    ThemedPicker,
+    ThemedPickerItem
+} from '../themes/customs/components';
 
 class SuratList extends Component{
     constructor(props){
@@ -38,10 +48,24 @@ class SuratList extends Component{
         this.initListSurats();
     }
 
-    static navigationOptions = ({ navigation }) => ({
-        title: 'Daftar Surat',
-        headerRight: <RightHeaderSuratList />
-    })
+    static navigationOptions = ({ screenProps }) => {
+        let currentTheme = ThemeConstants[screenProps.theme];
+        
+        return {
+            title: 'Daftar Surat',
+            headerRight: <RightHeaderSuratList />,
+            headerTintColor: currentTheme.headerTintColor,
+            headerStyle: {
+                backgroundColor: currentTheme.backgroundColor,
+                borderBottomColor: currentTheme.borderColor,
+            },
+            headerTitleStyle: {
+                color: currentTheme.headerTitleColor,
+                fontSize: currentTheme.headerTitleFontSize,
+                fontFamily: currentTheme.headerTitleFontFamily,
+            },
+        }
+    }
 
     // function to init all surat list from the database
     initListSurats = () => {
@@ -101,9 +125,10 @@ class SuratList extends Component{
             : require("react-native-extra-dimensions-android").get("REAL_WINDOW_HEIGHT");
 
         return(
-            <ScrollView 
+            <ThemedScrollView 
                 scrollEnabled={this.state.scrollEnabled}
                 keyboardShouldPersistTaps='always'
+                style={styles.container}
             >
                 <FlatList
                     data={ this.props.suratList }
@@ -116,23 +141,25 @@ class SuratList extends Component{
                     } }
                     keyExtractor={ (item, index) => item + index }
                 />
-                <View>
+                <Theme.View>
                     <Modal
                         isVisible={this.props.goToSuratVisible}
                         deviceWidth={deviceWidth}
                         deviceHeight={deviceHeight} 
+                        animationInTiming={500}
+                        animationOutTiming={500}
                         style={{
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}
                         onBackdropPress={ () => this.props.toggleGoToSuratModal() }
                     >
-                        <View style={styles.modalContainer}>
-                            <View style={styles.modalContent}>
-                                <Text style={styles.modalHeader}>Lompat ke</Text>
-                                <View style={styles.inputSurat}>
-                                    <Text style={styles.inputSuratLabel}>Surat</Text>
-                                    <Picker
+                        <Theme.View style={styles.modalContainer}>
+                            <Theme.View style={styles.modalContent}>
+                                <Theme.Text style={styles.modalHeader}>Lompat ke</Theme.Text>
+                                <Theme.View style={styles.inputSurat}>
+                                    <Theme.Text style={styles.inputSuratLabel}>Surat</Theme.Text>
+                                    <ThemedPicker
                                         style={styles.inputSuratInput}
                                         mode='dropdown'
                                         selectedValue={this.state.selectedSuratId}
@@ -140,46 +167,53 @@ class SuratList extends Component{
                                             this.handleChangePicker(itemValue)
                                         }>
                                         { this.props.suratList.map((item, index) => {
-                                            return (<Picker.Item label={item.surat_nama} value={item.id} key={item.id}/>) 
+                                            return (<ThemedPickerItem style={styles.inputSuratInputItem} label={item.surat_nama} value={item.id} key={item.id}/>) 
                                         })}
-                                    </Picker>
-                                </View>
-                                <View style={styles.inputAyatContainer}>
-                                    <Text style={styles.inputAyatLabel}>Ayat</Text>
-                                    <TextInput
+                                    </ThemedPicker>
+                                </Theme.View>
+                                <Theme.View style={styles.inputAyatContainer}>
+                                    <Theme.Text style={styles.inputAyatLabel}>Ayat</Theme.Text>
+                                    <ThemedTextInput
                                         style={styles.inputAyatInput}
                                         value={this.state.selectedAyatId}
                                         onChangeText={ (selectedAyatId) => this.handleCheckSelectedAyatId(selectedAyatId) }
                                         placeholder={ `1-${this.state.ayatSugest}` }
+                                        placeholderTextColor='@textColorQuaternary'                                        
                                         keyboardType='numeric'                                        
                                     />
-                                </View>
-                            </View>
-                            <View style={styles.buttonContainer}>
-                                <TouchableHighlight
-                                    underlayColor='#80d9ff'
+                                </Theme.View>
+                            </Theme.View>
+                            <Theme.View style={styles.buttonContainer}>
+                                <ThemedTouchableHighlight
+                                    underlayColor='@buttonColorSecondaryHighlight'
                                     onPress={ () => this.props.toggleGoToSuratModal() }
                                     style={styles.buttonClose}
                                 >
-                                     <Icon style={styles.buttonText} name='close' size={28} color='#ffffff' />
-                                </TouchableHighlight>
-                                <TouchableHighlight
-                                    underlayColor='#80d9ff'
+                                     <ThemedMaterialsIcon style={styles.buttonText} name='close' size={28} color='@modalSecondaryButtonIcon' />
+                                </ThemedTouchableHighlight>
+                                <ThemedTouchableHighlight
+                                    underlayColor='@buttonColorSecondaryHighlight'
                                     onPress={ () => this.navigateFromModal() }
                                     style={styles.buttonSubmit}
                                 >
-                                     <Icon style={styles.buttonText} name='page-next' size={28} color='#ffffff' />
-                                </TouchableHighlight>
-                            </View>
-                        </View>
+                                     <ThemedMaterialsIcon style={styles.buttonText} name='page-next' size={28} color='@modalPrimaryButtonIcon' />
+                                </ThemedTouchableHighlight>
+                            </Theme.View>
+                        </Theme.View>
                     </Modal>
-                </View>
-            </ScrollView>
+                </Theme.View>
+            </ThemedScrollView>
             )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
+    // main component
+    container: {
+        backgroundColor: '@backgroundColor'
+    },
+
+    // modal
     modalContainer: {
         height: ( Dimensions.get("window").width  * 90 / 100 ) * 60 / 100,
         width: '90%',
@@ -190,48 +224,53 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '@backgroundColor',
     },
     modalHeader: {
         fontSize: 20,
         marginBottom: 5,
         fontWeight: '500',
         fontFamily: 'Roboto-Regular',
-        color: '#444444'
+        color: '@textColorPrimary'
     },
     inputAyatContainer:{
         flex: 1,
-        color: '#444444',
+        color: '@textColorPrimary',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
     inputSurat: {
         flex: 1,
-        color: '#444444',
+        color: '@textColorPrimary',
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
     },
     inputAyatLabel: {
-        color: '#444444',
+        color: '@textColorPrimary',
         fontSize: 16,
         width: '20%'
     },
     inputSuratLabel: {
-        color: '#444444',
+        color: '@textColorPrimary',
         fontSize: 16,
         width: '20%'
     },
     inputSuratInput: {
-        flex: 1
+        flex: 1,
+        color: '@textColorPrimary',        
+    },
+    inputSuratInputItem: {
+        color: '@textColorPrimary',
     },
     inputAyatInput: {
         flex: 1,
         padding: 10,
         fontSize: 16,
         borderWidth: 1,
-        borderColor: '#eaeaea'
+        color: '@textColorPrimary',
+        borderColor: '@borderColor'
     },
     buttonContainer: {
         height: 40,
@@ -241,14 +280,14 @@ const styles = StyleSheet.create({
     },
     buttonClose: {
         flex: 1,
-        backgroundColor: '#5ecfff',
+        backgroundColor: '@buttonColorSecondary',
         padding: 5,
         justifyContent: 'center',
         alignContent: 'center',
     },
     buttonSubmit: {
         flex: 2,
-        backgroundColor: '#2bc0ff',
+        backgroundColor: '@buttonColorPrimary',
         padding: 5,
         justifyContent: 'center',
         alignContent: 'center',

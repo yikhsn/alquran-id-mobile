@@ -4,20 +4,22 @@ import {
     Text,
     StyleSheet
 } from 'react-native';
+import Theme, { createStyle } from 'react-native-theming';
 
 const Bismillah = (props) => {
     return(
-        <View style={styles.container}>
-            <Text style={styles.ayat}>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</Text>
-        </View>
+        <Theme.View style={styles.container}>
+            <Theme.Text style={styles.ayat}>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</Theme.Text>
+        </Theme.View>
     )
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     container: {
+        backgroundColor: '@backgroundColor',
         paddingVertical: 5,
         paddingHorizontal: 5,
-        borderColor: '#eeeeee',
+        borderColor: '@borderColor',
         borderBottomWidth: 1,
         justifyContent: 'center',
         alignItems: 'center'
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
     ayat: {
         fontSize: 35,
         fontFamily: 'scheherazade-webfont',
-        color: '#444444',
+        color: '@textColorPrimary',
     }
 })
 

@@ -11,6 +11,11 @@ import { searchAyat } from '../../controllers/AyatController';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../store/actionCreators';
+import Theme, { createStyle } from 'react-native-theming';
+import {
+    ThemedTouchableOpacity,
+    ThemedTextInput
+} from '../../themes/customs/components'
 
 class SearchHeader extends Component{
     state = {
@@ -72,9 +77,9 @@ class SearchHeader extends Component{
 
     render(){
         return(
-            <View style={styles.container}>
-                <View style={styles.inputContainer}>
-                    <TextInput 
+            <Theme.View style={styles.container}>
+                <Theme.View style={styles.inputContainer}>
+                    <ThemedTextInput
                         style={styles.input}
                         value={this.props.datas.wordsSearch}
                         multiline={false}
@@ -82,7 +87,7 @@ class SearchHeader extends Component{
                         autoFocus={false}
                         autoCapitalize='none'
                         placeholder={'Cari...'}
-                        placeholderTextColor='#DFF2FB'
+                        placeholderTextColor='@textColorQuaternary'
                         onChangeText={(words) => this.handleWordChange(words) }
                         onSubmitEditing={ () => this.handleSearch() }
                         onFocus={ () => this.handleFocus() }
@@ -95,10 +100,10 @@ class SearchHeader extends Component{
                             (
                                 this.props.datas.wordsSearch
                                 ?
-                                    <View style={{
+                                    <Theme.View style={{
                                         flexDirection: 'row'
                                     }}>
-                                        <TouchableOpacity
+                                        <ThemedTouchableOpacity
                                             style={ styles.buttonContainer }
                                             onPress={ () => this.handleClear() }
                                         >
@@ -106,8 +111,8 @@ class SearchHeader extends Component{
                                                 style={styles.imageActive}
                                                 source={ require('../../assets/remove.png') }
                                             />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
+                                        </ThemedTouchableOpacity>
+                                        <ThemedTouchableOpacity
                                             style={ styles.buttonContainer }
                                             onPress={ () => this.handleSearch() }
                                         >
@@ -115,37 +120,37 @@ class SearchHeader extends Component{
                                                 style={styles.imageActive}
                                                 source={ require('../../assets/search.png') }
                                             />
-                                        </TouchableOpacity>
-                                    </View>
+                                        </ThemedTouchableOpacity>
+                                    </Theme.View>
                                 :
-                                <View style={styles.buttonContainer}>
+                                <Theme.View style={styles.buttonContainer}>
                                     <Image
                                         style={styles.imageDisabled}
                                         source={ require('../../assets/search.png') }
                                     />
-                                </View>
+                                </Theme.View>
                             )
 
                         :
-                            <View style={styles.buttonContainer}>
+                            <Theme.View style={styles.buttonContainer}>
                                 <Image
                                     style={styles.imageDisabled}
                                     source={ require('../../assets/search.png') }
                                 />
-                            </View>
+                            </Theme.View>
                     }
-                </View>
-        </View>
+                </Theme.View>
+        </Theme.View>
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     container: {
         elevation: 5,
         flexDirection: 'row',
         height: 58,
-        backgroundColor: '#2BC0FF',
+        backgroundColor: '@buttonColorPrimary',
         padding: 5,
         justifyContent: 'center',
         alignItems: 'center',
@@ -157,14 +162,10 @@ const styles = StyleSheet.create({
     logoContainer: {
         width: '10%'
     },
-    logoText: {
-        fontSize: 20,
-        color: '#ffffff'
-    },
     inputContainer: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: '#6fd4ff',
+        backgroundColor: '@buttonColorTertiary',
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
@@ -179,15 +180,15 @@ const styles = StyleSheet.create({
         height: 40,
         fontFamily: 'Roboto-Regular',
         fontSize: 20,
-        color: '#ffffff',
+        color: '@textColorLight',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#6fd4ff',
+        backgroundColor: '@buttonColorTertiary',
         borderRadius: 15
     },
     buttonContainer: {
         width: 35,
-        color: '#ffffff',
+        color: '@textColorLight',
         justifyContent: 'center',
         alignItems: 'center',
     },

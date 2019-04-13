@@ -7,18 +7,19 @@ import {
     Alert,
     StyleSheet
 } from 'react-native';
-import { ScrollIntoView } from 'react-native-scroll-into-view';
+import Theme, { createStyle } from 'react-native-theming';
+import { ThemedTouchableOpacity } from '../../themes/customs/components';
 
 class Ayat extends Component{    
     render(){
         const { ayat } = this.props;
         
         return(
-            <TouchableOpacity 
+            <ThemedTouchableOpacity 
                 style={styles.container}
                 onPress={ () => this.props.handleAyatPressed(ayat) }
             >
-                <View style={styles.left}>
+                <Theme.View style={styles.left}>
                     <ImageBackground
                         source={ require('../../assets/oval.png') }
                         style={{
@@ -28,28 +29,29 @@ class Ayat extends Component{
                             justifyContent: 'center',
                         }}
                     >
-                        <Text style={styles.number}>{ayat.nomor_ayat}</Text>
+                        <Theme.Text style={styles.number}>{ayat.nomor_ayat}</Theme.Text>
                     </ImageBackground>
-                </View>
-                <View style={styles.right}>
-                    <View style={styles.ayatContainer}>
-                        <Text style={styles.ayat}>{ayat.ayat}</Text>
-                    </View>
+                </Theme.View>
+                <Theme.View style={styles.right}>
+                    <Theme.View style={styles.ayatContainer}>
+                        <Theme.Text style={styles.ayat}>{ayat.ayat}</Theme.Text>
+                    </Theme.View>
 
-                    <View style={styles.ayatMeanContainer}>
-                        <Text style={styles.ayatMean}>{ayat.terjemahan}</Text>
-                    </View>
-                </View>
-            </TouchableOpacity>
+                    <Theme.View style={styles.ayatMeanContainer}>
+                        <Theme.Text style={styles.ayatMean}>{ayat.terjemahan}</Theme.Text>
+                    </Theme.View>
+                </Theme.View>
+            </ThemedTouchableOpacity>
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     container: {
+        backgroundColor: '@backgroundColor',
         paddingVertical: 10,
         paddingHorizontal: 5,
-        borderColor: '#eeeeee',
+        borderColor: '@borderColor',
         borderBottomWidth: 1,
         flexDirection: 'row',
     },
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
     number: {
         fontFamily: 'Roboto-Regular',
         fontSize: 8,
-        color: '#444444'
+        color: '@textColorPrimary'
     },
     ayatContainer: {
         flex: 1,
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     ayat: {
         fontSize: 35,
         fontFamily: 'scheherazade-webfont',
-        color: '#444444',
+        color: '@textColorPrimary',
     },
     ayatMeanContainer: {
         padding: 5
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
     ayatMean: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
-        color: '#555555'
+        color: '@textColorSecondary'
     }
 })
 

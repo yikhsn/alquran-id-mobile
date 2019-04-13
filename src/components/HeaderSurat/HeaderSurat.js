@@ -1,33 +1,34 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet} from 'react-native';
+import Theme, { createStyle } from 'react-native-theming';
 
 class HeaderSurat extends Component{
     render(){
         const { surat } = this.props;
 
         return(
-            <View style={styles.container}>
-                <View style={styles.centerHeader}>
-                    <Text style={styles.suratName}>{surat.surat_arab}</Text>
-                    <View style={styles.suratNameBox}>
-                        <Text style={styles.suratNameMean}>{surat.surat_arti}</Text>
-                    </View>
-                    <Text style={styles.ayatTotal}>{surat.ayat_total} Ayat</Text>
-                </View>
-           </View>
+            <Theme.View style={styles.container}>
+                <Theme.View style={styles.centerHeader}>
+                    <Theme.Text style={styles.suratName}>{surat.surat_arab}</Theme.Text>
+                    <Theme.View style={styles.suratNameBox}>
+                        <Theme.Text style={styles.suratNameMean}>{surat.surat_arti}</Theme.Text>
+                    </Theme.View>
+                    <Theme.Text style={styles.ayatTotal}>{surat.ayat_total} Ayat</Theme.Text>
+                </Theme.View>
+           </Theme.View>
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     container: {
         flexDirection: 'row',
-        backgroundColor: '#ffffff',
+        backgroundColor: '@backgroundColor',
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 2,
         borderBottomWidth: 2,
-        borderColor: '#eeeeee'
+        borderColor: '@borderColor'
     },
     leftHeader: {
         padding: 10
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     },
     suratName: {
         fontSize: 50,
-        color: '#444444',
+        color: '@textColorPrimary',
         top: 0,
         bottom: 35,
         fontFamily: 'scheherazade-webfont',
@@ -59,13 +60,13 @@ const styles = StyleSheet.create({
     suratNameMean: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
-        color: '#666666',
+        color: '@textColorSecondary2',
         paddingHorizontal: 2
     },
     ayatTotal: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
-        color: '#666666',
+        color: '@textColorSecondary2',
         top: -15,
     },
 })

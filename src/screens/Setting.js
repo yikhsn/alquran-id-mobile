@@ -4,63 +4,102 @@ import {
     ScrollView,
     Text,
     Switch,
+    TouchableHighlight,
     StyleSheet
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Theme, { createStyle } from 'react-native-theming';
+import themes from '../themes/themes';
+import { 
+    ThemedSwitch,
+    ThemedMaterialsIcon,
+    Bar,
+    ThemedScrollView
+} from '../themes/customs/components';
+import ThemeConstants from '../themes/navigations/ThemeConstants';
 
 class Setting extends Component{
 
+    static navigationOptions = ({ screenProps }) => {
+        let currentTheme = ThemeConstants[screenProps.theme];
+        
+        return {
+            headerTintColor: currentTheme.headerTintColor,
+            headerStyle: {
+                backgroundColor: currentTheme.backgroundColor,
+                borderBottomColor: currentTheme.borderColor,
+            },
+            headerTitleStyle: {
+                color: currentTheme.headerTitleColor,
+                fontSize: currentTheme.headerTitleFontSize,
+                fontFamily: currentTheme.headerTitleFontFamily,
+            },
+        }
+    }
+
     state = {
-        darkMode: true
+        darkMode: false
     }
 
     render(){
+        console.log(this.props);
         return(
-            <View style={styles.screen}>
-                <ScrollView style={styles.container} >
-                    <View style={styles.item}>
-                        <Text style={styles.itemText}>
+            <ThemedScrollView style={styles.screen}>
+                <Bar barStyle="@statusBar" backgroundColor="@statusBarBackground" />
+                <Theme.View style={styles.container} >
+                    <Theme.View style={styles.item}>
+                        <Theme.Text style={styles.itemText}>
                             Dark Mode
-                        </Text>
-                        <Switch
+                        </Theme.Text>
+                        <ThemedSwitch
                             disabled={false}
                             onValueChange={ () => this.setState({ darkMode: !this.state.darkMode })}
-                            trackColor={ {false: '#ccc', true: '#b3e8ff'} }
-                            thumbColor='#2bc0ff'
+                            trackColor={ {false: '@ToggleSwitchInActive', true: '@ToggleSwitchActive'} }
+                            thumbColor='@buttonColorPrimary'
                             value={this.state.darkMode}
                         />
-                    </View>
-                    <View style={styles.item}>
-                        <Text style={styles.itemText}>
+                    </Theme.View>
+                    <Theme.View style={styles.item}>
+                        <Theme.Text style={styles.itemText}>
                             Pengembang
-                        </Text>
-                        <Icon style={styles.image} name="web" size={25} color="#888888"/>
-                    </View>
-                    <View style={styles.item}>
-                        <Text style={styles.itemText}>
+                        </Theme.Text>
+                        <ThemedMaterialsIcon style={styles.image} name="web" size={25} color="@textColorTertiary"/>
+                    </Theme.View>
+                    <Theme.View style={styles.item}>
+                        <Theme.Text style={styles.itemText}>
                             Feedback
-                        </Text>
-                        <Icon style={styles.image} name="star" size={25} color="#888888"/>
-                    </View>
-                </ScrollView>
-            </View>
-
+                        </Theme.Text>
+                        <ThemedMaterialsIcon style={styles.image} name="star" size={25} color="@textColorTertiary"/>
+                    </Theme.View>
+                </Theme.View>
+                <View style={{ flexDirection: 'row' }}>
+                { themes.map(theme => (
+                    <TouchableHighlight key={theme.name} onPress={ () => {
+                        theme.apply()
+                        if (theme.name === 'Dark') this.props.screenProps.dark();
+                        if (theme.name === 'Light') this.props.screenProps.light();
+                    }}>
+                        <Theme.Text style={{ color: '@buttonTextPrimary' }}>{theme.name}</Theme.Text>
+                    </TouchableHighlight>
+                    ))
+                }
+                </View>
+            </ThemedScrollView>
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     screen: {
         flex: 1,
         paddingVertical: 5,
-        backgroundColor: '#eaeaea',
+        backgroundColor: '@containerColor',
     },
     container: {
         flex: 1,
         paddingHorizontal: 10,
     },
     item: {
-        backgroundColor: '#ffffff',
+        backgroundColor: '@boxColor',
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 15,
@@ -72,7 +111,7 @@ const styles = StyleSheet.create({
     itemText: {
         fontSize: 16,
         fontFamily: 'Roboto-Regular',
-        color: '#444444',
+        color: '@textColorPrimary',
     },
 })
 

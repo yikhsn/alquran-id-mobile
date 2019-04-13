@@ -1,33 +1,47 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../store/actionCreators';
+import Theme, { createStyle } from 'react-native-theming';
+import { 
+    ThemedMaterialsIcon,
+    ThemedFontAwesome,
+    ThemedTouchableOpacity
+ } from '../../themes/customs/components';
 
 class RightHeaderSuratList extends Component{
     render(){
         return(
-            <View style={styles.right}>
-                <TouchableOpacity
+            <Theme.View style={styles.right}>
+                <ThemedTouchableOpacity
                     style={styles.reverseButton}
                     onPress={ () =>  this.props.reverseSuratList() }
                 >
-                    <Icon style={styles.image} name="exchange" size={20} color="#ffffff"/>
-                </TouchableOpacity>
-                <TouchableOpacity
+                    <ThemedFontAwesome
+                        style={styles.image} 
+                        name="exchange" 
+                        size={20} 
+                        color="@textColorLight"
+                    />
+                </ThemedTouchableOpacity>
+                <ThemedTouchableOpacity
                     style={styles.goToButton}
                     onPress={ () => this.props.toggleGoToSuratModal() }
                 >
-                    <Icon2 style={styles.gotoIcon} name="page-next-outline" size={25} color="#ffffff" />
-                </TouchableOpacity>
-            </View>
+                    <ThemedMaterialsIcon 
+                        style={styles.gotoIcon} 
+                        name="page-next-outline" 
+                        size={25} 
+                        color="@textColorLight"
+                    />
+                </ThemedTouchableOpacity>
+            </Theme.View>
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     right: {
         marginRight: 15,
         flexDirection: 'row',

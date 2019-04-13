@@ -7,9 +7,14 @@ import {
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
-import Swipeout from 'react-native-swipeout';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { deleteFromRecentReads } from '../../controllers/RecentReadsController';
+import Theme, { createStyle } from 'react-native-theming';
+import {
+    ThemedSwipeout,
+    ThemedTouchableOpacity,
+    ThemedIonicons
+} from '../../themes/customs/components';
 
 class BookmarkAyatList extends Component{    
     deleteRecentReads =  (value) => {
@@ -36,45 +41,45 @@ class BookmarkAyatList extends Component{
             : `${date.getHours()}:${date.getMinutes()}`;
 
         return(
-            <Swipeout
+            <ThemedSwipeout
                 right={swipeRightButton}
                 autoClose={true}
                 scroll={ (event) => this.props.allowScroll(event)}
             >
-                <TouchableOpacity style={styles.container}
+                <ThemedTouchableOpacity style={styles.container}
                     onPress={ () => this.props.navigation.navigate('Surat', {
                         surat: ayat,
                         surat_id: ayat.nomor_surat,
                         ayatGoToId: ayat.nomor_ayat
                     })}
                 >
-                    <View style={styles.left}>
-                        <Icon style={styles.image} name="md-bookmark" size={20} color="#444444"/>
-                        <Text style={styles.surat}>QS. {ayat.surat_nama}</Text>
-                        <Text style={styles.ayat}>:Ayat { ayat.nomor_ayat }</Text>
-                    </View>
+                    <Theme.View style={styles.left}>
+                        <ThemedIonicons style={styles.image} name="md-bookmark" size={20} color="@textColorPrimary"/>
+                        <Theme.Text style={styles.surat}>QS. {ayat.surat_nama}</Theme.Text>
+                        <Theme.Text style={styles.ayat}>:Ayat { ayat.nomor_ayat }</Theme.Text>
+                    </Theme.View>
 
-                    <View style={styles.right}>
-                        <Text style={styles.time}>
+                    <Theme.View style={styles.right}>
+                        <Theme.Text style={styles.time}>
                             { datePrint }
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            </Swipeout>
+                        </Theme.Text>
+                    </Theme.View>
+                </ThemedTouchableOpacity>
+            </ThemedSwipeout>
 
         )
     }
 }
 
-const styles = StyleSheet.create({
+const styles = createStyle({
     container: {
         paddingVertical: 10,
         paddingRight: 10,
         paddingLeft: 40,
-        backgroundColor: '#ffffff',
+        backgroundColor: '@backgroundColor',
         flexDirection: 'row',
         borderBottomWidth: 1,
-        borderColor: '#eaeaea',
+        borderColor: '@borderColor',
         justifyContent: 'center'
     },
     left: {
@@ -91,12 +96,12 @@ const styles = StyleSheet.create({
     surat: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
-        color: '#444444',
+        color: '@textColorPrimary',
     },
     ayat: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
-        color: '#444444'
+        color: '@textColorPrimary'
     },
     image: {
         marginRight: 5
@@ -104,7 +109,7 @@ const styles = StyleSheet.create({
     time: {
         fontFamily: 'Roboto-Regular',
         fontSize: 14,
-        color: '#555555'
+        color: '@textColorSecondary'
     }
 })
 

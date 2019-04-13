@@ -12,6 +12,13 @@ import HeaderRecentReads from '../components/RecentReads/Header';
 import ListRecentReads from '../components/RecentReads/List';
 import NoBookmark from '../components/NoBookmark/NoBookmark';
 
+import Theme, { createStyle } from 'react-native-theming';
+import ThemeConstants from '../themes/navigations/ThemeConstants';
+import { 
+    ThemedScrollView
+} from '../themes/customs/components';
+
+
 class Bookmark extends Component{
     constructor(props){
         super(props);
@@ -24,6 +31,23 @@ class Bookmark extends Component{
         }
 
         this.initBookmarks();
+    }
+
+    static navigationOptions = ({ screenProps }) => {
+        let currentTheme = ThemeConstants[screenProps.theme];
+        
+        return {
+            headerTintColor: currentTheme.headerTintColor,
+            headerStyle: {
+                backgroundColor: currentTheme.backgroundColor,
+                borderBottomColor: currentTheme.borderColor,
+            },
+            headerTitleStyle: {
+                color: currentTheme.headerTitleColor,
+                fontSize: currentTheme.headerTitleFontSize,
+                fontFamily: currentTheme.headerTitleFontFamily,
+            },
+        }
     }
 
     componentDidMount() {
@@ -53,11 +77,7 @@ class Bookmark extends Component{
 
     render(){
             return(
-                <ScrollView
-                    style={{
-                        flex: 1,
-                    }}
-                >
+                <ThemedScrollView style={styles.container} >
                     {
                         this.state.recent_reads.length > 0
                         ?
@@ -142,9 +162,16 @@ class Bookmark extends Component{
                         :
                             null
                     }
-                </ScrollView>
+                </ThemedScrollView>
             )            
         }
 }
+
+const styles = createStyle({
+    container: {
+        flex: 1,
+        backgroundColor: '@backgroundColor'
+    }
+})
 
 export default Bookmark;
