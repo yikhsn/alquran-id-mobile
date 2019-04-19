@@ -9,6 +9,9 @@ import {
 } from 'react-native';
 import Theme, { createStyle } from 'react-native-theming';
 import { ThemedTouchableOpacity } from '../../themes/customs/components';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actionCreators from '../../store/actionCreators';
 
 class Ayat extends Component{    
     render(){
@@ -20,17 +23,33 @@ class Ayat extends Component{
                 onPress={ () => this.props.handleAyatPressed(ayat) }
             >
                 <Theme.View style={styles.left}>
-                    <ImageBackground
-                        source={ require('../../assets/oval.png') }
-                        style={{
-                            width: 40,
-                            height: 50,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <Theme.Text style={styles.number}>{ayat.nomor_ayat}</Theme.Text>
-                    </ImageBackground>
+                    {
+                        this.props.darkMode
+                        ?
+                            <ImageBackground
+                                source={ require('../../assets/oval-dark-default.png') }
+                                style={{
+                                    width: 40,
+                                    height: 50,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Theme.Text style={styles.number}>{ayat.nomor_ayat}</Theme.Text>
+                            </ImageBackground>
+                        :
+                            <ImageBackground
+                                source={ require('../../assets/oval.png') }
+                                style={{
+                                    width: 40,
+                                    height: 50,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Theme.Text style={styles.number}>{ayat.nomor_ayat}</Theme.Text>
+                            </ImageBackground>
+                    }
                 </Theme.View>
                 <Theme.View style={styles.right}>
                     <Theme.View style={styles.ayatContainer}>
@@ -86,6 +105,14 @@ const styles = createStyle({
         fontSize: 16,
         color: '@textColorSecondary'
     }
-})
+});
 
-export default Ayat;
+const mapStateToProps = state => {
+    return {
+        darkMode: state.theme.darkMode,
+    }
+}
+
+const mapDisptatchToProps = dispatch => bindActionCreators(actionCreators, dispatch);
+
+export default connect(mapStateToProps, mapDisptatchToProps)(Ayat);
