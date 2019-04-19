@@ -2,6 +2,7 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import SearchHeader from '../components/SearchHeader/SearchHeader';
+import TabBarComponent from '../components/TabBarComponent/TabBarComponent';
 import SuratList from '../screens/SuratList';
 import Surat from '../screens/Surat';
 import Bookmark from '../screens/Bookmark';
@@ -184,10 +185,20 @@ export default createAppContainer(createBottomTabNavigator(
         Settings: SettingNavigator
     },
     {
+        tabBarComponent: TabBarComponent,
         initialRouteName: 'Settings',
         order: ['Reads', 'Search', 'Bookmarks', 'Settings'],
-        defaultNavigationOptions: ({ navigation }) => ({
+        defaultNavigationOptions: ({ navigation }) => 
+        // {
+        //     const { routeName, routes } = navigation.state;
+            
+        //     let params = routes && routes[1] && routes[1].params;
+        //     console.log(params);
+        // },
+        
+        ({
             tabBarIcon: ({ focused, horizontal, tintColor }) => {
+                
                 const { routeName } = navigation.state;
                 let IconComponent = Ionicons;
                 let iconName;
@@ -209,10 +220,6 @@ export default createAppContainer(createBottomTabNavigator(
             },
         }),
         tabBarOptions: {
-            tabStyle: {
-                backgroundColor: '#262626',
-                borderTopColor: '#262626'
-            },
             showLabel: false,
             labelStyle: {
                 fontSize: 12,

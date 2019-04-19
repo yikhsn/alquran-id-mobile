@@ -4,8 +4,9 @@ export default ThemeConstants = {
         color: '#ffffff',
         headerTintColor: '#ffffff',
 
-        activeTintColor: '2bc0ff',
-        inactiveTintColor: '#ffffff',
+        backgroundColorTab: '#ffffff',
+        activeTintColor: '#2bc0ff',
+        inactiveTintColor: '#666666',
         
         borderColor: 'rgba(0,0,0,0.2)',
 
@@ -18,8 +19,9 @@ export default ThemeConstants = {
         color: '#d4d4d4',
         headerTintColor: '#d4d4d4',
 
-        activeTintColor: '#d4d4d4',
-        inactiveTintColor: '#888',
+        backgroundColorTab: '#262626',
+        activeTintColor: '#2bc0ff',
+        inactiveTintColor: '#666666',
 
         borderColor: 'rgba(255,255,255,0.2)',
 
