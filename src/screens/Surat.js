@@ -521,10 +521,10 @@ const styles = createStyle({
 
 const mapStateToProps = state => {
     return {
-        suratList: state.suratList,
-        goToAyatVisible: state.goToAyatVisible,
-        selectedAyat: state.selectedAyat,
-        ayats: state.ayats
+        suratList: state.rdc.suratList,
+        goToAyatVisible: state.rdc.goToAyatVisible,
+        selectedAyat: state.rdc.selectedAyat,
+        ayats: state.rdc.ayats
     }
 }
 

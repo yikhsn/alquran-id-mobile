@@ -66,8 +66,8 @@ const styles = createStyle({
 
 const mapStateToProps = state => {
     return {
-        suratList: state.suratList,
-        goToSuratVisible: state.goToSuratVisible
+        suratList: state.rdc.suratList,
+        goToSuratVisible: state.rdc.goToSuratVisible
     }
 }
 

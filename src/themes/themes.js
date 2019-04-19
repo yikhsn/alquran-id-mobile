@@ -1,8 +1,7 @@
 import { createTheme } from 'react-native-theming';
 
-export default themes = [
-    createTheme({
-        
+export const lightThemes = 
+    createTheme({        
         containerColor: '#eaeaea',
         backgroundColor: '#ffffff',
         boxColor: '#ffffff',
@@ -30,15 +29,18 @@ export default themes = [
         buttonColorSecondary: '#5DCFFF',
         buttonColorTertiary: '#6FD4FF',
 
+        thumbColorSwitch: '#2bc0ff',
         ToggleSwitchActive: '#b3e8ff',
-        ToggleSwitchInActive: '#aaaaaa',
+        ToggleSwitchInActive: '#111111',
 
         buttonTextPrimary: '#444444',
         buttonTextSecondary: '#666666',
 
         statusBarBackground: '#00a2e6',
         statusBar: 'light-content',
-    }, 'Light'),
+    }, 'Light');
+
+export const darkThemes = 
     createTheme({
         containerColor: '#262626',
         backgroundColor: '#262626',
@@ -67,13 +69,14 @@ export default themes = [
         buttonColorSecondary: '#373737',
         buttonColorTertiary: '#373737',
 
-        ToggleSwitchActive: 'yellow',
-        ToggleSwitchInActive: '#aaaaaa',
+        thumbColorSwitch: '#505050',
+        ToggleSwitchActive: '#b3e8ff',
+        ToggleSwitchInActive: '#111111',
 
         buttonTextPrimary: '#ffffff',
         buttonTextSecondary: '#cccccc',
 
         statusBarBackground: '#1D1D1D',
         statusBar: 'light-content',
-    }, 'Dark'),
-];
+    }, 'Dark');
+

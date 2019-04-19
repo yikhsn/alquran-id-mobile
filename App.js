@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import reducer from './src/store/reducer';
 import Appnavigator from './src/navigations/AppNavigator';
-
-const store = createStore(reducer);
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './src/store/store';
 
 export default class App extends Component {
     state = {
@@ -17,13 +15,15 @@ export default class App extends Component {
     render() {
         return (
             <Provider store={store}>
-                <Appnavigator
-                    screenProps={{ 
-                        theme: this.state.theme,
-                        dark: this.dark,
-                        light: this.light
-                    }}
-                />
+                <PersistGate persistor={persistor}>
+                    <Appnavigator
+                        screenProps={{ 
+                            theme: this.state.theme,
+                            dark: this.dark,
+                            light: this.light
+                        }}
+                    />
+                </PersistGate>
             </Provider>
         );
     }

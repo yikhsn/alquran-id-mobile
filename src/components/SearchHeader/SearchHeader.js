@@ -207,7 +207,7 @@ const styles = createStyle({
 
 const mapStateToProps = state => {
     return {
-        datas: state
+        datas: state.rdc
     }
 }
 

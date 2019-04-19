@@ -70,3 +70,10 @@ export const setAyats = (ayats) => {
         ayats: ayats
     }
 }
+
+export const changeTheme = (value) => {
+    return {
+        type: actionTypes.CHANGE_THEME,
+        darkMode: value
+    }
+}

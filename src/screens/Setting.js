@@ -3,12 +3,11 @@ import {
     View,
     ScrollView,
     Text,
-    Switch,
     TouchableHighlight,
     StyleSheet
 } from 'react-native';
 import Theme, { createStyle } from 'react-native-theming';
-import themes from '../themes/themes';
+import { darkThemes, lightThemes } from '../themes/themes';
 import { 
     ThemedSwitch,
     ThemedMaterialsIcon,
@@ -16,8 +15,18 @@ import {
     ThemedScrollView
 } from '../themes/customs/components';
 import ThemeConstants from '../themes/navigations/ThemeConstants';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actionCreators from '../store/actionCreators';
 
 class Setting extends Component{
+
+    constructor(props){
+        super(props);
+
+        if (this.props.darkMode) this.darkThemeApply();
+        else this.lightThemeApply();
+    }
 
     static navigationOptions = ({ screenProps }) => {
         let currentTheme = ThemeConstants[screenProps.theme];
@@ -36,12 +45,23 @@ class Setting extends Component{
         }
     }
 
-    state = {
-        darkMode: false
+    handleThemeApply = (value) => {
+        this.props.changeTheme(value)
+        if (value) this.darkThemeApply();
+        else this.lightThemeApply();
+    }
+
+    darkThemeApply = () => {
+        darkThemes.apply();
+        this.props.screenProps.dark();
+    }
+
+    lightThemeApply = () => {
+        lightThemes.apply();
+        this.props.screenProps.light();
     }
 
     render(){
-        console.log(this.props);
         return(
             <ThemedScrollView style={styles.screen}>
                 <Bar barStyle="@statusBar" backgroundColor="@statusBarBackground" />
@@ -52,10 +72,10 @@ class Setting extends Component{
                         </Theme.Text>
                         <ThemedSwitch
                             disabled={false}
-                            onValueChange={ () => this.setState({ darkMode: !this.state.darkMode })}
-                            trackColor={ {false: '@ToggleSwitchInActive', true: '@ToggleSwitchActive'} }
-                            thumbColor='@buttonColorPrimary'
-                            value={this.state.darkMode}
+                            onValueChange={ (value) => this.handleThemeApply(value) }
+                            trackColor={ {false: '#aaaaaa', true: '#888888'} }
+                            thumbColor='@thumbColorSwitch'
+                            value={this.props.darkMode}
                         />
                     </Theme.View>
                     <Theme.View style={styles.item}>
@@ -71,18 +91,6 @@ class Setting extends Component{
                         <ThemedMaterialsIcon style={styles.image} name="star" size={25} color="@textColorTertiary"/>
                     </Theme.View>
                 </Theme.View>
-                <View style={{ flexDirection: 'row' }}>
-                { themes.map(theme => (
-                    <TouchableHighlight key={theme.name} onPress={ () => {
-                        theme.apply()
-                        if (theme.name === 'Dark') this.props.screenProps.dark();
-                        if (theme.name === 'Light') this.props.screenProps.light();
-                    }}>
-                        <Theme.Text style={{ color: '@buttonTextPrimary' }}>{theme.name}</Theme.Text>
-                    </TouchableHighlight>
-                    ))
-                }
-                </View>
             </ThemedScrollView>
         )
     }
@@ -115,4 +123,12 @@ const styles = createStyle({
     },
 })
 
-export default Setting;
+const mapStateToProps = state => {
+    return {
+        darkMode: state.theme.darkMode
+    }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators(actionCreators, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Setting);

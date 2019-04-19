@@ -14,7 +14,6 @@ import Theme, { createStyle } from 'react-native-theming';
 import {
     ThemedSwipeout,
     ThemedTouchableOpacity,
-    ThemedIonicons,
 } from '../../themes/customs/components';
 
 class SuratList extends Component{

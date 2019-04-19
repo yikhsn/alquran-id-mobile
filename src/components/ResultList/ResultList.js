@@ -10,7 +10,8 @@ import {
 import searchExcerpter from '../../helpers/SearchExcerpt';
 import Theme, { createStyle } from 'react-native-theming';
 import {
-    ThemedTouchableOpacity
+    ThemedTouchableOpacity,
+    ThemedMatIcon
 } from '../../themes/customs/components'
 
 class ResultList extends Component {
@@ -46,12 +47,11 @@ class ResultList extends Component {
                         <Theme.Text style={styles.textResult}>{searchExcerpter(this.props.data.terjemahan)}</Theme.Text>
                     </Theme.View>
                     <Theme.View style={styles.right}>
-                        <Image
-                            style={{
-                                width: 15,
-                                height: 15
-                            }}
-                            source={ require('../../assets/right-arrow-black.png') }
+                        <ThemedMatIcon 
+                            style={styles.gotoIcon} 
+                            name="keyboard-arrow-right" 
+                            size={25} 
+                            color="@textColorTertiary" 
                         />
                     </Theme.View>
                 </ThemedTouchableOpacity>
@@ -77,11 +77,6 @@ const styles = createStyle({
     right: {
         justifyContent: 'flex-end'
     },
-    textResult: {
-        fontFamily: 'Roboto-Regular',        
-        fontSize: 15,
-        color: '@textColorSecondary',
-    },
     suratResult: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
@@ -89,6 +84,12 @@ const styles = createStyle({
         color: '@textColorPrimary',
         alignSelf: 'flex-start'
     },
+    textResult: {
+        fontFamily: 'Roboto-Regular',        
+        fontSize: 15,
+        color: '@textColorSecondary',
+    },
+
 })
 
 export default ResultList;
