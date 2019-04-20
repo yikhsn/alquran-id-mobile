@@ -45,7 +45,7 @@ const styles = createStyle({
     },
     suratName: {
         fontSize: 50,
-        color: '@textColorPrimary',
+        color: '@textColorArab',
         top: 0,
         bottom: 35,
         fontFamily: 'scheherazade-webfont',
@@ -60,13 +60,13 @@ const styles = createStyle({
     suratNameMean: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
-        color: '@textColorSecondary2',
+        color: '@textColorPrimary',
         paddingHorizontal: 2
     },
     ayatTotal: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
-        color: '@textColorSecondary2',
+        color: '@textColorPrimary',
         top: -15,
     },
 })

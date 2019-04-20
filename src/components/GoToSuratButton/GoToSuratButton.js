@@ -22,7 +22,7 @@ class ReadHeader extends Component{
                         style={styles.gotoIcon} 
                         name="page-next-outline" 
                         size={25} 
-                        color="@textColorLight" 
+                        color="@textColorArabLight" 
                     />
                 </ThemedTouchableOpacity>
             </Theme.View>

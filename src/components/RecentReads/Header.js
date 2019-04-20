@@ -7,7 +7,12 @@ import { ThemedIonicons } from '../../themes/customs/components';
 export default HeaderBookmark = (props) => {
     return(
         <Theme.View style={styles.container}>
-            <ThemedIonicons style={styles.image} name="md-time" size={30} color="@textColorPrimary"/>  
+            <ThemedIonicons 
+                style={styles.image} 
+                name="md-time" 
+                size={30} 
+                color="@textColorArab"
+            />  
             <Theme.Text style={styles.title}>
                 {props.title}
             </Theme.Text>
@@ -30,7 +35,7 @@ const styles =createStyle({
     },
     title: {
         fontFamily: 'Roboto-Regular',
-        color: '@textColorPrimary',
+        color: '@textColorArab',
         fontSize: 16,
     }
 })

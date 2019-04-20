@@ -122,7 +122,7 @@ const styles = createStyle({
     },
     arab: {
         fontFamily: 'scheherazade-webfont',
-        color: '@textColorPrimary',
+        color: '@textColorArab',
         fontSize: 40,
     }
 

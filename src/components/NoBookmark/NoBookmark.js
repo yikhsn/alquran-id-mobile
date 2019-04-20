@@ -26,7 +26,7 @@ const styles = createStyle({
     },
     text : {
         fontSize: 16,
-        color: '@textColorPrimary',
+        color: '@textColorArab',
         fontFamily: 'Roboto-Regular',
     }
 })

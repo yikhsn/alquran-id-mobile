@@ -43,8 +43,12 @@ class ResultList extends Component {
                     // onLongPress={ () => this.addToBookmark( this.props.data.id ) }
                 >
                     <Theme.View style={styles.left}>
-                        <Theme.Text style={styles.suratResult}>{ (`QS. ${this.props.data.surat_nama}:Ayat ${this.props.data.nomor_ayat}`).toUpperCase() }</Theme.Text>
-                        <Theme.Text style={styles.textResult}>{searchExcerpter(this.props.data.terjemahan)}</Theme.Text>
+                        <Theme.Text style={styles.suratResult}>
+                            { (`QS. ${this.props.data.surat_nama}:Ayat ${this.props.data.nomor_ayat}`).toUpperCase() }
+                        </Theme.Text>
+                        <Theme.Text style={styles.textResult}>
+                            {searchExcerpter(this.props.data.terjemahan)}
+                        </Theme.Text>
                     </Theme.View>
                     <Theme.View style={styles.right}>
                         <ThemedMatIcon 
@@ -64,7 +68,7 @@ const styles = createStyle({
         flex: 1,
         backgroundColor: '@backgroundColor',
         paddingVertical: 10,
-        paddingHorizontal: 15,
+        paddingHorizontal: 5,
         flexDirection: 'row',
         borderBottomWidth: 1,
         borderBottomColor: '@borderColor',
@@ -72,16 +76,17 @@ const styles = createStyle({
         alignItems: 'center'
     },
     left: {
-        flex: 1
+        flex: 1,
+        paddingLeft: 10
     },
     right: {
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
     suratResult: {
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
         marginBottom: 2,
-        color: '@textColorPrimary',
+        color: '@textColorArab',
         alignSelf: 'flex-start'
     },
     textResult: {
@@ -89,6 +94,9 @@ const styles = createStyle({
         fontSize: 15,
         color: '@textColorSecondary',
     },
+    gotoIcon: {
+        justifyContent: 'flex-end',
+    }
 
 })
 

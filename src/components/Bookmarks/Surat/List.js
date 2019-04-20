@@ -66,7 +66,12 @@ class BookmarkSuratList extends Component{
                     })}
                 >
                     <Theme.View style={styles.left}>
-                        <ThemedIonicons style={styles.image} name="md-bookmark" size={20} color="@textColorPrimary"/>
+                        <ThemedIonicons 
+                            style={styles.image} 
+                            name="md-bookmark" 
+                            size={20} 
+                            color="@textColorPrimary"
+                        />
                         <Theme.Text style={styles.name}>
                             QS. {surat.surat_nama}
                         </Theme.Text>

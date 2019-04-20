@@ -27,7 +27,7 @@ const styles = createStyle({
     ayat: {
         fontSize: 35,
         fontFamily: 'scheherazade-webfont',
-        color: '@textColorPrimary',
+        color: '@textColorArab',
     }
 })
 

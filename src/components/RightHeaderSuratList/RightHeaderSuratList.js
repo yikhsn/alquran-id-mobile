@@ -22,7 +22,7 @@ class RightHeaderSuratList extends Component{
                         style={styles.image} 
                         name="exchange" 
                         size={20} 
-                        color="@textColorLight"
+                        color="@textColorArabLight"
                     />
                 </ThemedTouchableOpacity>
                 <ThemedTouchableOpacity
@@ -33,7 +33,7 @@ class RightHeaderSuratList extends Component{
                         style={styles.gotoIcon} 
                         name="page-next-outline" 
                         size={25} 
-                        color="@textColorLight"
+                        color="@textColorArabLight"
                     />
                 </ThemedTouchableOpacity>
             </Theme.View>

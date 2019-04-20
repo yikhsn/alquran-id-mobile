@@ -20,6 +20,10 @@ export const lightThemes =
         textColorTertiary: '#888888',
         textColorQuaternary: '#aaaaaa',
 
+        textColorArab: '#444444',
+        textColorArabLight: '#ffffff',
+        textColorArabDark: '#FFE8B1',
+
         textPlaceHolderSearch: '#B5E6FD',
 
         textColorLight: '#ffffff',
@@ -29,7 +33,7 @@ export const lightThemes =
         buttonColorSecondary: '#5DCFFF',
         buttonColorTertiary: '#6FD4FF',
 
-        thumbColorSwitch: '#2bc0ff',
+        thumbColorSwitch: '#505050',
         ToggleSwitchActive: '#b3e8ff',
         ToggleSwitchInActive: '#111111',
 
@@ -42,17 +46,17 @@ export const lightThemes =
 
 export const darkThemes = 
     createTheme({
-        containerColor: '#262626',
-        backgroundColor: '#262626',
-        boxColor: '#373737',
+        containerColor: '#1e1e1e',
+        backgroundColor: '#1e1e1e',
+        boxColor: '#2f2f2f',
 
-        buttonColorPrimaryHighlight: '#373737',
+        buttonColorPrimaryHighlight: '#2f2f2f',
         buttonColorSecondaryHighlight: '#595959',
 
-        modalPrimaryButtonIcon: '#2bc0ff',
+        modalPrimaryButtonIcon: '#ffedc2',
         modalSecondaryButtonIcon: '#d4d4d4',
 
-        borderColor: '#373737',
+        borderColor: '#2f2f2f',
 
         textColorPrimary: '#d4d4d4',
         textColorSecondary: '#c3c3c3',
@@ -60,14 +64,18 @@ export const darkThemes =
         textColorTertiary: '#aaa',
         textColorQuaternary: '#909090',
 
-        textPlaceHolderSearch: '#909090',
+        textColorArab: '#ffedc2',
+        textColorArabLight: '#ffedc2',
+        textColorArabDark: '#FFE8B1',
+
+        textPlaceHolderSearch: '#8B8370',
 
         textColorLight: '#d4d4d4',
         textColorLightSecondary: '#ffffff',
 
         buttonColorPrimary: '#262626',
-        buttonColorSecondary: '#373737',
-        buttonColorTertiary: '#373737',
+        buttonColorSecondary: '#2f2f2f',
+        buttonColorTertiary: '#2f2f2f',
 
         thumbColorSwitch: '#505050',
         ToggleSwitchActive: '#b3e8ff',

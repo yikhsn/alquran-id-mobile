@@ -73,7 +73,7 @@ class Setting extends Component{
                         <ThemedSwitch
                             disabled={false}
                             onValueChange={ (value) => this.handleThemeApply(value) }
-                            trackColor={ {false: '#aaaaaa', true: '#888888'} }
+                            trackColor={ {false: '#aaaaaa', true: '#ffedc2'} }
                             thumbColor='@thumbColorSwitch'
                             value={this.props.darkMode}
                         />

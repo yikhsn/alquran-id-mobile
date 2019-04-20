@@ -189,14 +189,24 @@ class SuratList extends Component{
                                     onPress={ () => this.props.toggleGoToSuratModal() }
                                     style={styles.buttonClose}
                                 >
-                                     <ThemedMaterialsIcon style={styles.buttonText} name='close' size={28} color='@modalSecondaryButtonIcon' />
+                                     <ThemedMaterialsIcon
+                                        style={styles.buttonText} 
+                                        name='close'
+                                        size={28} 
+                                        color='@modalSecondaryButtonIcon'
+                                    />
                                 </ThemedTouchableHighlight>
                                 <ThemedTouchableHighlight
                                     underlayColor='@buttonColorSecondaryHighlight'
                                     onPress={ () => this.navigateFromModal() }
                                     style={styles.buttonSubmit}
                                 >
-                                     <ThemedMaterialsIcon style={styles.buttonText} name='page-next' size={28} color='@modalPrimaryButtonIcon' />
+                                     <ThemedMaterialsIcon 
+                                        style={styles.buttonText} 
+                                        name='page-next' 
+                                        size={28} 
+                                        color='@modalPrimaryButtonIcon'
+                                    />
                                 </ThemedTouchableHighlight>
                             </Theme.View>
                         </Theme.View>
@@ -231,7 +241,7 @@ const styles = createStyle({
         marginBottom: 5,
         fontWeight: '500',
         fontFamily: 'Roboto-Regular',
-        color: '@textColorPrimary'
+        color: '@textColorArab'
     },
     inputAyatContainer:{
         flex: 1,

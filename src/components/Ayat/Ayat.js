@@ -27,7 +27,7 @@ class Ayat extends Component{
                         this.props.darkMode
                         ?
                             <ImageBackground
-                                source={ require('../../assets/oval-dark-default.png') }
+                                source={ require('../../assets/oval-dark.png') }
                                 style={{
                                     width: 40,
                                     height: 50,
@@ -86,7 +86,7 @@ const styles = createStyle({
     number: {
         fontFamily: 'Roboto-Regular',
         fontSize: 8,
-        color: '@textColorPrimary'
+        color: '@textColorArab'
     },
     ayatContainer: {
         flex: 1,
@@ -95,7 +95,7 @@ const styles = createStyle({
     ayat: {
         fontSize: 35,
         fontFamily: 'scheherazade-webfont',
-        color: '@textColorPrimary',
+        color: '@textColorArab',
     },
     ayatMeanContainer: {
         padding: 5

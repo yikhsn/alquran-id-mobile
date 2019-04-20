@@ -14,7 +14,9 @@ import * as actionCreators from '../../store/actionCreators';
 import Theme, { createStyle } from 'react-native-theming';
 import {
     ThemedTouchableOpacity,
-    ThemedTextInput
+    ThemedTextInput,
+    ThemedIonicons,
+    ThemedMatIcon
 } from '../../themes/customs/components'
 
 class SearchHeader extends Component{
@@ -107,35 +109,32 @@ class SearchHeader extends Component{
                                             style={ styles.buttonContainer }
                                             onPress={ () => this.handleClear() }
                                         >
-                                            <Image
+                                            <ThemedMatIcon
                                                 style={styles.imageActive}
-                                                source={ require('../../assets/remove.png') }
-                                            />
-                                        </ThemedTouchableOpacity>
-                                        <ThemedTouchableOpacity
-                                            style={ styles.buttonContainer }
-                                            onPress={ () => this.handleSearch() }
-                                        >
-                                            <Image
-                                                style={styles.imageActive}
-                                                source={ require('../../assets/search.png') }
+                                                name="clear" 
+                                                size={32} 
+                                                color="@textColorArabLight"
                                             />
                                         </ThemedTouchableOpacity>
                                     </Theme.View>
                                 :
-                                <Theme.View style={styles.buttonContainer}>
-                                    <Image
-                                        style={styles.imageDisabled}
-                                        source={ require('../../assets/search.png') }
-                                    />
-                                </Theme.View>
+                                    <Theme.View style={styles.buttonContainer}>
+                                        <ThemedIonicons
+                                            style={styles.imageDisabled}
+                                            name="ios-search" 
+                                            size={30} 
+                                            color="@textColorArabLight"
+                                        />
+                                    </Theme.View>
                             )
 
                         :
                             <Theme.View style={styles.buttonContainer}>
-                                <Image
+                                <ThemedIonicons
                                     style={styles.imageDisabled}
-                                    source={ require('../../assets/search.png') }
+                                    name="ios-search" 
+                                    size={30} 
+                                    color="@textColorArabLight"
                                 />
                             </Theme.View>
                     }
@@ -180,7 +179,7 @@ const styles = createStyle({
         height: 40,
         fontFamily: 'Roboto-Regular',
         fontSize: 20,
-        color: '@textColorLight',
+        color: '@textColorArabLight',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '@buttonColorTertiary',
@@ -193,14 +192,10 @@ const styles = createStyle({
         alignItems: 'center',
     },
     imageDisabled: {
-        width: 20,
-        height: 20,
         marginRight: 5,
         opacity: 0.5
     },
     imageActive: {
-        width: 20,
-        height: 20,
         marginRight: 5,
     }
 });

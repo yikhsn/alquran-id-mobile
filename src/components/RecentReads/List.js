@@ -54,7 +54,12 @@ class BookmarkAyatList extends Component{
                     })}
                 >
                     <Theme.View style={styles.left}>
-                        <ThemedIonicons style={styles.image} name="md-bookmark" size={20} color="@textColorPrimary"/>
+                        <ThemedIonicons
+                            style={styles.image} 
+                            name="md-bookmark" 
+                            size={20} 
+                            color="@textColorPrimary"
+                        />
                         <Theme.Text style={styles.surat}>QS. {ayat.surat_nama}</Theme.Text>
                         <Theme.Text style={styles.ayat}>:Ayat { ayat.nomor_ayat }</Theme.Text>
                     </Theme.View>

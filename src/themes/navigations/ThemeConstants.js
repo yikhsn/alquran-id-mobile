@@ -15,17 +15,17 @@ export default ThemeConstants = {
         headerTitleFontFamily: 'Roboto-Regular',
     },
     dark: {
-        backgroundColor: '#262626',
+        backgroundColor: '#1e1e1e',
         color: '#d4d4d4',
-        headerTintColor: '#d4d4d4',
+        headerTintColor: '#ffedc2',
 
-        backgroundColorTab: '#262626',
-        activeTintColor: '#2bc0ff',
+        backgroundColorTab: '#1e1e1e',
+        activeTintColor: '#ffe3a0',
         inactiveTintColor: '#666666',
 
-        borderColor: 'rgba(255,255,255,0.2)',
+        borderColor: '#2f2f2f',
 
-        headerTitleColor: '#d4d4d4',
+        headerTitleColor: '#ffedc2',
         headerTitleFontSize: 20,
         headerTitleFontFamily: 'Roboto-Regular',
     },

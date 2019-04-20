@@ -357,7 +357,7 @@ class Surat extends Component{
                                     style={styles.modalListButton}
                                 >
                                     <ThemedMatIcon 
-                                        name='library-add' size={28} color='@textColorPrimary'
+                                        name='library-add' size={28} color='@textColorArab'
                                         style={styles.modalListButtonIcon}
                                     />
                                     <Theme.Text style={styles.modalListButtonText}>Tambah ke bookmark</Theme.Text>
@@ -367,7 +367,7 @@ class Surat extends Component{
                                     style={styles.modalListButton}
                                 >
                                     <ThemedMatIcon 
-                                        name='access-time' size={28} color='@textColorPrimary'
+                                        name='access-time' size={28} color='@textColorArab'
                                         style={styles.modalListButtonIcon}
                                     />
                                     <Theme.Text style={styles.modalListButtonText}>Tandai terakhir dibaca</Theme.Text>
@@ -377,7 +377,7 @@ class Surat extends Component{
                                     style={styles.modalListButton}
                                 >
                                     <ThemedMatIcon 
-                                        name='close' size={28} color='@textColorPrimary'
+                                        name='close' size={28} color='@textColorArab'
                                         style={styles.modalListButtonIcon}
                                     />
                                     <Theme.Text style={styles.modalListButtonText}>Keluar</Theme.Text>
@@ -415,7 +415,7 @@ const styles = createStyle({
         marginBottom: 5,
         fontWeight: '500',
         fontFamily: 'Roboto-Regular',
-        color: '@textColorPrimary'
+        color: '@textColorArab'
     },
     inputAyatContainer:{
         flex: 1,
@@ -495,7 +495,7 @@ const styles = createStyle({
         fontWeight: '500',
         alignSelf: 'center',
         fontFamily: 'Roboto-Regular',
-        color: '@textColorPrimary'
+        color: '@textColorArab'
     },
     modalListContent: {
         alignItems: 'center',
@@ -513,7 +513,7 @@ const styles = createStyle({
         marginRight: 5,
     },
     modalListButtonText: {
-        color: '@textColorPrimary',
+        color: '@textColorArab',
         fontFamily: 'Roboto-Regular',
         fontSize: 16
     }

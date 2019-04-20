@@ -22,12 +22,12 @@ const styles = createStyle({
         justifyContent:'center',
     },
     name: {
-        color: '@textColorPrimary',
+        color: '@textColorArab',
         fontFamily: 'Roboto-Regular',
         fontSize: 18
     },
     translation: {
-        color: '@textColorSecondary',
+        color: '@textColorPrimary',
         fontSize: 14,
         fontFamily: 'Roboto-Regular',
     },
