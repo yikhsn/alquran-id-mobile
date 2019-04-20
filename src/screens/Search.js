@@ -47,7 +47,6 @@ class Search extends Component{
                             :
                                 null                                
                     }                      
-
             </ThemedScrollView>
         )
     }

@@ -1,13 +1,22 @@
 import React from 'react';
 import {
-    View,
-    ActivityIndicator
+    View
 } from 'react-native';
+import Theme, { createStyle } from 'react-native-theming';
+import {
+    ThemedActivityIndicator,
+} from '../../themes/customs/components';
 
 const Loader = (props) => {
     return(
-        <View>
-            <ActivityIndicator size="large" color="#2BC0FF" />
+        <View
+            style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}
+        >
+            <ThemedActivityIndicator size="large" color="@activityIndicatorColor" />
         </View>
     )
 }

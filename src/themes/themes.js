@@ -40,6 +40,8 @@ export const lightThemes =
         buttonTextPrimary: '#444444',
         buttonTextSecondary: '#666666',
 
+        activityIndicatorColor: '#2bc0ff',
+
         statusBarBackground: '#00a2e6',
         statusBar: 'light-content',
     }, 'Light');
@@ -83,6 +85,8 @@ export const darkThemes =
 
         buttonTextPrimary: '#ffffff',
         buttonTextSecondary: '#cccccc',
+
+        activityIndicatorColor: '#ffedc2',
 
         statusBarBackground: '#1D1D1D',
         statusBar: 'light-content',

@@ -2,6 +2,7 @@ import { createThemedComponent } from 'react-native-theming';
 import {
     TouchableOpacity,
     TouchableHighlight,
+    ActivityIndicator,
     ScrollView,
     Switch,
     StatusBar,
@@ -59,3 +60,6 @@ export const ThemedPicker
 
 export const ThemedPickerItem
     = createThemedComponent(Picker.Item);
+
+export const ThemedActivityIndicator
+    = createThemedComponent(ActivityIndicator, ['color']);
