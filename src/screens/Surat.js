@@ -71,22 +71,19 @@ class Surat extends Component{
 
     // function to scroll to section ayat view based on ayatId from navigation params
     goToAyatView = () => {
-
         // get ayatGoToId data from navigation params
         let ayatGoToId = this.props.navigation.getParam('ayatGoToId', null);
 
         // get surat data from navigation params
         const surat = this.props.navigation.getParam('surat', null);
 
-        if (!ayatGoToId) {
-            return;
-        }
-
+        if (!ayatGoToId) return;
+        
         if (ayatGoToId === surat.ayat_total){
             ayatGoToId = ayatGoToId - 1;
         }
-
-        this.scrollSectionIntoView(ayatGoToId);
+        
+        this.scrollSectionIntoView(ayatGoToId, 'top');
     }
 
     // init ayat from database
@@ -197,8 +194,8 @@ class Surat extends Component{
     }
 
     // function scroll to scroll into ayat section/view based on the ayat that pressed
-    scrollSectionIntoView = (section) => {
-        this.sectionsRefs[section].current.scrollIntoView({ align: 'top' });
+    scrollSectionIntoView = (section, align) => {
+        this.sectionsRefs[section].current.scrollIntoView({ align });
     };
     
     
@@ -261,7 +258,7 @@ class Surat extends Component{
                             renderItem={ ({ item }) => (
                                 <ScrollIntoView
                                     key={item.nomor_ayat}
-                                    ref={this.sectionsRefs[item.nomor_ayat]}
+                                    ref={this.sectionsRefs[item.nomor_ayat - 1 ]}
                                     onMount={false}
                                     onUpdate
                                 >
