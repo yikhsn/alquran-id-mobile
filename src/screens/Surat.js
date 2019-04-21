@@ -1,17 +1,10 @@
 import React, { Component } from 'react'
 import { 
     View,
-    ScrollView,
     FlatList,
     Dimensions,
     Platform,
-    Picker,
-    Text,
-    TouchableHighlight,
-    TouchableOpacity,
-    TextInput,
     Alert,
-    StyleSheet
 } from 'react-native';
 import { getSingleSurat } from '../controllers/SuratController';
 import HeaderSurat from '../components/HeaderSurat/HeaderSurat';
@@ -19,7 +12,6 @@ import Ayat from '../components/Ayat/Ayat';
 import Bismillah from '../components/Bismillah/Bismillah';
 import GoToSuratBotton from '../components/GoToSuratButton/GoToSuratButton';
 import Modal from 'react-native-modal';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../store/actionCreators';
@@ -74,21 +66,34 @@ class Surat extends Component{
     }
 
     componentDidMount() {
-        setTimeout(this.goToAyatView, 4000);
+        setTimeout(this.goToAyatView, 500);
     }
 
     // function to scroll to section ayat view based on ayatId from navigation params
     goToAyatView = () => {
-        const ayatGoToId = this.props.navigation.getParam('ayatGoToId', null);
 
-        if (ayatGoToId) {
-            this.scrollSectionIntoView(ayatGoToId);
+        // get ayatGoToId data from navigation params
+        let ayatGoToId = this.props.navigation.getParam('ayatGoToId', null);
+
+        // get surat data from navigation params
+        const surat = this.props.navigation.getParam('surat', null);
+
+        if (!ayatGoToId) {
+            return;
         }
+
+        if (ayatGoToId === surat.ayat_total){
+            ayatGoToId = ayatGoToId - 1;
+        }
+
+        this.scrollSectionIntoView(ayatGoToId);
     }
 
     // init ayat from database
     initSurat = () => {
         const surat_id = this.props.navigation.getParam('surat_id', null);
+
+        // redux
         getSingleSurat(surat_id).then( (ayats) => this.props.setAyats(ayats));
     }
 
@@ -198,7 +203,8 @@ class Surat extends Component{
     
     
     render(){
-        // create ref to each ayat
+
+        // create 'Refs' based on much ayat
         this.sectionsRefs = this.props.ayats.map(_section => React.createRef());
 
         // get surat id from navigation params to decide to show bismillah or not
@@ -206,6 +212,10 @@ class Surat extends Component{
         
         // get surat data from navigation params to show on header surat
         const surat = this.props.navigation.getParam('surat', null);
+
+        // get ayatGoToId data from navigation params to know that user want
+        // to go to specific ayat or not
+        const ayatGoToId = this.props.navigation.getParam('ayatGoToId', null);
 
         // get device width and height to for backdrop modal
         const deviceWidth = Dimensions.get("window").width;
@@ -225,10 +235,11 @@ class Surat extends Component{
                     // to show bismillah in all ayat except in al-fatihah(QS1) and at-taubah (QS9)
                     surat_id !== 1 ? ( surat_id !== 9 ? <Bismillah /> : null ) : null
                 }
-                <FlatList
-                    data={ this.props.ayats }
-                    renderItem={ ({ item }) => {
-                        return (
+
+                {
+                    ayatGoToId
+                    ?
+                        this.props.ayats.map( (item ) => (
                             <ScrollIntoView
                                 key={item.nomor_ayat}
                                 ref={this.sectionsRefs[item.nomor_ayat]}
@@ -242,11 +253,29 @@ class Surat extends Component{
                                     addToBookmark={this.addToBookmark}
                                 />  
                             </ScrollIntoView>
-                        )
-    
-                    }}
-                    keyExtractor={ (item, index) => item + index }
-                />
+                        ))
+
+                    :
+                        <FlatList
+                            data={ this.props.ayats }
+                            renderItem={ ({ item }) => (
+                                <ScrollIntoView
+                                    key={item.nomor_ayat}
+                                    ref={this.sectionsRefs[item.nomor_ayat]}
+                                    onMount={false}
+                                    onUpdate
+                                >
+                                    <Ayat
+                                        ayat={item}
+                                        navigation={this.props.navigation}
+                                        handleAyatPressed={this.handleAyatPressed}
+                                        addToBookmark={this.addToBookmark}
+                                    />  
+                                </ScrollIntoView>
+                            )}
+                            keyExtractor={ (item, index) => item + index }
+                        />
+                }
 
                 <Theme.View>
                     <Modal
@@ -320,7 +349,6 @@ class Surat extends Component{
                         </Theme.View>
                     </Modal>
                 </Theme.View>
-
 
                 <View>
                     <Modal 
@@ -480,7 +508,6 @@ const styles = createStyle({
         alignContent: 'center',
         alignSelf: 'center'
     },
-
 
     // style for modal list
     modalListContainer: {
