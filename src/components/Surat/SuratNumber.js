@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, Text, StyleSheet } from 'react-native';
+import { ImageBackground } from 'react-native';
 import Theme, { createStyle } from 'react-native-theming';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

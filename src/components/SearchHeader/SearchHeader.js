@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import { 
-    View,
-    TextInput,
-    TouchableOpacity,
-    Image,
     Keyboard,
-    StyleSheet 
 } from 'react-native';
 import { searchAyat } from '../../controllers/AyatController';
 import { connect } from 'react-redux';

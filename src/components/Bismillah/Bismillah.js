@@ -1,9 +1,4 @@
 import React from 'react';
-import {
-    View,
-    Text,
-    StyleSheet
-} from 'react-native';
 import Theme, { createStyle } from 'react-native-theming';
 
 const Bismillah = (props) => {

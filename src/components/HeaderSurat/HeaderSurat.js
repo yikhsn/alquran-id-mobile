@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet} from 'react-native';
 import Theme, { createStyle } from 'react-native-theming';
 
 class HeaderSurat extends Component{

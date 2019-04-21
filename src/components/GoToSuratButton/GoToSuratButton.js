@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
-
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../store/actionCreators';
-
 import Theme, { createStyle } from 'react-native-theming';
 import { 
     ThemedMaterialsIcon,
@@ -19,7 +16,6 @@ class ReadHeader extends Component{
                     onPress={ () => this.props.toggleGoToAyatModal() }
                 >
                     <ThemedMaterialsIcon 
-                        style={styles.gotoIcon} 
                         name="page-next-outline" 
                         size={25} 
                         color="@textColorArabLight" 
@@ -33,8 +29,6 @@ class ReadHeader extends Component{
 const styles = createStyle({    
     container: {
         marginRight: 15
-    },
-    gotoIcon: {
     },
 })
 

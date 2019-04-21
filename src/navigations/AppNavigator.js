@@ -1,6 +1,5 @@
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import SearchHeader from '../components/SearchHeader/SearchHeader';
 import TabBarComponent from '../components/TabBarComponent/TabBarComponent';
 import SuratList from '../screens/SuratList';
@@ -186,16 +185,9 @@ export default createAppContainer(createBottomTabNavigator(
     },
     {
         tabBarComponent: TabBarComponent,
-        initialRouteName: 'Settings',
+        initialRouteName: 'Reads',
         order: ['Reads', 'Search', 'Bookmarks', 'Settings'],
         defaultNavigationOptions: ({ navigation }) => 
-        // {
-        //     const { routeName, routes } = navigation.state;
-            
-        //     let params = routes && routes[1] && routes[1].params;
-        //     console.log(params);
-        // },
-        
         ({
             tabBarIcon: ({ focused, horizontal, tintColor }) => {
                 

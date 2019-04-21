@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, ScrollView } from 'react-native';
+import { View, FlatList, } from 'react-native';
 import {
     getAyatBookmarks,
     getSuratBookmarks

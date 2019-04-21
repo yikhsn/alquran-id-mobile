@@ -1,11 +1,4 @@
 import React, { Component } from 'react';
-import {
-    View,
-    TouchableOpacity,
-    Text,
-    Image,
-    StyleSheet
-} from 'react-native';
 import { deleteSuratBookmark } from '../../../controllers/BookmarkController';
 import Theme, { createStyle } from 'react-native-theming';
 import {
@@ -122,7 +115,6 @@ const styles = createStyle({
         fontSize: 14,
         color: '@textColorSecondary'
     }
-
 })
 
 export default BookmarkSuratList;

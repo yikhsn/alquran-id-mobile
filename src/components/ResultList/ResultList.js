@@ -1,11 +1,4 @@
 import React, { Component } from 'react';
-import { 
-    View, 
-    Image,
-    Text, 
-    Alert, 
-    StyleSheet
-} from 'react-native';
 // import { addAyatToBookmark } from '../../controllers/BookmarkController';
 import searchExcerpter from '../../helpers/SearchExcerpt';
 import Theme, { createStyle } from 'react-native-theming';

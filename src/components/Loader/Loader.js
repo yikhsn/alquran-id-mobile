@@ -2,7 +2,6 @@ import React from 'react';
 import {
     View
 } from 'react-native';
-import Theme, { createStyle } from 'react-native-theming';
 import {
     ThemedActivityIndicator,
 } from '../../themes/customs/components';

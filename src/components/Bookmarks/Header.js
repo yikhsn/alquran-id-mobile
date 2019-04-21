@@ -1,8 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 import Theme, { createStyle } from 'react-native-theming';
 import { ThemedIonicons } from '../../themes/customs/components';
-
 
 export default HeaderBookmark = (props) => {
     return(

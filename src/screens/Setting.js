@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
-import {
-    View,
-    ScrollView,
-    Text,
-    TouchableHighlight,
-    StyleSheet
-} from 'react-native';
 import Theme, { createStyle } from 'react-native-theming';
 import { darkThemes, lightThemes } from '../themes/themes';
 import { 
     ThemedSwitch,
     ThemedMaterialsIcon,
-    Bar,
     ThemedScrollView
 } from '../themes/customs/components';
 import ThemeConstants from '../themes/navigations/ThemeConstants';
@@ -23,9 +15,6 @@ class Setting extends Component{
 
     constructor(props){
         super(props);
-
-        if (this.props.darkMode) this.darkThemeApply();
-        else this.lightThemeApply();
     }
 
     static navigationOptions = ({ screenProps }) => {
@@ -64,7 +53,6 @@ class Setting extends Component{
     render(){
         return(
             <ThemedScrollView style={styles.screen}>
-                <Bar barStyle="@statusBar" backgroundColor="@statusBarBackground" />
                 <Theme.View style={styles.container} >
                     <Theme.View style={styles.item}>
                         <Theme.Text style={styles.itemText}>

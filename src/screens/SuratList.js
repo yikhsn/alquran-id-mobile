@@ -1,30 +1,21 @@
 import React, { Component } from 'react';
 import { 
-    ScrollView,
-    TouchableOpacity,
-    TouchableHighlight,
     View,
     Dimensions,
     Platform,
-    Text,
-    Picker,
-    TextInput,
-    StyleSheet,
     FlatList 
 } from 'react-native';
 import Modal from 'react-native-modal';
 import List from '../components/Surat/List';
 import RightHeaderSuratList from '../components/RightHeaderSuratList/RightHeaderSuratList';
-
 import { getAllSurats } from '../controllers/SuratController';
-
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../store/actionCreators';
-
 import Theme, { createStyle } from 'react-native-theming';
 import ThemeConstants from '../themes/navigations/ThemeConstants';
-import { 
+import {
+    Bar,
     ThemedScrollView,
     ThemedTextInput,
     ThemedTouchableHighlight,
@@ -32,6 +23,8 @@ import {
     ThemedPicker,
     ThemedPickerItem
 } from '../themes/customs/components';
+import { darkThemes, lightThemes } from '../themes/themes';
+
 
 class SuratList extends Component{
     constructor(props){
@@ -45,6 +38,7 @@ class SuratList extends Component{
             ayatSugest: 7,
         }        
 
+        this.initTheme();
         this.initListSurats();
     }
 
@@ -72,8 +66,23 @@ class SuratList extends Component{
         getAllSurats().then( (surats) => this.props.setSuratList(surats));
     }
 
+    initTheme = () => {
+        if (this.props.darkMode) this.darkThemeApply();
+        else this.lightThemeApply();
+    }
+
     allowScroll = (scrollEnabled) => {
         this.setState({ scrollEnabled });
+    }
+
+    darkThemeApply = () => {
+        darkThemes.apply();
+        this.props.screenProps.dark();
+    }
+
+    lightThemeApply = () => {
+        lightThemes.apply();
+        this.props.screenProps.light();
     }
 
     navigateFromModal = () => {
@@ -125,94 +134,99 @@ class SuratList extends Component{
             : require("react-native-extra-dimensions-android").get("REAL_WINDOW_HEIGHT");
 
         return(
-            <ThemedScrollView 
-                scrollEnabled={this.state.scrollEnabled}
-                keyboardShouldPersistTaps='always'
-                style={styles.container}
-            >
-                <FlatList
-                    data={ this.props.suratList }
-                    renderItem={ ({ item }) => {
-                        return <List
-                            surat={item}
-                            navigation={this.props.navigation}
-                            allowScroll={this.allowScroll}
-                        />
-                    } }
-                    keyExtractor={ (item, index) => item + index }
-                />
-                <Theme.View>
-                    <Modal
-                        isVisible={this.props.goToSuratVisible}
-                        deviceWidth={deviceWidth}
-                        deviceHeight={deviceHeight} 
-                        animationInTiming={500}
-                        animationOutTiming={500}
-                        style={{
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                        onBackdropPress={ () => this.props.toggleGoToSuratModal() }
-                    >
-                        <Theme.View style={styles.modalContainer}>
-                            <Theme.View style={styles.modalContent}>
-                                <Theme.Text style={styles.modalHeader}>Lompat ke</Theme.Text>
-                                <Theme.View style={styles.inputSurat}>
-                                    <Theme.Text style={styles.inputSuratLabel}>Surat</Theme.Text>
-                                    <ThemedPicker
-                                        style={styles.inputSuratInput}
-                                        mode='dropdown'
-                                        selectedValue={this.state.selectedSuratId}
-                                        onValueChange={(itemValue, indexValue) => 
-                                            this.handleChangePicker(itemValue)
-                                        }>
-                                        { this.props.suratList.map((item, index) => {
-                                            return (<ThemedPickerItem style={styles.inputSuratInputItem} label={item.surat_nama} value={item.id} key={item.id}/>) 
-                                        })}
-                                    </ThemedPicker>
+            <View>
+                <Bar barStyle="@statusBar" backgroundColor="@statusBarBackground" />
+                <ThemedScrollView 
+                    scrollEnabled={this.state.scrollEnabled}
+                    keyboardShouldPersistTaps='always'
+                    style={styles.container}
+                >
+                
+                    <FlatList
+                        data={ this.props.suratList }
+                        renderItem={ ({ item }) => {
+                            return <List
+                                surat={item}
+                                navigation={this.props.navigation}
+                                allowScroll={this.allowScroll}
+                            />
+                        } }
+                        keyExtractor={ (item, index) => item + index }
+                    />
+                    <Theme.View>
+                        <Modal
+                            isVisible={this.props.goToSuratVisible}
+                            deviceWidth={deviceWidth}
+                            deviceHeight={deviceHeight} 
+                            animationInTiming={500}
+                            animationOutTiming={500}
+                            style={{
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                            onBackdropPress={ () => this.props.toggleGoToSuratModal() }
+                        >
+                            <Theme.View style={styles.modalContainer}>
+                                <Theme.View style={styles.modalContent}>
+                                    <Theme.Text style={styles.modalHeader}>Lompat ke</Theme.Text>
+                                    <Theme.View style={styles.inputSurat}>
+                                        <Theme.Text style={styles.inputSuratLabel}>Surat</Theme.Text>
+                                        <ThemedPicker
+                                            style={styles.inputSuratInput}
+                                            mode='dropdown'
+                                            selectedValue={this.state.selectedSuratId}
+                                            onValueChange={(itemValue, indexValue) => 
+                                                this.handleChangePicker(itemValue)
+                                            }>
+                                            { this.props.suratList.map((item, index) => {
+                                                return (<ThemedPickerItem style={styles.inputSuratInputItem} label={item.surat_nama} value={item.id} key={item.id}/>) 
+                                            })}
+                                        </ThemedPicker>
+                                    </Theme.View>
+                                    <Theme.View style={styles.inputAyatContainer}>
+                                        <Theme.Text style={styles.inputAyatLabel}>Ayat</Theme.Text>
+                                        <ThemedTextInput
+                                            style={styles.inputAyatInput}
+                                            value={this.state.selectedAyatId}
+                                            onChangeText={ (selectedAyatId) => this.handleCheckSelectedAyatId(selectedAyatId) }
+                                            placeholder={ `1-${this.state.ayatSugest}` }
+                                            placeholderTextColor='@textColorQuaternary'                                        
+                                            keyboardType='numeric'                                        
+                                        />
+                                    </Theme.View>
                                 </Theme.View>
-                                <Theme.View style={styles.inputAyatContainer}>
-                                    <Theme.Text style={styles.inputAyatLabel}>Ayat</Theme.Text>
-                                    <ThemedTextInput
-                                        style={styles.inputAyatInput}
-                                        value={this.state.selectedAyatId}
-                                        onChangeText={ (selectedAyatId) => this.handleCheckSelectedAyatId(selectedAyatId) }
-                                        placeholder={ `1-${this.state.ayatSugest}` }
-                                        placeholderTextColor='@textColorQuaternary'                                        
-                                        keyboardType='numeric'                                        
-                                    />
+                                <Theme.View style={styles.buttonContainer}>
+                                    <ThemedTouchableHighlight
+                                        underlayColor='@buttonColorSecondaryHighlight'
+                                        onPress={ () => this.props.toggleGoToSuratModal() }
+                                        style={styles.buttonClose}
+                                    >
+                                        <ThemedMaterialsIcon
+                                            style={styles.buttonText} 
+                                            name='close'
+                                            size={28} 
+                                            color='@modalSecondaryButtonIcon'
+                                        />
+                                    </ThemedTouchableHighlight>
+                                    <ThemedTouchableHighlight
+                                        underlayColor='@buttonColorSecondaryHighlight'
+                                        onPress={ () => this.navigateFromModal() }
+                                        style={styles.buttonSubmit}
+                                    >
+                                        <ThemedMaterialsIcon 
+                                            style={styles.buttonText} 
+                                            name='page-next' 
+                                            size={28} 
+                                            color='@modalPrimaryButtonIcon'
+                                        />
+                                    </ThemedTouchableHighlight>
                                 </Theme.View>
                             </Theme.View>
-                            <Theme.View style={styles.buttonContainer}>
-                                <ThemedTouchableHighlight
-                                    underlayColor='@buttonColorSecondaryHighlight'
-                                    onPress={ () => this.props.toggleGoToSuratModal() }
-                                    style={styles.buttonClose}
-                                >
-                                     <ThemedMaterialsIcon
-                                        style={styles.buttonText} 
-                                        name='close'
-                                        size={28} 
-                                        color='@modalSecondaryButtonIcon'
-                                    />
-                                </ThemedTouchableHighlight>
-                                <ThemedTouchableHighlight
-                                    underlayColor='@buttonColorSecondaryHighlight'
-                                    onPress={ () => this.navigateFromModal() }
-                                    style={styles.buttonSubmit}
-                                >
-                                     <ThemedMaterialsIcon 
-                                        style={styles.buttonText} 
-                                        name='page-next' 
-                                        size={28} 
-                                        color='@modalPrimaryButtonIcon'
-                                    />
-                                </ThemedTouchableHighlight>
-                            </Theme.View>
-                        </Theme.View>
-                    </Modal>
-                </Theme.View>
-            </ThemedScrollView>
+                        </Modal>
+                    </Theme.View>
+                </ThemedScrollView>
+            </View>
+
             )
     }
 }
@@ -311,7 +325,8 @@ const styles = createStyle({
 const mapStateToProps = state => {
     return {
         suratList: state.rdc.suratList,
-        goToSuratVisible: state.rdc.goToSuratVisible
+        goToSuratVisible: state.rdc.goToSuratVisible,
+        darkMode: state.theme.darkMode
     }
 }
 

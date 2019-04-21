@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../store/actionCreators';

@@ -1,13 +1,4 @@
 import React, { Component } from 'react';
-import { 
-    View,
-    Text,
-    Alert,
-    Image,
-    TouchableOpacity,
-    StyleSheet
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { deleteFromRecentReads } from '../../controllers/RecentReadsController';
 import Theme, { createStyle } from 'react-native-theming';
 import {

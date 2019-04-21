@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../store/actionCreators';
 
-// const ThemeContext = React.createContext(null);
-
 class ThemedBottomTabbar extends Component{
     render(){
         const theme = this.props.darkMode ? 'dark' : 'light' ;

@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import {
-    View,
-    Text,
-    TouchableOpacity,
     ImageBackground,
-    Alert,
-    StyleSheet
 } from 'react-native';
 import Theme, { createStyle } from 'react-native-theming';
 import { ThemedTouchableOpacity } from '../../themes/customs/components';
