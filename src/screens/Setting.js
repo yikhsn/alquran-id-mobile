@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { Linking } from 'react-native';
 import Theme, { createStyle } from 'react-native-theming';
 import { darkThemes, lightThemes } from '../themes/themes';
 import { 
     ThemedSwitch,
     ThemedMaterialsIcon,
-    ThemedScrollView
+    ThemedScrollView,
+    ThemedTouchableOpacity
 } from '../themes/customs/components';
 import ThemeConstants from '../themes/navigations/ThemeConstants';
 import { connect } from 'react-redux';
@@ -33,6 +35,20 @@ class Setting extends Component{
             },
         }
     }
+
+    goToDeveloperSite = () => {
+        const url = 'https://www.yeedevstudio.com';
+        Linking.canOpenURL(url)
+        .then((supported) => {
+            if (!supported) {
+            console.log("Can't handle url: " + url);
+            } else {
+            return Linking.openURL(url);
+            }
+        })
+        .catch((err) => console.error('An error occurred', err));
+    }
+
 
     handleThemeApply = (value) => {
         this.props.changeTheme(value)
@@ -66,12 +82,15 @@ class Setting extends Component{
                             value={this.props.darkMode}
                         />
                     </Theme.View>
-                    <Theme.View style={styles.item}>
+                    <ThemedTouchableOpacity 
+                        style={styles.item}
+                        onPress={ () => this.goToDeveloperSite() }
+                    >
                         <Theme.Text style={styles.itemText}>
                             Pengembang
                         </Theme.Text>
                         <ThemedMaterialsIcon style={styles.image} name="web" size={25} color="@textColorTertiary"/>
-                    </Theme.View>
+                    </ThemedTouchableOpacity>
                     <Theme.View style={styles.item}>
                         <Theme.Text style={styles.itemText}>
                             Feedback
