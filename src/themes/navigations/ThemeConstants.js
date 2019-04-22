@@ -8,7 +8,7 @@ export default ThemeConstants = {
         activeTintColor: '#2bc0ff',
         inactiveTintColor: '#666666',
         
-        borderColor: '#2f2f2f',
+        borderColor: '#eaeaea',
 
         headerTitleColor: '#ffffff',
         headerTitleFontSize: 20,
