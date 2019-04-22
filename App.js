@@ -3,10 +3,15 @@ import { Provider } from 'react-redux';
 import Appnavigator from './src/navigations/AppNavigator';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './src/store/store';
+import SplashScreen from 'react-native-splash-screen';
 
 export default class App extends Component {
     state = {
         theme: 'light'
+    }
+    
+    componentDidMount() {
+        SplashScreen.hide()
     }
 
     dark = () => this.setState({ theme: 'dark'});

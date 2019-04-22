@@ -1,8 +1,17 @@
 package com.quranmobile;
 
 import com.facebook.react.ReactActivity;
+import org.devio.rn.splashscreen.SplashScreen; // import for react-native-splashscreen
+import android.os.Bundle; // import for react-native-splashscreen
 
 public class MainActivity extends ReactActivity {
+
+    // react-native-splash-screen
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen.show(this);  // here
+        super.onCreate(savedInstanceState);
+    }
 
     /**
      * Returns the name of the main component registered from JavaScript.

@@ -3,6 +3,7 @@ package com.quranmobile;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
          new SQLitePluginPackage(),
           new MainReactPackage(),
+            new SplashScreenReactPackage(),
             new ExtraDimensionsPackage(),
             new VectorIconsPackage(),
             new RNGestureHandlerPackage()
