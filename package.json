@@ -1,5 +1,5 @@
 {
-  "name": "QuranMobile",
+  "name": "AlQuranIndonesia",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@babel/runtime": "^7.4.3",
     "react": "16.6.3",
     "react-native": "0.58.6",
     "react-native-extra-dimensions-android": "^1.2.5",
