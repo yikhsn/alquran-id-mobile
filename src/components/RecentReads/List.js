@@ -1,25 +1,30 @@
 import React, { Component } from 'react';
-import { deleteFromRecentReads } from '../../controllers/RecentReadsController';
 import Theme, { createStyle } from 'react-native-theming';
 import {
     ThemedSwipeout,
     ThemedTouchableOpacity,
     ThemedIonicons
 } from '../../themes/customs/components';
+// import console = require('console');
 
-class BookmarkAyatList extends Component{    
-    deleteRecentReads =  (value) => {
-        deleteFromRecentReads(value).then( (msg) =>  this.props.initBookmarks());
+class BookmarkAyatList extends Component{
+    handleLongPress = () => {
+        this.props.toggleRecentReadActionModal(true);
+
+        this.props.setDataToRecentReadModal(this.props.ayat);
     }
 
     render(){
+
+        console.log(this.props.ayat);
+
         let swipeRightButton = [
             {
                 text: 'Hapus',
                 backgroundColor: '#ff445b',
                 color: '#ffffff',
                 underlayColor: '#f78',
-                onPress: () => this.deleteRecentReads(ayat.id)
+                onPress: () => this.props.deleteRecentReads(ayat.id)
             }
         ]
 
@@ -43,6 +48,9 @@ class BookmarkAyatList extends Component{
                         surat_id: ayat.nomor_surat,
                         ayatGoToId: ayat.nomor_ayat
                     })}
+                    onLongPress={
+                        () =>  this.handleLongPress()
+                    }
                 >
                     <Theme.View style={styles.left}>
                         <ThemedIonicons
