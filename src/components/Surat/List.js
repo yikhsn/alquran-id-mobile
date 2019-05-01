@@ -16,22 +16,20 @@ import {
 class SuratList extends Component{
     constructor(props){
         super(props);
-
     }
 
     addToBookmark = (id) => {
-        addSuratToBookmark(id).then( msg => {
-            Alert.alert(
-                msg.title,
-                msg.content,
-                [
-                    {
-                        text: 'OK',
-                    },
-                ],
-                { cancelable: false }
-            );
-        })
+        addSuratToBookmark(id)
+            .then( msg => {
+                this.props.handleBookmarkSuratModal(true);
+                this.props.setBookmarkSuratStatus(msg.title);
+                this.props.setBookmarkSuratDesc( msg.content);
+            })
+            .catch( msg => {
+                this.props.handleBookmarkSuratModal(true);
+                this.props.setBookmarkSuratStatus(msg.title);
+                this.props.setBookmarkSuratDesc( msg.content);
+            })
     }
     
     render(){

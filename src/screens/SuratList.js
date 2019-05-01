@@ -33,9 +33,15 @@ class SuratList extends Component{
         this.state = {
             scrollEnabled: true,
             
+            // for 'GoToSurat' Modal
             selectedSuratId: 1,
             selectedAyatId: null,
             ayatSugest: 7,
+
+            // for 'BookmarkSurat' Alert Modal
+            isBookmarkSuratVisible: false,
+            bookmarkSuratStatus: '',
+            bookmarkSuratDesc: ''
         }        
 
         this.initTheme();
@@ -126,6 +132,15 @@ class SuratList extends Component{
         // change ayat sugest on modal to  curent range of ayats
         this.handleAyatSugestModal(itemValue);
     }
+
+    handleBookmarkSuratModal = 
+        (isBookmarkSuratVisible) => this.setState({ isBookmarkSuratVisible });
+
+    setBookmarkSuratStatus = 
+        (bookmarkSuratStatus) => this.setState({bookmarkSuratStatus});
+
+    setBookmarkSuratDesc = 
+        (bookmarkSuratDesc) => this.setState({ bookmarkSuratDesc });
     
     render() {
         const deviceWidth = Dimensions.get("window").width;
@@ -135,20 +150,29 @@ class SuratList extends Component{
 
         return(
             <View>
-                <ModalAlert />
                 <Bar barStyle="@statusBar" backgroundColor="@statusBarBackground" />
+
+                {/* modal alert for/when user bookmark surat list */}
+                <ModalAlert 
+                    isVisible={this.state.isBookmarkSuratVisible}
+                    status={this.state.bookmarkSuratStatus}
+                    desc={this.state.bookmarkSuratDesc}
+                    handleBookmarkSuratModal={this.handleBookmarkSuratModal}
+                />
                 <ThemedScrollView 
                     scrollEnabled={this.state.scrollEnabled}
                     keyboardShouldPersistTaps='always'
                     style={styles.container}
                 >
-                
                     <FlatList
                         data={ this.props.suratList }
                         renderItem={ ({ item }) => {
                             return <List
                                 surat={item}
                                 navigation={this.props.navigation}
+                                handleBookmarkSuratModal={this.handleBookmarkSuratModal}
+                                setBookmarkSuratStatus={this.setBookmarkSuratStatus}
+                                setBookmarkSuratDesc={this.setBookmarkSuratDesc}
                                 allowScroll={this.allowScroll}
                             />
                         } }
