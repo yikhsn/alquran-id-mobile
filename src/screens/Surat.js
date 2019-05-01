@@ -31,6 +31,7 @@ import {
     ThemedScrollIntoViewScrollView
 } from '../themes/customs/components';
 import ModalAlertBookmarkAyat from '../components/ModalAlert/ModalAlert';
+import ModalAlertRecentAyat from '../components/ModalAlert/ModalAlert';
 
 class Surat extends Component{
     constructor(props){
@@ -46,9 +47,14 @@ class Surat extends Component{
             isListModalVisible: false,
 
             // for 'BookmarkSurat' Alert Modal
-            isBookmarkAyatVisible: true,
+            isBookmarkAyatVisible: false,
             bookmarkAyatStatus: '',
-            bookmarkAyatDesc: ''
+            bookmarkAyatDesc: '',
+
+            // for 'TagRecentRead' Modal
+            isRecentReadVisible: false,
+            recentReadStatus: '',
+            recentReadDesc: '',
         }
 
         this.initSurat();
@@ -183,18 +189,11 @@ class Surat extends Component{
         this.toggleListModal();
 
         deleteAllFromRecentReads().then( (mes) => {
-            addToRecentReads(id).then( (msg) => {
-                Alert.alert(
-                    msg.title,
-                    msg.content,
-                    [
-                        {
-                            text: 'OK',
-                            onPress: () => this.props.navigation.navigate('Surat')
-                        },
-                    ],
-                    { cancelable: false }
-                );
+            addToRecentReads(id)
+                .then( (msg) => {
+                    this.handleRecentReadModal(true);
+                    this.setRecentReadStatus(msg.title);
+                    this.setRecentReadDesc( msg.content);
             })
         })
     }
@@ -205,6 +204,7 @@ class Surat extends Component{
     };
 
 
+    // function to set state to any change on Bookmark Ayat Modal
     handleBookmarkAyatModal = 
         (isBookmarkAyatVisible) => this.setState({ isBookmarkAyatVisible });
 
@@ -214,6 +214,15 @@ class Surat extends Component{
     setBookmarkAyatDesc = 
         (bookmarkAyatDesc) => this.setState({ bookmarkAyatDesc });
     
+    // function to set state to any change on Bookmark Ayat Modal
+    handleRecentReadModal = 
+        (isRecentReadVisible) => this.setState({ isRecentReadVisible });
+
+    setRecentReadStatus = 
+        (recentReadStatus) => this.setState({recentReadStatus});
+
+    setRecentReadDesc = 
+        (recentReadDesc) => this.setState({ recentReadDesc });
     
     render(){
 
@@ -432,6 +441,13 @@ class Surat extends Component{
                     status={this.state.bookmarkAyatStatus}
                     desc={this.state.bookmarkAyatDesc}
                     handleBookmarkModal={this.handleBookmarkAyatModal}
+                />
+
+                <ModalAlertRecentAyat
+                    isVisible={this.state.isRecentReadVisible}
+                    status={this.state.recentReadStatus}
+                    desc={this.state.recentReadDesc}
+                    handleBookmarkModal={this.handleRecentReadModal}
                 />
             </ThemedScrollIntoViewScrollView>
         )
