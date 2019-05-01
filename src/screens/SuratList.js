@@ -24,7 +24,7 @@ import {
     ThemedPickerItem
 } from '../themes/customs/components';
 import { darkThemes, lightThemes } from '../themes/themes';
-
+import ModalAlert from '../components/ModalAlert/ModalAlert';
 
 class SuratList extends Component{
     constructor(props){
@@ -135,6 +135,7 @@ class SuratList extends Component{
 
         return(
             <View>
+                <ModalAlert />
                 <Bar barStyle="@statusBar" backgroundColor="@statusBarBackground" />
                 <ThemedScrollView 
                     scrollEnabled={this.state.scrollEnabled}
@@ -241,6 +242,7 @@ const styles = createStyle({
     modalContainer: {
         height: ( Dimensions.get("window").width  * 90 / 100 ) * 60 / 100,
         width: '90%',
+        backgroundColor: '@backgroundColor',
     },
     modalContent: {
         flex: 1,

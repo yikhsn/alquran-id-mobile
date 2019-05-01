@@ -425,6 +425,7 @@ const styles = createStyle({
     modalContainer: {
         height: ( Dimensions.get("window").width  * 90 / 100 ) * 60 / 100,
         width: '90%',
+        backgroundColor: '@backgroundColor',
     },
     modalContent: {
         flex: 1,
@@ -491,6 +492,7 @@ const styles = createStyle({
         flex: 1,
         backgroundColor: '@buttonColorSecondary',
         padding: 5,
+        margin: 0,
         justifyContent: 'center',
         alignContent: 'center',
     },
@@ -498,6 +500,7 @@ const styles = createStyle({
         flex: 2,
         backgroundColor: '@buttonColorPrimary',
         padding: 5,
+        margin: 0,
         justifyContent: 'center',
         alignContent: 'center',
     },
