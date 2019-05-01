@@ -29,7 +29,7 @@ class ModalAlert extends Component {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}
-                    onBackdropPress={ () => this.props.handleBookmarkSuratModal(false) }
+                    onBackdropPress={ () => this.props.handleBookmarkModal(false) }
                 >
                     <Theme.View style={styles.modalContainer}>
                         <Theme.View style={styles.modalContent}>
@@ -58,7 +58,7 @@ class ModalAlert extends Component {
                             </Theme.Text>
                         </Theme.View>
                         <ThemedTouchableHighlight
-                            onPress={ () => this.props.handleBookmarkSuratModal(false) }
+                            onPress={ () => this.props.handleBookmarkModal(false) }
                             style={styles.buttonContainer}
                             underlayColor='@buttonColorPrimaryHighlight'
                         >

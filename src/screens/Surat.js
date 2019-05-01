@@ -30,17 +30,25 @@ import {
     ThemedPickerItem,
     ThemedScrollIntoViewScrollView
 } from '../themes/customs/components';
+import ModalAlertBookmarkAyat from '../components/ModalAlert/ModalAlert';
 
 class Surat extends Component{
     constructor(props){
         super(props);
 
         this.state = {
+            // for 'GoToSurat' Modal
             selectedSuratId: 1,
             selectedAyatId: null,
             ayatSugest: 7,
 
-            isListModalVisible: false
+            // for 'BottomModalList'
+            isListModalVisible: false,
+
+            // for 'BookmarkSurat' Alert Modal
+            isBookmarkAyatVisible: true,
+            bookmarkAyatStatus: '',
+            bookmarkAyatDesc: ''
         }
 
         this.initSurat();
@@ -157,19 +165,17 @@ class Surat extends Component{
     addToBookmark = (id) => {
         this.toggleListModal();
 
-        addAyatToBookmark(id).then( (msg) => {
-            Alert.alert(
-                msg.title,
-                msg.content,
-                [
-                    {
-                        text: 'OK',
-                        onPress: () => this.props.navigation.navigate('Surat')
-                    },
-                ],
-                { cancelable: false }
-            );
-        })
+        addAyatToBookmark(id)
+            .then( (msg) => {
+                this.handleBookmarkAyatModal(true);
+                this.setBookmarkAyatStatus(msg.title);
+                this.setBookmarkAyatDesc( msg.content);
+            })
+            .catch( (msg) => {
+                this.handleBookmarkAyatModal(true);
+                this.setBookmarkAyatStatus(msg.title);
+                this.setBookmarkAyatDesc( msg.content);
+            })
     }
 
     // function to handle button add ayat to recent read to database on modal
@@ -197,6 +203,16 @@ class Surat extends Component{
     scrollSectionIntoView = (section, align) => {
         this.sectionsRefs[section].current.scrollIntoView({ align });
     };
+
+
+    handleBookmarkAyatModal = 
+        (isBookmarkAyatVisible) => this.setState({ isBookmarkAyatVisible });
+
+    setBookmarkAyatStatus = 
+        (bookmarkAyatStatus) => this.setState({bookmarkAyatStatus});
+
+    setBookmarkAyatDesc = 
+        (bookmarkAyatDesc) => this.setState({ bookmarkAyatDesc });
     
     
     render(){
@@ -251,7 +267,6 @@ class Surat extends Component{
                                 />  
                             </ScrollIntoView>
                         ))
-
                     :
                         <FlatList
                             data={ this.props.ayats }
@@ -411,6 +426,13 @@ class Surat extends Component{
                         </Theme.View>
                     </Modal>
                 </View>
+
+                <ModalAlertBookmarkAyat
+                    isVisible={this.state.isBookmarkAyatVisible}
+                    status={this.state.bookmarkAyatStatus}
+                    desc={this.state.bookmarkAyatDesc}
+                    handleBookmarkModal={this.handleBookmarkAyatModal}
+                />
             </ThemedScrollIntoViewScrollView>
         )
     }
