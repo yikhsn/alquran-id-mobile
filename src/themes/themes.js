@@ -23,6 +23,7 @@ export const lightThemes =
         textColorArab: '#444444',
         textColorArabLight: '#ffffff',
         textColorArabDark: '#FFE8B1',
+        textColorArabPrimary: '#2bc0ff',
 
         textPlaceHolderSearch: '#B5E6FD',
 
@@ -69,6 +70,7 @@ export const darkThemes =
         textColorArab: '#ffedc2',
         textColorArabLight: '#ffedc2',
         textColorArabDark: '#FFE8B1',
+        textColorArabPrimary: '#ffedc2',
 
         textPlaceHolderSearch: '#8B8370',
 
