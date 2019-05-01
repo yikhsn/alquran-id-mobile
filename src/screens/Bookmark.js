@@ -20,7 +20,8 @@ import ThemeConstants from '../themes/navigations/ThemeConstants';
 import { 
     ThemedScrollView,
     ThemedTouchableOpacity,
-    ThemedMatIcon
+    ThemedMatIcon,
+    ThemedMaterialsIcon
 } from '../themes/customs/components';
 import Modal from 'react-native-modal';
 // import console = require('console');
@@ -235,8 +236,8 @@ class Bookmark extends Component{
                                     } 
                                     style={styles.modalListButton}
                                 >
-                                    <ThemedMatIcon 
-                                        name='library-add' size={28} color='@textColorArab'
+                                    <ThemedMaterialsIcon 
+                                        name='book-multiple-remove' size={28} color='@textColorArab'
                                         style={styles.modalListButtonIcon}
                                     />
                                     <Theme.Text style={styles.modalListButtonText}>
@@ -247,7 +248,7 @@ class Bookmark extends Component{
                                     onPress={ () => this.toggleRecentReadActionModal(false) } 
                                     style={styles.modalListButton}
                                 >
-                                    <ThemedMatIcon 
+                                    <ThemedMaterialsIcon 
                                         name='close' size={28} color='@textColorArab'
                                         style={styles.modalListButtonIcon}
                                     />
