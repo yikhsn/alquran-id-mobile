@@ -157,7 +157,7 @@ class SuratList extends Component{
                     isVisible={this.state.isBookmarkSuratVisible}
                     status={this.state.bookmarkSuratStatus}
                     desc={this.state.bookmarkSuratDesc}
-                    handleBookmarkSuratModal={this.handleBookmarkSuratModal}
+                    handleBookmarkModal={this.handleBookmarkSuratModal}
                 />
                 <ThemedScrollView 
                     scrollEnabled={this.state.scrollEnabled}
