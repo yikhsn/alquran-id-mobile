@@ -40,15 +40,21 @@ class Setting extends Component{
         const url = 'https://www.yeedevstudio.com';
         Linking.canOpenURL(url)
         .then((supported) => {
-            if (!supported) {
-            console.log("Can't handle url: " + url);
-            } else {
-            return Linking.openURL(url);
-            }
+            if (!supported) console.log("Can't handle url: " + url);
+            else return Linking.openURL(url);
         })
         .catch((err) => console.error('An error occurred', err));
     }
 
+    goToRateThisApp = () => {
+        const url = 'https://play.google.com/store/apps/details?id=com.alquranindonesia';
+        Linking.canOpenURL(url)
+        .then((supported) => {
+            if (!supported) console.log("Can't handle url: " + url);
+            else return Linking.openURL(url);
+        })
+        .catch((err) => console.error('An error occurred', err));
+    }
 
     handleThemeApply = (value) => {
         this.props.changeTheme(value)
@@ -91,12 +97,15 @@ class Setting extends Component{
                         </Theme.Text>
                         <ThemedMaterialsIcon style={styles.image} name="web" size={25} color="@textColorTertiary"/>
                     </ThemedTouchableOpacity>
-                    <Theme.View style={styles.item}>
+                    <ThemedTouchableOpacity 
+                        style={styles.item}
+                        onPress={ () => this.goToRateThisApp() }
+                    >
                         <Theme.Text style={styles.itemText}>
                             Feedback
                         </Theme.Text>
                         <ThemedMaterialsIcon style={styles.image} name="star" size={25} color="@textColorTertiary"/>
-                    </Theme.View>
+                    </ThemedTouchableOpacity>
                 </Theme.View>
             </ThemedScrollView>
         )
