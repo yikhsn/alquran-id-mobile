@@ -8,16 +8,13 @@ import {
 // import console = require('console');
 
 class BookmarkAyatList extends Component{
-    handleLongPress = () => {
+    handleLongPress = (ayat) => {
         this.props.toggleRecentReadActionModal(true);
 
-        this.props.setDataToRecentReadModal(this.props.ayat);
+        this.props.setDataToRecentReadModal(ayat);
     }
 
     render(){
-
-        console.log(this.props.ayat);
-
         let swipeRightButton = [
             {
                 text: 'Hapus',
@@ -49,7 +46,7 @@ class BookmarkAyatList extends Component{
                         ayatGoToId: ayat.nomor_ayat
                     })}
                     onLongPress={
-                        () =>  this.handleLongPress()
+                        () =>  this.handleLongPress(this.props.ayat)
                     }
                 >
                     <Theme.View style={styles.left}>
