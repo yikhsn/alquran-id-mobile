@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { View, Dimensions, FlatList, Platform } from 'react-native';
 import {
     getAyatBookmarks,
-    getSuratBookmarks, 
+    deleteAyatBookmark, 
+    getSuratBookmarks,
+    deleteSuratBookmark
 } from '../controllers/BookmarkController';
 import { 
     getRecentReads,
@@ -39,14 +41,23 @@ class Bookmark extends Component{
             // for "RecentRead" Modal
             isRecentReadModalVisible: false,
             ayatInRecentRead: {
-                ayat_id: null,
-                ayat_total: null,
-                created_at: "",
                 id: null,
                 nomor_ayat: null,
-                nomor_surat: null,
-                surat_arab: "",
-                surat_arti: "",
+                surat_nama: "",
+            },
+
+            // for "BookmarkAyat" Modal
+            isBookmarkAyatModalVisible: false,
+            ayatInBookmarkModal: {
+                id: null,
+                nomor_ayat: null,
+                surat_nama: "",
+            },
+
+            // for "BookmarkSurat" Modal
+            isBookmarkSuratModalVisible: false,
+            suratInBookmarkModal: {
+                id: null,
                 surat_nama: "",
             }
         }
@@ -96,10 +107,12 @@ class Bookmark extends Component{
         this.setState({ scrollEnabled });
     }
 
+    // DELETE RECENT READ
     deleteRecentReads =  (value) => {
         deleteFromRecentReads(value).then( (msg) =>  this.initBookmarks());
     }
 
+    // ACTION FOR THE MODAL FOR RECENT READ LIST
     handleRecentReadDeleteButton = (id) => {
         this.deleteRecentReads(id);
 
@@ -110,7 +123,43 @@ class Bookmark extends Component{
         this.setState({isRecentReadModalVisible});
     }
 
-    setDataToRecentReadModal = (ayatInRecentRead) => this.setState({ayatInRecentRead});
+    setDataToRecentReadModal = (ayatInRecentRead) => this.setState({ ayatInRecentRead });
+
+    // DELETE AYAT BOOKMARK
+    deleteAyatFromBookmark = (value) => {
+        deleteAyatBookmark(value).then( (msg) => this.initBookmarks());
+    }
+
+    // ACTION FOR THE MODAL FOR AYAT LIST
+    handleDeleteAyatBookmarkBotton = (id) => {
+        this.deleteAyatFromBookmark(id);
+
+        this.toggleBookmarkAyatActionModal(false);
+    }
+
+    toggleBookmarkAyatActionModal = (isBookmarkAyatModalVisible) => {
+        this.setState({isBookmarkAyatModalVisible});
+    }
+
+    setDataToBookmarkAyatModal = (ayatInBookmarkModal) => this.setState({ ayatInBookmarkModal });
+
+    // DELETE SURAT BOOKMARK
+    deleteSuratFromBookmark = (value) => {
+        deleteSuratBookmark(value).then( (msg) => this.initBookmarks());
+    }
+
+    // ACTION FOR THE MODAL FOR SURAT LIST
+    handleDeleteSuratBookmarkBotton = (id) => {
+        this.deleteSuratFromBookmark(id);
+
+        this.toggleBookmarkSuratActionModal(false);
+    }
+
+    toggleBookmarkSuratActionModal = (isBookmarkSuratModalVisible) => {
+        this.setState({isBookmarkSuratModalVisible});
+    }
+
+    setDataToBookmarkSuratModal = (suratInBookmarkModal) => this.setState({ suratInBookmarkModal });
 
     render(){
             const deviceWidth = Dimensions.get("window").width;
@@ -139,6 +188,7 @@ class Bookmark extends Component{
                                     )
                             )
                     }
+
                     {
                         this.state.recent_reads.length > 0
                         ?
@@ -177,6 +227,9 @@ class Bookmark extends Component{
                                         navigation={this.props.navigation}
                                         initBookmarks={this.initBookmarks}
                                         allowScroll={this.allowScroll}
+                                        deleteSuratFromBookmark={this.deleteSuratFromBookmark}
+                                        toggleBookmarkSuratActionModal={this.toggleBookmarkSuratActionModal}
+                                        setDataToBookmarkSuratModal={this.setDataToBookmarkSuratModal}
                                     /> 
                                 }}
                                 keyExtractor={ (item, index) => item + index }
@@ -199,6 +252,9 @@ class Bookmark extends Component{
                                             navigation={this.props.navigation}
                                             initBookmarks={this.initBookmarks}
                                             allowScroll={this.allowScroll}
+                                            deleteAyatFromBookmark={this.deleteAyatFromBookmark}
+                                            toggleBookmarkAyatActionModal={this.toggleBookmarkAyatActionModal}
+                                            setDataToBookmarkAyatModal={this.setDataToBookmarkAyatModal}
                                         /> 
                                     }}
                                     keyExtractor={ (item, index) => item + index }
@@ -208,56 +264,162 @@ class Bookmark extends Component{
                             null
                     }
 
-                <View>
-                    <Modal 
-                        isVisible={this.state.isRecentReadModalVisible}
-                        deviceWidth={deviceWidth}
-                        deviceHeight={deviceHeight} 
-                        animationInTiming={500}
-                        animationOutTiming={500}
-                        style={{
-                            flex: 1,
-                            justifyContent: "flex-end",
-                            margin: 0,
-                            alignItems: "center",
-                        }}
-                        onBackdropPress={ () => this.toggleRecentReadActionModal(false) }
-                    >
-                        <Theme.View style={styles.modalListContainer}>
-                            <Theme.View style={styles.modalListHeader} >
-                                <Theme.Text style={styles.modalListTitle}>
-                                    { `QS. ${this.state.ayatInRecentRead.surat_nama}:Ayat ${this.state.ayatInRecentRead.nomor_ayat}` }
-                                </Theme.Text>
-                            </Theme.View>
-                            <Theme.View style={styles.modalListContent}>
-                                <ThemedTouchableOpacity 
-                                    onPress={ () => 
-                                       this.handleRecentReadDeleteButton(this.state.ayatInRecentRead.id)
-                                    } 
-                                    style={styles.modalListButton}
-                                >
-                                    <ThemedMaterialsIcon 
-                                        name='book-multiple-remove' size={28} color='@textColorArab'
-                                        style={styles.modalListButtonIcon}
-                                    />
-                                    <Theme.Text style={styles.modalListButtonText}>
-                                        Hapus sebagai terkahir dibaca
+                    {/* MODAL FOR RECENT READ ACTION */}
+                    <View>
+                        <Modal 
+                            isVisible={this.state.isRecentReadModalVisible}
+                            deviceWidth={deviceWidth}
+                            deviceHeight={deviceHeight} 
+                            animationInTiming={500}
+                            animationOutTiming={500}
+                            style={{
+                                flex: 1,
+                                justifyContent: "flex-end",
+                                margin: 0,
+                                alignItems: "center",
+                            }}
+                            onBackdropPress={ () => this.toggleRecentReadActionModal(false) }
+                        >
+                            <Theme.View style={styles.modalListContainer}>
+                                <Theme.View style={styles.modalListHeader} >
+                                    <Theme.Text style={styles.modalListTitle}>
+                                        { `QS. ${this.state.ayatInRecentRead.surat_nama}:Ayat ${this.state.ayatInRecentRead.nomor_ayat}` }
                                     </Theme.Text>
-                                </ThemedTouchableOpacity>
-                                <ThemedTouchableOpacity
-                                    onPress={ () => this.toggleRecentReadActionModal(false) } 
-                                    style={styles.modalListButton}
-                                >
-                                    <ThemedMaterialsIcon 
-                                        name='close' size={28} color='@textColorArab'
-                                        style={styles.modalListButtonIcon}
-                                    />
-                                    <Theme.Text style={styles.modalListButtonText}>Keluar</Theme.Text>
-                                </ThemedTouchableOpacity>
+                                </Theme.View>
+                                <Theme.View style={styles.modalListContent}>
+                                    <ThemedTouchableOpacity 
+                                        onPress={ () => 
+                                            this.handleRecentReadDeleteButton(this.state.ayatInRecentRead.id)
+                                        } 
+                                        style={styles.modalListButton}
+                                    >
+                                        <ThemedMaterialsIcon 
+                                            name='book-multiple-remove' size={28} color='@textColorArab'
+                                            style={styles.modalListButtonIcon}
+                                        />
+                                        <Theme.Text style={styles.modalListButtonText}>
+                                            Hapus sebagai terkahir dibaca
+                                        </Theme.Text>
+                                    </ThemedTouchableOpacity>
+                                    <ThemedTouchableOpacity
+                                        onPress={ () => this.toggleRecentReadActionModal(false) } 
+                                        style={styles.modalListButton}
+                                    >
+                                        <ThemedMaterialsIcon 
+                                            name='close' size={28} color='@textColorArab'
+                                            style={styles.modalListButtonIcon}
+                                        />
+                                        <Theme.Text style={styles.modalListButtonText}>Keluar</Theme.Text>
+                                    </ThemedTouchableOpacity>
+                                </Theme.View>
                             </Theme.View>
-                        </Theme.View>
-                    </Modal>
-                </View>
+                        </Modal>
+                    </View>
+
+                    {/* MODAL FOR AYAT BOOKMARK ACTION */}
+                    <View>
+                        <Modal 
+                            isVisible={this.state.isBookmarkAyatModalVisible}
+                            deviceWidth={deviceWidth}
+                            deviceHeight={deviceHeight} 
+                            animationInTiming={500}
+                            animationOutTiming={500}
+                            style={{
+                                flex: 1,
+                                justifyContent: "flex-end",
+                                margin: 0,
+                                alignItems: "center",
+                            }}
+                            onBackdropPress={ () => this.toggleBookmarkAyatActionModal(false) }
+                        >
+                            <Theme.View style={styles.modalListContainer}>
+                                <Theme.View style={styles.modalListHeader} >
+                                    <Theme.Text style={styles.modalListTitle}>
+                                        { `QS. ${this.state.ayatInBookmarkModal.surat_nama}:Ayat ${this.state.ayatInBookmarkModal.nomor_ayat}` }
+                                    </Theme.Text>
+                                </Theme.View>
+                                <Theme.View style={styles.modalListContent}>
+                                    <ThemedTouchableOpacity 
+                                        onPress={ () => 
+                                            this.handleDeleteAyatBookmarkBotton(this.state.ayatInBookmarkModal.id)
+                                        } 
+                                        style={styles.modalListButton}
+                                    >
+                                        <ThemedMaterialsIcon 
+                                            name='book-multiple-remove' size={28} color='@textColorArab'
+                                            style={styles.modalListButtonIcon}
+                                        />
+                                        <Theme.Text style={styles.modalListButtonText}>
+                                            Hapus dari bookmark
+                                        </Theme.Text>
+                                    </ThemedTouchableOpacity>
+                                    <ThemedTouchableOpacity
+                                        onPress={ () => this.toggleBookmarkAyatActionModal(false) } 
+                                        style={styles.modalListButton}
+                                    >
+                                        <ThemedMaterialsIcon 
+                                            name='close' size={28} color='@textColorArab'
+                                            style={styles.modalListButtonIcon}
+                                        />
+                                        <Theme.Text style={styles.modalListButtonText}>Keluar</Theme.Text>
+                                    </ThemedTouchableOpacity>
+                                </Theme.View>
+                            </Theme.View>
+                        </Modal>
+                    </View>
+
+                    {/* MODAL FOR SURAT BOOKMARK ACTION */}
+                    <View>
+                        <Modal 
+                            isVisible={this.state.isBookmarkSuratModalVisible}
+                            deviceWidth={deviceWidth}
+                            deviceHeight={deviceHeight} 
+                            animationInTiming={500}
+                            animationOutTiming={500}
+                            style={{
+                                flex: 1,
+                                justifyContent: "flex-end",
+                                margin: 0,
+                                alignItems: "center",
+                            }}
+                            onBackdropPress={ () => this.toggleBookmarkSuratActionModal(false) }
+                        >
+                            <Theme.View style={styles.modalListContainer}>
+                                <Theme.View style={styles.modalListHeader} >
+                                    <Theme.Text style={styles.modalListTitle}>
+                                        { `QS. ${this.state.suratInBookmarkModal.surat_nama}` }
+                                    </Theme.Text>
+                                </Theme.View>
+                                <Theme.View style={styles.modalListContent}>
+                                    <ThemedTouchableOpacity 
+                                        onPress={ () => 
+                                            this.handleDeleteSuratBookmarkBotton(this.state.suratInBookmarkModal.id)
+                                        } 
+                                        style={styles.modalListButton}
+                                    >
+                                        <ThemedMaterialsIcon 
+                                            name='book-multiple-remove' size={28} color='@textColorArab'
+                                            style={styles.modalListButtonIcon}
+                                        />
+                                        <Theme.Text style={styles.modalListButtonText}>
+                                            Hapus dari bookmark
+                                        </Theme.Text>
+                                    </ThemedTouchableOpacity>
+                                    <ThemedTouchableOpacity
+                                        onPress={ () => this.toggleBookmarkSuratActionModal(false) } 
+                                        style={styles.modalListButton}
+                                    >
+                                        <ThemedMaterialsIcon 
+                                            name='close' size={28} color='@textColorArab'
+                                            style={styles.modalListButtonIcon}
+                                        />
+                                        <Theme.Text style={styles.modalListButtonText}>Keluar</Theme.Text>
+                                    </ThemedTouchableOpacity>
+                                </Theme.View>
+                            </Theme.View>
+                        </Modal>
+                    </View>
+
                 </ThemedScrollView>
             )            
         }

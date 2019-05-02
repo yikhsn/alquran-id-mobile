@@ -8,8 +8,10 @@ import {
 } from '../../../themes/customs/components';
 
 class BookmarkSuratList extends Component{
-    deleteBookmark = (value) => {
-        deleteSuratBookmark(value).then( (msg) => this.props.initBookmarks() );
+    handleLongPress = (surat) => {
+        this.props.setDataToBookmarkSuratModal(surat);
+
+        this.props.toggleBookmarkSuratActionModal(true);
     }
     
     render(){ 
@@ -31,7 +33,7 @@ class BookmarkSuratList extends Component{
                 backgroundColor: '#ff445b',
                 color: '#ffffff',
                 underlayColor: '#f78',
-                onPress: () => this.deleteBookmark(surat.id)
+                onPress: () => this.props.deleteSuratFromBookmark(surat.id)
             }
         ]
 
@@ -57,6 +59,7 @@ class BookmarkSuratList extends Component{
                         surat_id: surat.surat_id
 
                     })}
+                    onLongPress={ () => this.handleLongPress(this.props.surat)}
                 >
                     <Theme.View style={styles.left}>
                         <ThemedIonicons 

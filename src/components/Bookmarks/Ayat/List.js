@@ -7,7 +7,6 @@ import {
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
-import { deleteAyatBookmark } from '../../../controllers/BookmarkController';
 import Theme, { createStyle } from 'react-native-theming';
 import {
     ThemedSwipeout,
@@ -16,10 +15,13 @@ import {
 } from '../../../themes/customs/components';
 
 class BookmarkAyatList extends Component{    
-    deleteBookmark =  (value) => {
-        deleteAyatBookmark(value).then( (msg) =>  this.props.initBookmarks());
-    }
+    
+    handleLongPress = (ayat) => {
+        this.props.setDataToBookmarkAyatModal(ayat);
 
+        this.props.toggleBookmarkAyatActionModal(true);
+    }
+    
     render(){
         let swipeRightButton = [
             {
@@ -27,7 +29,7 @@ class BookmarkAyatList extends Component{
                 backgroundColor: '#ff445b',
                 color: '#ffffff',
                 underlayColor: '#f78',
-                onPress: () => this.deleteBookmark(ayat.id)
+                onPress: () => this.props.deleteAyatFromBookmark(ayat.id)
             }
         ]
 
@@ -53,6 +55,7 @@ class BookmarkAyatList extends Component{
                         surat_id: ayat.nomor_surat,
                         ayatGoToId: ayat.nomor_ayat
                     })}
+                    onLongPress={ () => this.handleLongPress(this.props.ayat)}
                 >
                     <Theme.View style={styles.left}>
                         <ThemedIonicons
@@ -76,7 +79,6 @@ class BookmarkAyatList extends Component{
                     </Theme.View>
                 </ThemedTouchableOpacity>
             </ThemedSwipeout>
-
         )
     }
 }
