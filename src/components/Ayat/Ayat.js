@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import {
     ImageBackground,
+    View
 } from 'react-native';
 import Theme, { createStyle } from 'react-native-theming';
-import { ThemedTouchableOpacity } from '../../themes/customs/components';
+import {
+    ThemedTouchableOpacity,
+    ThemedTouchableHighlight
+} from '../../themes/customs/components';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../store/actionCreators';
@@ -15,8 +19,10 @@ class Ayat extends Component{
         return(
             <ThemedTouchableOpacity 
                 style={styles.container}
+                activeOpacity={0.5}
                 onPress={ () => this.props.handleAyatPressed(ayat) }
             >
+            <View style={styles.boxAyat}>            
                 <Theme.View style={styles.left}>
                     {
                         this.props.darkMode
@@ -55,6 +61,7 @@ class Ayat extends Component{
                         <Theme.Text style={styles.ayatMean}>{ayat.terjemahan}</Theme.Text>
                     </Theme.View>
                 </Theme.View>
+            </View>            
             </ThemedTouchableOpacity>
         )
     }
@@ -67,7 +74,10 @@ const styles = createStyle({
         paddingHorizontal: 5,
         borderColor: '@borderColor',
         borderBottomWidth: 1,
-        flexDirection: 'row',
+    },
+    boxAyat: {
+        display: 'flex',
+        flexDirection: 'row' 
     },
     left: {
         width: 50,
