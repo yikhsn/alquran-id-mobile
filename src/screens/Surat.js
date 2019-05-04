@@ -28,16 +28,20 @@ import {
     ThemedTouchableOpacity,
     ThemedPicker,
     ThemedPickerItem,
-    ThemedScrollIntoViewScrollView
+    ThemedScrollIntoViewScrollView,
+    ThemedActivityIndicator
 } from '../themes/customs/components';
 import ModalAlertBookmarkAyat from '../components/ModalAlert/ModalAlert';
 import ModalAlertRecentAyat from '../components/ModalAlert/ModalAlert';
+import Loader from '../components/Loader/Loader';
 
 class Surat extends Component{
     constructor(props){
         super(props);
 
         this.state = {
+            isInRendering: true,
+
             // for 'GoToSurat' Modal
             selectedSuratId: 1,
             selectedAyatId: null,
@@ -56,6 +60,16 @@ class Surat extends Component{
             recentReadStatus: '',
             recentReadDesc: '',
         }
+
+        // Fires while transition is happening
+        props.navigation.addListener('willFocus', () => {
+            this.setState({ isInRendering: true });
+        });
+    
+        // Fires after transition is complete
+        props.navigation.addListener('didFocus', () => {
+            this.setState({ isInRendering: false });
+        });
 
         this.initSurat();
     }
@@ -203,7 +217,6 @@ class Surat extends Component{
         this.sectionsRefs[section].current.scrollIntoView({ align });
     };
 
-
     // function to set state to any change on Bookmark Ayat Modal
     handleBookmarkAyatModal = 
         (isBookmarkAyatVisible) => this.setState({ isBookmarkAyatVisible });
@@ -244,211 +257,222 @@ class Surat extends Component{
         const deviceHeight = Platform.OS === "ios"
             ? Dimensions.get("window").height
             : require("react-native-extra-dimensions-android").get("REAL_WINDOW_HEIGHT");
-           
+
+        // to show bismillah in all ayat except in al-fatihah(QS1) and at-taubah (QS9)        
+        const renderBismillah = surat_id !== 1 ? ( surat_id !== 9 ? <Bismillah /> : null ) : null;
+
+        // to render each ayat of surat
+        const renderAyat = 
+            ayatGoToId
+            ?
+                this.props.ayats.map( (item ) => (
+                    <ScrollIntoView
+                        key={item.nomor_ayat}
+                        ref={this.sectionsRefs[item.nomor_ayat]}
+                        onMount={false}
+                        onUpdate
+                    >
+                        <Ayat
+                            ayat={item}
+                            navigation={this.props.navigation}
+                            handleAyatPressed={this.handleAyatPressed}
+                            addToBookmark={this.addToBookmark}
+                        />  
+                    </ScrollIntoView>
+                ))
+            :
+                <FlatList
+                    data={ this.props.ayats }
+                    renderItem={ ({ item }) => (
+                        <ScrollIntoView
+                            key={item.nomor_ayat}
+                            ref={this.sectionsRefs[item.nomor_ayat - 1 ]}
+                            onMount={false}
+                            onUpdate
+                        >
+                            <Ayat
+                                ayat={item}
+                                navigation={this.props.navigation}
+                                handleAyatPressed={this.handleAyatPressed}
+                                addToBookmark={this.addToBookmark}
+                            />  
+                        </ScrollIntoView>
+                    )}
+                    keyExtractor={ (item, index) => item + index }
+                />
+   
         return(
             <ThemedScrollIntoViewScrollView
                 keyboardShouldPersistTaps='always'
                 style={styles.container}
+                contentContainerStyle={{ flexGrow: 1 }}
             >
-                <HeaderSurat
-                    surat={surat}
-                />
                 {
-                    // to show bismillah in all ayat except in al-fatihah(QS1) and at-taubah (QS9)
-                    surat_id !== 1 ? ( surat_id !== 9 ? <Bismillah /> : null ) : null
-                }
-
-                {
-                    ayatGoToId
-                    ?
-                        this.props.ayats.map( (item ) => (
-                            <ScrollIntoView
-                                key={item.nomor_ayat}
-                                ref={this.sectionsRefs[item.nomor_ayat]}
-                                onMount={false}
-                                onUpdate
-                            >
-                                <Ayat
-                                    ayat={item}
-                                    navigation={this.props.navigation}
-                                    handleAyatPressed={this.handleAyatPressed}
-                                    addToBookmark={this.addToBookmark}
-                                />  
-                            </ScrollIntoView>
-                        ))
+                    this.state.isInRendering
+                    ? <Loader />
                     :
-                        <FlatList
-                            data={ this.props.ayats }
-                            renderItem={ ({ item }) => (
-                                <ScrollIntoView
-                                    key={item.nomor_ayat}
-                                    ref={this.sectionsRefs[item.nomor_ayat - 1 ]}
-                                    onMount={false}
-                                    onUpdate
+                        <View>
+                            <HeaderSurat
+                                surat={surat}
+                            />
+
+                            { renderBismillah }
+            
+                            { renderAyat }
+            
+                            <Theme.View>
+                                <Modal
+                                    isVisible={this.props.goToAyatVisible}
+                                    deviceWidth={deviceWidth}
+                                    deviceHeight={deviceHeight}
+                                    animationInTiming={500}
+                                    animationOutTiming={500}
+                                    style={{
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                    onBackdropPress={ () => this.props.toggleGoToAyatModal() }
                                 >
-                                    <Ayat
-                                        ayat={item}
-                                        navigation={this.props.navigation}
-                                        handleAyatPressed={this.handleAyatPressed}
-                                        addToBookmark={this.addToBookmark}
-                                    />  
-                                </ScrollIntoView>
-                            )}
-                            keyExtractor={ (item, index) => item + index }
-                        />
+                                    <Theme.View style={styles.modalContainer}>
+                                        <Theme.View style={styles.modalContent}>
+                                            <Theme.Text style={styles.modalHeader}>Lompat ke</Theme.Text>
+                                            <Theme.View style={styles.inputSurat}>
+                                                <Theme.Text style={styles.inputSuratLabel}>Surat</Theme.Text>
+                                                <ThemedPicker
+                                                    style={styles.inputSuratInput}
+                                                    mode='dropdown'
+                                                    selectedValue={this.state.selectedSuratId}
+                                                    onValueChange={(itemValue, indexValue) => 
+                                                        this.handleChangePicker(itemValue)
+                                                    }
+                                                    >
+                                                    {
+                                                        this.props.suratList.map((item, index) => {
+                                                            return (<ThemedPickerItem  color='@textColorPrimary' label={item.surat_nama} value={item.id} key={item.id}/>) 
+                                                        })
+                                                    }
+                                                </ThemedPicker>
+                                            </Theme.View>
+                                            <Theme.View style={styles.inputAyatContainer}>
+                                                <Theme.Text style={styles.inputAyatLabel}>Ayat</Theme.Text>
+                                                <ThemedTextInput
+                                                    style={styles.inputAyatInput}
+                                                    value={this.state.selectedAyatId}
+                                                    onChangeText={ (selectedAyatId) => this.handleCheckSelectedAyatId(selectedAyatId) }
+                                                    placeholder={`1-${this.state.ayatSugest.toString()}`}
+                                                    placeholderTextColor='@textColorQuaternary'
+                                                    keyboardType='numeric'
+                                                />
+                                            </Theme.View>
+                                        </Theme.View>
+                                        <Theme.View style={styles.buttonContainer}>
+                                            <ThemedTouchableHighlight
+                                                onPress={ () => this.props.toggleGoToAyatModal() }
+                                                style={styles.buttonClose}
+                                                underlayColor='@buttonColorSecondaryHighlight'
+                                            >
+                                                <ThemedMaterialsIcon 
+                                                    style={styles.buttonText} 
+                                                    name='close' size={28} 
+                                                    color='@modalSecondaryButtonIcon' 
+                                                />
+                                            </ThemedTouchableHighlight>
+                                            <ThemedTouchableHighlight
+                                                onPress={ () => this.navigateFromModal() }
+                                                style={styles.buttonSubmit}
+                                                underlayColor='@buttonColorPrimaryHighlight'
+                                            >
+                                                <ThemedMaterialsIcon 
+                                                    style={styles.buttonText} 
+                                                    name='page-next' size={28} 
+                                                    color='@modalPrimaryButtonIcon' 
+                                                />
+                                            </ThemedTouchableHighlight>
+                                        </Theme.View>
+                                    </Theme.View>
+                                </Modal>
+                            </Theme.View>
+            
+                            <View>
+                                <Modal 
+                                    isVisible={this.state.isListModalVisible}
+                                    deviceWidth={deviceWidth}
+                                    deviceHeight={deviceHeight} 
+                                    animationInTiming={500}
+                                    animationOutTiming={500}
+                                    style={{
+                                        flex: 1,
+                                        justifyContent: "flex-end",
+                                        margin: 0,
+                                        alignItems: "center",
+                                    }}
+                                    onBackdropPress={ () => this.toggleListModal() }
+                                >
+                                    <Theme.View style={styles.modalListContainer}>
+                                        <Theme.View style={styles.modalListHeader} >
+                                            <Theme.Text style={styles.modalListTitle}>
+                                                { 
+                                                    this.props.selectedAyat 
+                                                    ? 
+                                                        'QS. ' + this.props.selectedAyat.surat_nama+':Ayat '+this.props.selectedAyat.nomor_ayat 
+                                                    : 
+                                                        'loading'
+                                                }
+                                            </Theme.Text>
+                                        </Theme.View>
+                                        <Theme.View style={styles.modalListContent}>
+                                            <ThemedTouchableOpacity 
+                                                onPress={ () => 
+                                                    this.addToBookmark(this.props.selectedAyat.id) 
+                                                } 
+                                                style={styles.modalListButton}
+                                            >
+                                                <ThemedMatIcon 
+                                                    name='library-add' size={28} color='@textColorArab'
+                                                    style={styles.modalListButtonIcon}
+                                                />
+                                                <Theme.Text style={styles.modalListButtonText}>Tambah ke bookmark</Theme.Text>
+                                            </ThemedTouchableOpacity>
+                                            <ThemedTouchableOpacity
+                                                onPress={ () => this.addToRecent(this.props.selectedAyat.id) } 
+                                                style={styles.modalListButton}
+                                            >
+                                                <ThemedMatIcon 
+                                                    name='access-time' size={28} color='@textColorArab'
+                                                    style={styles.modalListButtonIcon}
+                                                />
+                                                <Theme.Text style={styles.modalListButtonText}>Tandai terakhir dibaca</Theme.Text>
+                                            </ThemedTouchableOpacity>
+                                            <ThemedTouchableOpacity
+                                                onPress={ () => this.toggleListModal() } 
+                                                style={styles.modalListButton}
+                                            >
+                                                <ThemedMatIcon 
+                                                    name='close' size={28} color='@textColorArab'
+                                                    style={styles.modalListButtonIcon}
+                                                />
+                                                <Theme.Text style={styles.modalListButtonText}>Keluar</Theme.Text>
+                                            </ThemedTouchableOpacity>
+                                        </Theme.View>
+                                    </Theme.View>
+                                </Modal>
+                            </View>
+            
+                            <ModalAlertBookmarkAyat
+                                isVisible={this.state.isBookmarkAyatVisible}
+                                status={this.state.bookmarkAyatStatus}
+                                desc={this.state.bookmarkAyatDesc}
+                                handleBookmarkModal={this.handleBookmarkAyatModal}
+                            />
+            
+                            <ModalAlertRecentAyat
+                                isVisible={this.state.isRecentReadVisible}
+                                status={this.state.recentReadStatus}
+                                desc={this.state.recentReadDesc}
+                                handleBookmarkModal={this.handleRecentReadModal}
+                            />
+                        </View>
                 }
-
-                <Theme.View>
-                    <Modal
-                        isVisible={this.props.goToAyatVisible}
-                        deviceWidth={deviceWidth}
-                        deviceHeight={deviceHeight}
-                        animationInTiming={500}
-                        animationOutTiming={500}
-                        style={{
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                        onBackdropPress={ () => this.props.toggleGoToAyatModal() }
-                    >
-                        <Theme.View style={styles.modalContainer}>
-                            <Theme.View style={styles.modalContent}>
-                                <Theme.Text style={styles.modalHeader}>Lompat ke</Theme.Text>
-                                <Theme.View style={styles.inputSurat}>
-                                    <Theme.Text style={styles.inputSuratLabel}>Surat</Theme.Text>
-                                    <ThemedPicker
-                                        style={styles.inputSuratInput}
-                                        mode='dropdown'
-                                        selectedValue={this.state.selectedSuratId}
-                                        onValueChange={(itemValue, indexValue) => 
-                                            this.handleChangePicker(itemValue)
-                                        }
-                                        >
-                                        {
-                                            this.props.suratList.map((item, index) => {
-                                                return (<ThemedPickerItem  color='@textColorPrimary' label={item.surat_nama} value={item.id} key={item.id}/>) 
-                                            })
-                                        }
-                                    </ThemedPicker>
-                                </Theme.View>
-                                <Theme.View style={styles.inputAyatContainer}>
-                                    <Theme.Text style={styles.inputAyatLabel}>Ayat</Theme.Text>
-                                    <ThemedTextInput
-                                        style={styles.inputAyatInput}
-                                        value={this.state.selectedAyatId}
-                                        onChangeText={ (selectedAyatId) => this.handleCheckSelectedAyatId(selectedAyatId) }
-                                        placeholder={`1-${this.state.ayatSugest.toString()}`}
-                                        placeholderTextColor='@textColorQuaternary'
-                                        keyboardType='numeric'
-                                    />
-                                </Theme.View>
-                            </Theme.View>
-                            <Theme.View style={styles.buttonContainer}>
-                                <ThemedTouchableHighlight
-                                    onPress={ () => this.props.toggleGoToAyatModal() }
-                                    style={styles.buttonClose}
-                                    underlayColor='@buttonColorSecondaryHighlight'
-                                >
-                                     <ThemedMaterialsIcon 
-                                        style={styles.buttonText} 
-                                        name='close' size={28} 
-                                        color='@modalSecondaryButtonIcon' 
-                                     />
-                                </ThemedTouchableHighlight>
-                                <ThemedTouchableHighlight
-                                    onPress={ () => this.navigateFromModal() }
-                                    style={styles.buttonSubmit}
-                                    underlayColor='@buttonColorPrimaryHighlight'
-                                >
-                                     <ThemedMaterialsIcon 
-                                        style={styles.buttonText} 
-                                        name='page-next' size={28} 
-                                        color='@modalPrimaryButtonIcon' 
-                                    />
-                                </ThemedTouchableHighlight>
-                            </Theme.View>
-                        </Theme.View>
-                    </Modal>
-                </Theme.View>
-
-                <View>
-                    <Modal 
-                        isVisible={this.state.isListModalVisible}
-                        deviceWidth={deviceWidth}
-                        deviceHeight={deviceHeight} 
-                        animationInTiming={500}
-                        animationOutTiming={500}
-                        style={{
-                            flex: 1,
-                            justifyContent: "flex-end",
-                            margin: 0,
-                            alignItems: "center",
-                        }}
-                        onBackdropPress={ () => this.toggleListModal() }
-                    >
-                        <Theme.View style={styles.modalListContainer}>
-                            <Theme.View style={styles.modalListHeader} >
-                                <Theme.Text style={styles.modalListTitle}>
-                                    { 
-                                        this.props.selectedAyat 
-                                        ? 
-                                            'QS. ' + this.props.selectedAyat.surat_nama+':Ayat '+this.props.selectedAyat.nomor_ayat 
-                                        : 
-                                            'loading'
-                                    }
-                                </Theme.Text>
-                            </Theme.View>
-                            <Theme.View style={styles.modalListContent}>
-                                <ThemedTouchableOpacity 
-                                    onPress={ () => 
-                                        this.addToBookmark(this.props.selectedAyat.id) 
-                                    } 
-                                    style={styles.modalListButton}
-                                >
-                                    <ThemedMatIcon 
-                                        name='library-add' size={28} color='@textColorArab'
-                                        style={styles.modalListButtonIcon}
-                                    />
-                                    <Theme.Text style={styles.modalListButtonText}>Tambah ke bookmark</Theme.Text>
-                                </ThemedTouchableOpacity>
-                                <ThemedTouchableOpacity
-                                    onPress={ () => this.addToRecent(this.props.selectedAyat.id) } 
-                                    style={styles.modalListButton}
-                                >
-                                    <ThemedMatIcon 
-                                        name='access-time' size={28} color='@textColorArab'
-                                        style={styles.modalListButtonIcon}
-                                    />
-                                    <Theme.Text style={styles.modalListButtonText}>Tandai terakhir dibaca</Theme.Text>
-                                </ThemedTouchableOpacity>
-                                <ThemedTouchableOpacity
-                                    onPress={ () => this.toggleListModal() } 
-                                    style={styles.modalListButton}
-                                >
-                                    <ThemedMatIcon 
-                                        name='close' size={28} color='@textColorArab'
-                                        style={styles.modalListButtonIcon}
-                                    />
-                                    <Theme.Text style={styles.modalListButtonText}>Keluar</Theme.Text>
-                                </ThemedTouchableOpacity>
-                            </Theme.View>
-                        </Theme.View>
-                    </Modal>
-                </View>
-
-                <ModalAlertBookmarkAyat
-                    isVisible={this.state.isBookmarkAyatVisible}
-                    status={this.state.bookmarkAyatStatus}
-                    desc={this.state.bookmarkAyatDesc}
-                    handleBookmarkModal={this.handleBookmarkAyatModal}
-                />
-
-                <ModalAlertRecentAyat
-                    isVisible={this.state.isRecentReadVisible}
-                    status={this.state.recentReadStatus}
-                    desc={this.state.recentReadDesc}
-                    handleBookmarkModal={this.handleRecentReadModal}
-                />
             </ThemedScrollIntoViewScrollView>
         )
     }
@@ -456,10 +480,10 @@ class Surat extends Component{
 
 const styles = createStyle({
     container: {
-        backgroundColor: '@backgroundColor'
+        backgroundColor: '@backgroundColor',
     },
 
-
+    // style for 'GoToSurat' Modal
     modalContainer: {
         height: ( Dimensions.get("window").width  * 90 / 100 ) * 60 / 100,
         width: '90%',
