@@ -77,7 +77,10 @@ class SearchHeader extends Component{
             <Theme.View style={styles.container}>
                 <Theme.View style={styles.inputContainer}>
                     <ThemedTextInput
-                        style={styles.input}
+                        style={[styles.input, {
+                            // to change text color in input to be lighter when box is focused
+                            color: this.state.isFocused ? '@textColorArabLight' : '@textPlaceHolderSearch',
+                        }]}
                         value={this.props.datas.wordsSearch}
                         multiline={false}
                         autoCorrect={false}
@@ -174,7 +177,6 @@ const styles = createStyle({
         height: 40,
         fontFamily: 'Roboto-Regular',
         fontSize: 20,
-        color: '@textColorArabLight',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '@buttonColorTertiary',
