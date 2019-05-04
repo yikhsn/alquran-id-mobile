@@ -31,8 +31,10 @@ class SuratList extends Component{
         super(props);
 
         this.state = {
+            // state for scrollView , to force to scroll to vertically
+            // when user is going to swipeout horizontally
             scrollEnabled: true,
-            
+
             // for 'GoToSurat' Modal
             selectedSuratId: 1,
             selectedAyatId: null,

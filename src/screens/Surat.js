@@ -40,6 +40,7 @@ class Surat extends Component{
         super(props);
 
         this.state = {
+            // to show loading spinner when content is loading
             isInRendering: true,
 
             // for 'GoToSurat' Modal

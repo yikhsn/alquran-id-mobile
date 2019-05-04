@@ -36,8 +36,11 @@ class Bookmark extends Component{
             surat_bookmarks: [],
             ayat_bookmarks: [],
             recent_reads: [],
-            scrollEnabled: true,
 
+            // state for scrollView , to force to scroll to vertically
+            // when user is going to swipeout horizontally
+            scrollEnabled: true,
+            
             // for "RecentRead" Modal
             isRecentReadModalVisible: false,
             ayatInRecentRead: {
