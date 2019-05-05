@@ -4,7 +4,6 @@ import {
     FlatList,
     Dimensions,
     Platform,
-    Alert,
 } from 'react-native';
 import { getSingleSurat } from '../controllers/SuratController';
 import HeaderSurat from '../components/HeaderSurat/HeaderSurat';
@@ -22,18 +21,13 @@ import Theme, { createStyle } from 'react-native-theming';
 import ThemeConstants from '../themes/navigations/ThemeConstants';
 import { 
     ThemedMatIcon,
-    ThemedMaterialsIcon,
-    ThemedTextInput,
-    ThemedTouchableHighlight,
     ThemedTouchableOpacity,
-    ThemedPicker,
-    ThemedPickerItem,
     ThemedScrollIntoViewScrollView,
-    ThemedActivityIndicator
 } from '../themes/customs/components';
 import ModalAlertBookmarkAyat from '../components/ModalAlert/ModalAlert';
 import ModalAlertRecentAyat from '../components/ModalAlert/ModalAlert';
 import Loader from '../components/Loader/Loader';
+import GoToAyatModal from '../components/GoToAyatModal/GoToAyatModal';
 
 class Surat extends Component{
     constructor(props){
@@ -42,11 +36,6 @@ class Surat extends Component{
         this.state = {
             // to show loading spinner when content is loading
             isInRendering: true,
-
-            // for 'GoToSurat' Modal
-            selectedSuratId: 1,
-            selectedAyatId: null,
-            ayatSugest: 7,
 
             // for 'BottomModalList'
             isListModalVisible: false,
@@ -95,24 +84,29 @@ class Surat extends Component{
     }
 
     componentDidMount() {
-        setTimeout(this.goToAyatView, 500);
+        setTimeout(this.countAyatToScroll, 500);
     }
 
-    // function to scroll to section ayat view based on ayatId from navigation params
-    goToAyatView = () => {
+    // function to scroll to count is it going to scroll to ayat or not based on the given params
+    countAyatToScroll = () => {
         // get ayatGoToId data from navigation params
         let ayatGoToId = this.props.navigation.getParam('ayatGoToId', null);
 
+        if (!ayatGoToId) return;
+        
+        this.scrollIntoAyat(ayatGoToId);
+    }
+
+    // function to count where to scroll
+    scrollIntoAyat = (ayatNumber) => {
         // get surat data from navigation params
         const surat = this.props.navigation.getParam('surat', null);
 
-        if (!ayatGoToId) return;
-        
-        if (ayatGoToId === surat.ayat_total){
-            ayatGoToId = ayatGoToId - 1;
+        if (ayatNumber == surat.ayat_total){
+            ayatNumber = ayatNumber - 1;
         }
-        
-        this.scrollSectionIntoView(ayatGoToId, 'top');
+
+        this.scrollSectionIntoView(ayatNumber, 'top');
     }
 
     // init ayat from database
@@ -121,33 +115,6 @@ class Surat extends Component{
 
         // redux
         getSingleSurat(surat_id).then( (ayats) => this.props.setAyats(ayats));
-    }
-
-    // function to handle surat that user changed on modal picker 
-    handleChangePicker = (itemValue) => {
-
-        // change state 'selectedSuratId' to curent selected itemValue on picker
-        this.setState({ selectedSuratId: itemValue  });
-
-        // change state 'selectedAyatId' to null everytime user change picker
-        this.setState({ selectedAyatId: null });
-
-        // change ayat sugest on modal to  curent range of ayats
-        this.handleAyatSugestModal(itemValue);
-    }
-
-    // function to handle state 'ayasSugest' to the curent surat selected
-    handleAyatSugestModal = (suratId) => {
-        const lastSugest = this.props.suratList.find( surat => surat.id === suratId);
-
-        const lastSugestString = lastSugest.ayat_total;
-        this.setState({ ayatSugest: lastSugestString });
-    }
-
-    // function to handle and check input user input to state 'selectedAyatId'
-    handleCheckSelectedAyatId = (selectedAyatId) => {
-        if ( selectedAyatId > this.state.ayatSugest) return;
-        else this.setState({ selectedAyatId });
     }
 
     // function to navigate from modal
@@ -241,7 +208,10 @@ class Surat extends Component{
     render(){
 
         // create 'Refs' based on much ayat
+        // this.sectionsRefs = this.props.ayats.map(_section => React.createRef());
         this.sectionsRefs = this.props.ayats.map(_section => React.createRef());
+
+        console.log(this.sectionsRefs);
 
         // get surat id from navigation params to decide to show bismillah or not
         const surat_id = this.props.navigation.getParam('surat_id', null);
@@ -321,78 +291,10 @@ class Surat extends Component{
             
                             { renderAyat }
             
-                            <Theme.View>
-                                <Modal
-                                    isVisible={this.props.goToAyatVisible}
-                                    deviceWidth={deviceWidth}
-                                    deviceHeight={deviceHeight}
-                                    animationInTiming={500}
-                                    animationOutTiming={500}
-                                    style={{
-                                        alignItems: 'center',
-                                        justifyContent: 'center'
-                                    }}
-                                    onBackdropPress={ () => this.props.toggleGoToAyatModal() }
-                                >
-                                    <Theme.View style={styles.modalContainer}>
-                                        <Theme.View style={styles.modalContent}>
-                                            <Theme.Text style={styles.modalHeader}>Lompat ke</Theme.Text>
-                                            <Theme.View style={styles.inputSurat}>
-                                                <Theme.Text style={styles.inputSuratLabel}>Surat</Theme.Text>
-                                                <ThemedPicker
-                                                    style={styles.inputSuratInput}
-                                                    mode='dropdown'
-                                                    selectedValue={this.state.selectedSuratId}
-                                                    onValueChange={(itemValue, indexValue) => 
-                                                        this.handleChangePicker(itemValue)
-                                                    }
-                                                    >
-                                                    {
-                                                        this.props.suratList.map((item, index) => {
-                                                            return (<ThemedPickerItem  color='@textColorPrimary' label={item.surat_nama} value={item.id} key={item.id}/>) 
-                                                        })
-                                                    }
-                                                </ThemedPicker>
-                                            </Theme.View>
-                                            <Theme.View style={styles.inputAyatContainer}>
-                                                <Theme.Text style={styles.inputAyatLabel}>Ayat</Theme.Text>
-                                                <ThemedTextInput
-                                                    style={styles.inputAyatInput}
-                                                    value={this.state.selectedAyatId}
-                                                    onChangeText={ (selectedAyatId) => this.handleCheckSelectedAyatId(selectedAyatId) }
-                                                    placeholder={`1-${this.state.ayatSugest.toString()}`}
-                                                    placeholderTextColor='@textColorQuaternary'
-                                                    keyboardType='numeric'
-                                                />
-                                            </Theme.View>
-                                        </Theme.View>
-                                        <Theme.View style={styles.buttonContainer}>
-                                            <ThemedTouchableHighlight
-                                                onPress={ () => this.props.toggleGoToAyatModal() }
-                                                style={styles.buttonClose}
-                                                underlayColor='@buttonColorSecondaryHighlight'
-                                            >
-                                                <ThemedMaterialsIcon 
-                                                    style={styles.buttonText} 
-                                                    name='close' size={28} 
-                                                    color='@modalSecondaryButtonIcon' 
-                                                />
-                                            </ThemedTouchableHighlight>
-                                            <ThemedTouchableHighlight
-                                                onPress={ () => this.navigateFromModal() }
-                                                style={styles.buttonSubmit}
-                                                underlayColor='@buttonColorPrimaryHighlight'
-                                            >
-                                                <ThemedMaterialsIcon 
-                                                    style={styles.buttonText} 
-                                                    name='page-next' size={28} 
-                                                    color='@modalPrimaryButtonIcon' 
-                                                />
-                                            </ThemedTouchableHighlight>
-                                        </Theme.View>
-                                    </Theme.View>
-                                </Modal>
-                            </Theme.View>
+                            <GoToAyatModal
+                                scrollIntoAyat={this.scrollIntoAyat}
+                                ayat_total={surat.ayat_total}
+                            />
             
                             <View>
                                 <Modal 
@@ -484,94 +386,6 @@ const styles = createStyle({
         backgroundColor: '@backgroundColor',
     },
 
-    // style for 'GoToSurat' Modal
-    modalContainer: {
-        height: ( Dimensions.get("window").width  * 90 / 100 ) * 60 / 100,
-        width: '90%',
-        backgroundColor: '@backgroundColor',
-    },
-    modalContent: {
-        flex: 1,
-        margin: 0,
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '@backgroundColor',
-    },
-    modalHeader: {
-        fontSize: 20,
-        marginBottom: 5,
-        fontWeight: '500',
-        fontFamily: 'Roboto-Regular',
-        color: '@textColorArab'
-    },
-    inputAyatContainer:{
-        flex: 1,
-        color: '@textColorPrimary',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    inputSurat: {
-        flex: 1,
-        color: '@textColorPrimary',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    inputAyatLabel: {
-        color: '@textColorPrimary',
-        fontSize: 16,
-        width: '20%'
-    },
-    inputSuratLabel: {
-        color: '@textColorPrimary',
-        fontSize: 16,
-        width: '20%'
-    },
-    inputSuratInput: {
-        flex: 1,
-        // to make color of arrow in item picker same as its text
-        // backgroundColor: '@backgroundColor',
-        color: '@textColorPrimary',
-    },
-    inputAyatInput: {
-        flex: 1,
-        color: '@textColorPrimary',
-        padding: 10,
-        fontSize: 16,
-        borderWidth: 1,
-        borderColor: '@borderColor'
-    },
-    buttonContainer: {
-        margin: 0,
-        height: 40,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignContent: 'center',
-    },
-    buttonClose: {
-        flex: 1,
-        backgroundColor: '@buttonColorSecondary',
-        padding: 5,
-        margin: 0,
-        justifyContent: 'center',
-        alignContent: 'center',
-    },
-    buttonSubmit: {
-        flex: 2,
-        backgroundColor: '@buttonColorPrimary',
-        padding: 5,
-        margin: 0,
-        justifyContent: 'center',
-        alignContent: 'center',
-    },
-    buttonText : {
-        alignContent: 'center',
-        alignSelf: 'center'
-    },
-
     // style for modal list
     modalListContainer: {
         width: '100%',
@@ -612,7 +426,6 @@ const styles = createStyle({
 const mapStateToProps = state => {
     return {
         suratList: state.rdc.suratList,
-        goToAyatVisible: state.rdc.goToAyatVisible,
         selectedAyat: state.rdc.selectedAyat,
         ayats: state.rdc.ayats
     }
