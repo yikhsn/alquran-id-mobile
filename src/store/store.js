@@ -1,8 +1,8 @@
-import { AsyncStorage } from 'react-native';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import appReducer from './reducers/mainReducer';
 import themeReducer from './reducers/themeReducer';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const defaultReducer = combineReducers({ 
     rdc: appReducer, 

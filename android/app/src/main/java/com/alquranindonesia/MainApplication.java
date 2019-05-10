@@ -3,6 +3,7 @@ package com.alquranindonesia;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
          new SQLitePluginPackage(),
           new MainReactPackage(),
+            new AsyncStoragePackage(),
             new SplashScreenReactPackage(),
             new ExtraDimensionsPackage(),
             new VectorIconsPackage(),
